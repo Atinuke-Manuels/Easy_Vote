@@ -7,7 +7,7 @@ class ElectionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Election election = ModalRoute.of(context)?.settings.arguments as Election;
+    final Election election = ModalRoute.of(context)?.settings.arguments as Election; // This retrieves the election object
     return Scaffold(
       appBar: AppBar(title: Text(election.title)),
       body: ListView.builder(

@@ -104,15 +104,25 @@ class FirebaseService {
 
 
   // Fetch elections
-  Future<List<Election>> fetchElections() async {
+  Stream<List<Election>> fetchElections() {
+    return _db.collection('Elections').snapshots().map((snapshot) {
+      // print('Fetched elections: ${snapshot.docs.length}'); // Log the number of fetched elections
+      return snapshot.docs.map((doc) => Election.fromFirestore(doc)).toList();
+    });
+  }
+
+  Future<Election?> fetchElectionById(String id) async {
     try {
-      final QuerySnapshot snapshot = await _db.collection('Elections').get();
-      return snapshot.docs.map((doc) {
+      DocumentSnapshot doc = await _db.collection('Elections').doc(id).get();
+      if (doc.exists) {
         return Election.fromFirestore(doc);
-      }).toList();
+      } else {
+        print('No election found with the provided ID.');
+        return null;
+      }
     } catch (e) {
-      print('Error fetching elections: $e');
-      return [];
+      print('Error fetching election: $e');
+      return null;
     }
   }
 

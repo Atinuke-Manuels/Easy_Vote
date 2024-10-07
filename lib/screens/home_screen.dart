@@ -1,7 +1,10 @@
-import 'package:easy_vote/screens/update_elections_screen.dart';
+import 'package:easy_vote/screens/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; // Import the intl package
 import '../models/election.dart';
 import '../services/firebase_service.dart';
+import 'update_elections_screen.dart';
+import 'election_screen.dart'; // Ensure this import is present
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -11,12 +14,27 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final FirebaseService _firebaseService = FirebaseService();
 
+  void navigateToLoginScreen(BuildContext context) {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+          (Route<dynamic> route) => false, // This predicate removes all previous routes
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Elections')),
-      body: FutureBuilder<List<Election>>(
-        future: _firebaseService.fetchElections(),
+      appBar: AppBar(title: Text('Elections'),
+      actions: [
+        TextButton(onPressed: (){
+          _firebaseService.signOut();
+          navigateToLoginScreen(context);
+        }, child: Icon(Icons.exit_to_app_outlined))
+      ],
+      ),
+      body: StreamBuilder<List<Election>>(
+        stream: _firebaseService.fetchElections(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -30,7 +48,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   Text('No elections available.'),
                   ElevatedButton(
                     onPressed: () {
-                      // Create a temporary Election object
                       Election temporaryElection = Election(
                         id: '',
                         title: '',
@@ -39,20 +56,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         endDate: DateTime.now().add(Duration(days: 7)),
                       );
 
-                      // Navigate to the UpdateElectionScreen
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => UpdateElectionScreen(election: temporaryElection),
                         ),
                       ).then((_) {
-                        // Re-fetch elections after coming back from the UpdateElectionScreen
-                        setState(() {});
+                        // No need to setState here; the StreamBuilder will handle updates.
                       });
                     },
                     child: Text("Schedule An Election"),
                   ),
-
                 ],
               ),
             );
@@ -67,9 +81,16 @@ class _HomeScreenState extends State<HomeScreen> {
               return Card(
                 child: ListTile(
                   title: Text(election.title),
-                  subtitle: Text('Voting Period: ${election.startDate} - ${election.endDate}'),
+                  subtitle: Text(
+                    'Voting starts: ${DateFormat('dd/MM/yyyy HH:mm').format(election.startDate)}\n'
+                        'Voting ends: ${DateFormat('dd/MM/yyyy HH:mm').format(election.endDate)}',
+                  ),
                   onTap: () {
-                    Navigator.pushNamed(context, '/electionDetails', arguments: election);
+                    Navigator.pushNamed(
+                      context,
+                      '/election',  // Make sure this route matches with your main app routes
+                      arguments: election,
+                    );
                   },
                 ),
               );

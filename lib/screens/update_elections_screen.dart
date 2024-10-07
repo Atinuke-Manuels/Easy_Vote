@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/election.dart';
 import '../services/firebase_service.dart';
+import 'package:intl/intl.dart'; // Import for date formatting
 
 class UpdateElectionScreen extends StatefulWidget {
   final Election election;
@@ -16,6 +17,9 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
 
   late TextEditingController _titleController;
   late TextEditingController _candidatesController;
+  late TextEditingController _startDateController;
+  late TextEditingController _endDateController;
+
   DateTime? _startDate;
   DateTime? _endDate;
 
@@ -26,12 +30,18 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
     _candidatesController = TextEditingController(text: widget.election.candidates.join(', '));
     _startDate = widget.election.startDate;
     _endDate = widget.election.endDate;
+
+    // Initialize the date controllers with formatted dates
+    _startDateController = TextEditingController(text: DateFormat('dd/MM/yyyy HH:mm').format(_startDate!));
+    _endDateController = TextEditingController(text: DateFormat('dd/MM/yyyy HH:mm').format(_endDate!));
   }
 
   @override
   void dispose() {
     _titleController.dispose();
     _candidatesController.dispose();
+    _startDateController.dispose();
+    _endDateController.dispose();
     super.dispose();
   }
 
@@ -58,6 +68,65 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
     Navigator.pop(context); // Go back after updating
   }
 
+  Future<void> _selectStartDateTime() async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _startDate ?? DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2101),
+    );
+
+    if (pickedDate != null) {
+      TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.fromDateTime(_startDate ?? DateTime.now()),
+      );
+
+      if (pickedTime != null) {
+        setState(() {
+          _startDate = DateTime(
+            pickedDate.year,
+            pickedDate.month,
+            pickedDate.day,
+            pickedTime.hour,
+            pickedTime.minute,
+          );
+          // Update the controller text after selection
+          _startDateController.text = DateFormat('dd/MM/yyyy HH:mm').format(_startDate!);
+        });
+      }
+    }
+  }
+
+  Future<void> _selectEndDateTime() async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _endDate ?? DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2101),
+    );
+
+    if (pickedDate != null) {
+      TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.fromDateTime(_endDate ?? DateTime.now()),
+      );
+
+      if (pickedTime != null) {
+        setState(() {
+          _endDate = DateTime(
+            pickedDate.year,
+            pickedDate.month,
+            pickedDate.day,
+            pickedTime.hour,
+            pickedTime.minute,
+          );
+          // Update the controller text after selection
+          _endDateController.text = DateFormat('dd/MM/yyyy HH:mm').format(_endDate!);
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,49 +144,27 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
               controller: _candidatesController,
               decoration: const InputDecoration(labelText: 'Candidates (comma-separated)'),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Start Date: ${_startDate?.toLocal().toString().split(' ')[0] ?? ''}'),
-                ElevatedButton(
-                  onPressed: () async {
-                    DateTime? picked = await showDatePicker(
-                      context: context,
-                      initialDate: _startDate ?? DateTime.now(),
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime(2101),
-                    );
-                    if (picked != null && picked != _startDate) {
-                      setState(() {
-                        _startDate = picked;
-                      });
-                    }
-                  },
-                  child: const Text('Pick Start Date'),
+            TextField(
+              controller: _startDateController,
+              readOnly: true, // Make it read-only so users can't type in it
+              decoration: InputDecoration(
+                labelText: 'Start Date & Time',
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.calendar_today),
+                  onPressed: _selectStartDateTime,
                 ),
-              ],
+              ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('End Date: ${_endDate?.toLocal().toString().split(' ')[0] ?? ''}'),
-                ElevatedButton(
-                  onPressed: () async {
-                    DateTime? picked = await showDatePicker(
-                      context: context,
-                      initialDate: _endDate ?? DateTime.now(),
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime(2101),
-                    );
-                    if (picked != null && picked != _endDate) {
-                      setState(() {
-                        _endDate = picked;
-                      });
-                    }
-                  },
-                  child: const Text('Pick End Date'),
+            TextField(
+              controller: _endDateController,
+              readOnly: true, // Make it read-only so users can't type in it
+              decoration: InputDecoration(
+                labelText: 'End Date & Time',
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.calendar_today),
+                  onPressed: _selectEndDateTime,
                 ),
-              ],
+              ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
