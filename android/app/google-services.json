@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "493808727661",
+    "project_id": "easyvote-71ed8",
+    "storage_bucket": "easyvote-71ed8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:493808727661:android:d764f7ff1c82eee23f3164",
+        "android_client_info": {
+          "package_name": "com.example.easy_vote"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5lIby9yk8iRVTpJnuH93gtm5f6uV9xVU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

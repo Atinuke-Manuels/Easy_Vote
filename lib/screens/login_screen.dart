@@ -1,0 +1,136 @@
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'home_screen.dart';
+
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final _auth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
+
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _voterIdController = TextEditingController();
+
+  bool _isLoading = false;
+  bool _isPasswordVisible = false;
+
+  // Show SnackBar for displaying messages
+  void _showSnackBar(String message, Color color) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      backgroundColor: color,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  // Submit Login
+  Future<void> _submitLogin() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      // Fetch the user associated with the email
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+
+      // Retrieve the Voter ID from Firestore
+      DocumentSnapshot userDoc = await _firestore.collection('VotersRegister').doc(userCredential.user!.uid).get();
+
+      // Check if the provided Voter ID matches the stored one
+      if (userDoc.exists) {
+        String storedVoterId = userDoc.get('voterId');
+        if (_voterIdController.text != storedVoterId) {
+          _showSnackBar('Invalid Voter ID. Please try again.', Colors.red);
+          setState(() {
+            _isLoading = false;
+          });
+          return; // Stop further execution if the Voter ID does not match
+        }
+      } else {
+        _showSnackBar('User data not found in database.', Colors.red);
+        setState(() {
+          _isLoading = false;
+        });
+        return; // Stop further execution if user data is not found
+      }
+
+      _showSnackBar('Logged in successfully!', Colors.green);
+
+      // Navigate to HomeScreen after successful login
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
+    } on FirebaseAuthException catch (e) {
+      _showSnackBar(e.message ?? 'Authentication error', Colors.red);
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {
+      _showSnackBar('An unexpected error occurred.', Colors.red);
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Login')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextField(
+              controller: _emailController,
+              decoration: const InputDecoration(labelText: 'Email'),
+            ),
+            TextField(
+              controller: _passwordController,
+              decoration: InputDecoration(
+                labelText: 'Password',
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _isPasswordVisible = !_isPasswordVisible;
+                    });
+                  },
+                ),
+              ),
+              obscureText: !_isPasswordVisible,
+            ),
+            TextField(
+              controller: _voterIdController,
+              decoration: const InputDecoration(labelText: 'Voter ID'),
+            ),
+            ElevatedButton(
+              onPressed: _isLoading ? null : _submitLogin,
+              child: Text(_isLoading ? 'Loading...' : 'Login'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, '/signup');
+              },
+              child: Text('Not registered? Signup'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
