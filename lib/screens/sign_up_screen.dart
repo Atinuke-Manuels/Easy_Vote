@@ -1,8 +1,6 @@
-import 'package:easy_vote/screens/login_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:math'; // For generating a random voter ID
+import '../services/firebase_service.dart';
+import '../constants/app_colors.dart'; // Import your app colors
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -12,8 +10,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  final _auth = FirebaseAuth.instance;
-  final _firestore = FirebaseFirestore.instance;
+  final FirebaseService _authService = FirebaseService(); // Initialize AuthService
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -33,17 +30,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  // Function to generate a random 6-digit voter ID
-  String _generateVoterId() {
-    Random random = Random();
-    int voterId = 100000 + random.nextInt(900000); // Generates a 6-digit number
-    return voterId.toString();
-  }
-
   // Submit Signup
   Future<void> _submitSignup() async {
     if (_passwordController.text != _confirmPasswordController.text) {
-      _showSnackBar('Passwords do not match', Colors.red);
+      _showSnackBar('Passwords do not match', AppColors.errorColor);
       return;
     }
 
@@ -51,35 +41,46 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _isLoading = true;
     });
 
-    try {
-      // Create the user with Firebase Authentication
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
-      );
+    // Call the signup method from AuthService
+    var userCredential = await _authService.signUp(
+      _emailController.text,
+      _passwordController.text,
+      _nameController.text,
+    );
 
-      String voterId = _generateVoterId(); // Generate unique voter ID
-
-      // Save the user details to Firestore in the VotersRegister collection
-      await _firestore.collection('VotersRegister').doc(userCredential.user!.uid).set({
-        'name': _nameController.text,
-        'email': _emailController.text,
-        'voterId': voterId,
-      });
-
+    if (userCredential != null) {
       // Show the Voter ID in a dialog before navigating away
       await showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Signup Successful'),
-            content: Text('Your Voter ID is: $voterId. Please make sure to save it, as you will need it to log in.'),
+            title: Text('Signup Successful', style: AppTextStyles.headingStyle),
+            content: RichText(
+              text: TextSpan(
+                style: const TextStyle(color: Colors.black), // Default text style
+                children: <TextSpan>[
+                  const TextSpan(
+                    text: 'Your Voter ID is: ', // Regular text
+                  ),
+                  TextSpan(
+                    text: _authService.generateVoterId(), // Voter ID text
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold, // Make the Voter ID bold
+                      color: AppColors.voterIdColor, // Use the defined Voter ID color
+                    ),
+                  ),
+                  const TextSpan(
+                    text: '. Please make sure to save it, as you will need it to log in.', // Regular text
+                  ),
+                ],
+              ),
+            ),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('OK'),
+                child: const Text('OK', style: AppTextStyles.bodyTextStyle),
               ),
             ],
           );
@@ -99,14 +100,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
       // Navigate to login screen after successful signup
       Navigator.pushReplacementNamed(context, '/');
-
-    } on FirebaseAuthException catch (e) {
-      _showSnackBar(e.message ?? 'Authentication error', Colors.red);
-      setState(() {
-        _isLoading = false;
-      });
-    } catch (e) {
-      _showSnackBar('An unexpected error occurred.', Colors.red);
+    } else {
+      _showSnackBar('Signup failed. Please try again.', AppColors.errorColor);
       setState(() {
         _isLoading = false;
       });
@@ -116,7 +111,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Signup')),
+      appBar: AppBar(title: Text('Signup', style: AppTextStyles.headingStyle)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -126,16 +121,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
             children: [
               TextField(
                 controller: _nameController,
-                decoration: const InputDecoration(labelText: 'Full Name'),
+                decoration: InputDecoration(
+                  labelText: 'Full Name',
+                  labelStyle: TextStyle(color: AppColors.primaryColor), // Use the primary color for labels
+                ),
               ),
               TextField(
                 controller: _emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  labelStyle: TextStyle(color: AppColors.primaryColor), // Use the primary color for labels
+                ),
               ),
               TextField(
                 controller: _passwordController,
                 decoration: InputDecoration(
                   labelText: 'Password',
+                  labelStyle: TextStyle(color: AppColors.primaryColor), // Use the primary color for labels
                   suffixIcon: IconButton(
                     icon: Icon(
                       _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
@@ -153,11 +155,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 controller: _confirmPasswordController,
                 decoration: InputDecoration(
                   labelText: 'Confirm Password',
+                  labelStyle: TextStyle(color: AppColors.primaryColor), // Use the primary color for labels
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _isConfirmPasswordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
+                      _isConfirmPasswordVisible ? Icons.visibility : Icons.visibility_off,
                     ),
                     onPressed: () {
                       setState(() {
@@ -171,12 +172,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ElevatedButton(
                 onPressed: _isLoading ? null : _submitSignup,
                 child: Text(_isLoading ? 'Loading...' : 'Signup'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.secondaryColor, // Use the secondary color for buttons
+                ),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pushReplacementNamed(context, '/');
                 },
-                child: Text('Already have an account? Login'),
+                child: Text('Already have an account? Login', style: AppTextStyles.bodyTextStyle),
               ),
             ],
           ),

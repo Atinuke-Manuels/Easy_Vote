@@ -1,31 +1,119 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../models/election.dart';
-import '../models/vote.dart';
+import 'dart:math';
+
+import '../models/election.dart'; // For generating a random voter ID
 
 class FirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  // Sign up voters
-  Future<void> signUp(String email, String password) async {
-    await _auth.createUserWithEmailAndPassword(email: email, password: password);
+  // Generate a random 6-digit voter ID
+  String generateVoterId() {
+    Random random = Random();
+    int voterId = 100000 + random.nextInt(900000); // Generates a 6-digit number
+    return voterId.toString();
   }
 
-  // Login voters
-  Future<void> login(String email, String password) async {
-    await _auth.signInWithEmailAndPassword(email: email, password: password);
+  // Sign up a new user
+  Future<UserCredential?> signUp(
+      String email, String password, String name) async {
+    try {
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      String voterId = generateVoterId(); // Generate unique voter ID
+
+      // Save the user details to Firestore in the VotersRegister collection
+      await _db.collection('VotersRegister').doc(userCredential.user!.uid).set({
+        'name': name,
+        'email': email,
+        'voterId': voterId,
+      });
+
+      return userCredential;
+    } catch (e) {
+      // Handle error appropriately, perhaps logging it or throwing a custom exception
+      return null;
+    }
   }
 
-  // sign out
+  // Sign in a user
+  Future<UserCredential?> signIn(String email, String password) async {
+    try {
+      return await _auth.signInWithEmailAndPassword(email: email, password: password);
+    } catch (e) {
+      // Handle error appropriately, perhaps logging it or throwing a custom exception
+      return null;
+    }
+  }
+
+  // Fetch voter ID from Firestore
+  Future<String?> fetchVoterId(String userId) async {
+    try {
+      DocumentSnapshot userDoc = await _db.collection('VotersRegister').doc(userId).get();
+      if (userDoc.exists) {
+        return userDoc.get('voterId');
+      }
+      return null;
+    } catch (e) {
+      // Handle error appropriately
+      return null;
+    }
+  }
+
+  // Sign out
   Future<void> signOut() async {
     return await _auth.signOut();
   }
 
+  Future<void> addElection(Election election) async {
+    try {
+      // If the id is not set, generate a new document ID
+      String docId = election.id.isEmpty ? _db.collection('Elections').doc().id : election.id;
+
+      await _db.collection('Elections').doc(docId).set({
+        'title': election.title,
+        'candidates': election.candidates,
+        'startDate': Timestamp.fromDate(election.startDate),
+        'endDate': Timestamp.fromDate(election.endDate),
+      });
+      print('Election added successfully!');
+    } catch (e) {
+      print('Error adding election: $e');
+    }
+  }
+
+
+
+  Future<void> updateElection(Election election) async {
+    try {
+      await _db.collection('Elections').doc(election.id).update({
+        'title': election.title,
+        'candidates': election.candidates,
+        'startDate': Timestamp.fromDate(election.startDate),
+        'endDate': Timestamp.fromDate(election.endDate),
+      });
+      print('Election updated successfully!');
+    } catch (e) {
+      print('Error updating election: $e');
+    }
+  }
+
+
   // Fetch elections
-  Stream<List<Election>> fetchElections() {
-    return _db.collection('elections').snapshots().map((snapshot) =>
-        snapshot.docs.map((doc) => Election.fromFirestore(doc.data(), doc.id)).toList());
+  Future<List<Election>> fetchElections() async {
+    try {
+      final QuerySnapshot snapshot = await _db.collection('Elections').get();
+      return snapshot.docs.map((doc) {
+        return Election.fromFirestore(doc);
+      }).toList();
+    } catch (e) {
+      print('Error fetching elections: $e');
+      return [];
+    }
   }
 
   // Cast vote

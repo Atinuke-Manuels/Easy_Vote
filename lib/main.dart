@@ -1,4 +1,3 @@
-import 'package:easy_vote/screens/new_screen.dart';
 import 'package:easy_vote/screens/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,7 +24,6 @@ class EasyVoteApp extends StatelessWidget {
       routes: {
         '/': (context) => const LoginScreen(),
         '/signup': (context) => SignUpScreen(),
-        '/new': (context) => const NewScreen(),
         '/home': (context) => HomeScreen(),
         '/election': (context) => ElectionScreen(),
         '/results': (context) => ResultsScreen(),
