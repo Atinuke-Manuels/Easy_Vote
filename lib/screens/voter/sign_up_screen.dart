@@ -31,6 +31,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   // Submit Signup
+// Submit Signup
   Future<void> _submitSignup() async {
     if (_passwordController.text != _confirmPasswordController.text) {
       _showSnackBar('Passwords do not match', AppColors.errorColor);
@@ -41,13 +42,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _isLoading = true;
     });
 
-    var userCredential = await _authService.signUp(
+    var result = await _authService.signUp(
       _emailController.text,
       _passwordController.text,
       _nameController.text,
     );
 
-    if (userCredential != null) {
+    if (result != null) {
+      var userCredential = result['userCredential']; // Get UserCredential
+      var voterId = result['voterId']; // Get Voter ID
+
       await showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -59,7 +63,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 children: <TextSpan>[
                   const TextSpan(text: 'Your Voter ID is: '),
                   TextSpan(
-                    text: _authService.generateVoterId(),
+                    text: voterId, // Use the returned voterId
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       color: AppColors.voterIdColor,
@@ -98,6 +102,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

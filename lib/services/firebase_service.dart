@@ -27,8 +27,8 @@ class FirebaseService {
   }
 
   // Sign up a new user
-  Future<UserCredential?> signUp(
-      String email, String password, String name) async {
+// Sign up a new user
+  Future<Map<String, dynamic>?> signUp(String email, String password, String name) async {
     try {
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -44,12 +44,17 @@ class FirebaseService {
         'voterId': voterId,
       });
 
-      return userCredential;
+      // Return both userCredential and voterId
+      return {
+        'userCredential': userCredential,
+        'voterId': voterId,
+      };
     } catch (e) {
-      // Handle error appropriately, perhaps logging it or throwing a custom exception
+      // Handle error appropriately
       return null;
     }
   }
+
 
   // Sign in a user
   Future<UserCredential?> signIn(String email, String password) async {

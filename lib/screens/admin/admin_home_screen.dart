@@ -3,16 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import the intl package
 import '../../models/election.dart';
 import '../../services/firebase_service.dart';
-import 'login_screen.dart';
-import 'update_elections_screen.dart';
-import 'voting_screen.dart'; // Ensure this import is present
+import '../voter/update_elections_screen.dart';
 
-class HomeScreen extends StatefulWidget {
+
+class AdminHomeScreen extends StatefulWidget {
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<AdminHomeScreen> createState() => _AdminHomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _AdminHomeScreenState extends State<AdminHomeScreen> {
   final FirebaseService _firebaseService = FirebaseService();
 
   void navigateToLoginScreen(BuildContext context) {
@@ -27,12 +26,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Elections'),
-      actions: [
-        TextButton(onPressed: (){
-          _firebaseService.signOut();
-          navigateToLoginScreen(context);
-        }, child: const Icon(Icons.exit_to_app_outlined))
-      ],
+        actions: [
+          TextButton(onPressed: (){
+            _firebaseService.signOut();
+            navigateToLoginScreen(context);
+          }, child: const Icon(Icons.exit_to_app_outlined))
+        ],
       ),
       body: StreamBuilder<List<Election>>(
         stream: _firebaseService.fetchElections(),
@@ -46,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('No elections available.'),
+                  Text('Schedule an election.'),
                 ],
               ),
             );
@@ -77,6 +76,29 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           );
         },
+      ),
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Election temporaryElection = Election(
+            id: '',
+            title: '',
+            candidates: [],
+            startDate: DateTime.now(),
+            endDate: DateTime.now().add(Duration(days: 7)),
+          );
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => UpdateElectionScreen(election: temporaryElection),
+            ),
+          ).then((_) {
+            // No need to setState here; the StreamBuilder will handle updates.
+          });
+        },
+        tooltip: "View Chart",
+        child: const Icon(Icons.add),
       ),
     );
   }

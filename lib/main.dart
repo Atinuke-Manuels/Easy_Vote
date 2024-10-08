@@ -1,4 +1,7 @@
+import 'package:easy_vote/screens/admin/admin_home_screen.dart';
+import 'package:easy_vote/screens/admin/admin_login_screen.dart';
 import 'package:easy_vote/screens/auth/forgot_password_screen.dart';
+import 'package:easy_vote/screens/auth/login_option_screen.dart';
 import 'package:easy_vote/screens/voter/sign_up_screen.dart';
 import 'package:easy_vote/screens/voter/update_elections_screen.dart';
 import 'package:flutter/material.dart';
@@ -25,10 +28,13 @@ class EasyVoteApp extends StatelessWidget {
       theme: ThemeData(primarySwatch: Colors.blue),
       initialRoute: '/',
       routes: {
-        '/': (context) => const LoginScreen(),
+        '/': (context) => const LoginOptionScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/adminLogin': (context) => const AdminLoginScreen(),
         '/signup': (context) => const SignUpScreen(),
         '/forgotPassword': (context) => ForgotPasswordScreen(),
         '/home': (context) => HomeScreen(),
+        '/adminHome': (context) => AdminHomeScreen(),
         '/updateElection': (context) => UpdateElectionScreen(election: Election(id: '', title: '', candidates: [], startDate: DateTime.now(), endDate: DateTime.now().add(Duration(days: 7)))),
         '/election': (context) => VotingScreen(),
         '/results': (context) => ResultsScreen(),
