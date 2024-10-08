@@ -45,11 +45,12 @@ class VotingScreen extends StatelessWidget {
         DocumentSnapshot voterDoc = await voterRef.get();
 
         if (!voterDoc.exists) {
-          await voterRef.set({'hasVoted': false});
+          await voterRef.set({'votes': {}}); // Initialize votes map
           voterDoc = await voterRef.get(); // Re-fetch the document after creating it
         }
 
-        if (voterDoc['hasVoted'] == false) {
+        final votes = voterDoc['votes'] as Map<String, dynamic>;
+        if (votes[election.id] == null || votes[election.id] == false) {
           _showConfirmationDialog(context, candidate, election, voterId);
         } else {
           _showAlreadyVotedDialog(context);

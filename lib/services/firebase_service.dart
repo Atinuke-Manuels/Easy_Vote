@@ -152,9 +152,9 @@ class FirebaseService {
 
     // Check if the voter document exists
     if (!voterSnapshot.exists) {
-      // If the document doesn't exist, create it with hasVoted = false
+      // If the document doesn't exist, create it with an empty map for votes
       await voterRef.set({
-        'hasVoted': false, // Initial status for the voter
+        'votes': {}, // Initialize with an empty map to track votes by electionId
         'name': 'Unknown', // Default value, update with actual name if needed
       });
     }
@@ -162,21 +162,24 @@ class FirebaseService {
     // Now re-fetch the voter document after ensuring it exists
     final updatedVoterSnapshot = await voterRef.get();
 
-    // Proceed to check if the voter has already voted
-    if (updatedVoterSnapshot['hasVoted'] == false) {
-      // Cast the vote if the voter hasn't voted yet
+    // Check if the voter has already voted in this election
+    final votes = updatedVoterSnapshot['votes'] as Map<String, dynamic>;
+    if (votes[electionId] == null || votes[electionId] == false) {
+      // Cast the vote if the voter hasn't voted in this election yet
       await _db.collection('votes').add({
         'voterId': voterId,
         'candidateId': candidateId,
         'electionId': electionId,
       });
 
-      // Mark the voter as having voted
-      await voterRef.update({'hasVoted': true});
+      // Mark the voter as having voted in this election
+      votes[electionId] = true;
+      await voterRef.update({'votes': votes});
     } else {
-      throw Exception('Voter has already voted');
+      throw Exception('Voter has already voted in this election');
     }
   }
+
 
 
   // Fetch results
