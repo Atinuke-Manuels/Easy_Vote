@@ -18,7 +18,7 @@ class VotingScreen extends StatelessWidget {
       actions: [
         TextButton(onPressed: (){
           Navigator.pushNamed(context, '/results', arguments: election.id);
-        }, child: const Text("Result"))
+        }, child: const Text("View Result"))
       ],
       ),
       body: ListView.builder(

@@ -20,7 +20,9 @@ class ChartScreen extends StatelessWidget {
                   showTitles: true,
                   reservedSize: 40, // Reserve space for left titles
                   getTitlesWidget: (value, meta) {
-                    return Text(value.toInt().toString()); // Display vote count
+                    // Displaying numbers in increments of 1 up to the maximum votes
+                    int votes = value.toInt();
+                    return votes % 1 == 0 ? Text(votes.toString()) : Container(); // Show only integer values
                   },
                 ),
               ),
@@ -32,11 +34,11 @@ class ChartScreen extends StatelessWidget {
                     // Get the candidate name from the results
                     String candidateName = results.keys.elementAt(value.toInt());
                     // Return the first five letters of the candidate's name
-                    return Text(candidateName.substring(0, 5));
+                    return Text(candidateName.length > 5 ? candidateName.substring(0, 5) : candidateName);
                   },
                 ),
               ),
-              topTitles: const AxisTitles(
+              topTitles: AxisTitles(
                 sideTitles: SideTitles(showTitles: false),
               ),
               rightTitles: AxisTitles(
@@ -56,6 +58,7 @@ class ChartScreen extends StatelessWidget {
                 ],
               );
             }).toList(),
+            gridData: FlGridData(show: true),
           ),
         ),
       ),
