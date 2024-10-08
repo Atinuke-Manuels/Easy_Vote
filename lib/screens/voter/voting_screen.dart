@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,7 +14,13 @@ class VotingScreen extends StatelessWidget {
     final Election election = ModalRoute.of(context)?.settings.arguments as Election;
 
     return Scaffold(
-      appBar: AppBar(title: Text(election.title)),
+      appBar: AppBar(title: Text(election.title),
+      actions: [
+        TextButton(onPressed: (){
+          Navigator.pushNamed(context, '/results', arguments: election.id);
+        }, child: const Text("Result"))
+      ],
+      ),
       body: ListView.builder(
         itemCount: election.candidates.length,
         itemBuilder: (context, index) {
@@ -28,35 +36,28 @@ class VotingScreen extends StatelessWidget {
     );
   }
 
-  // Check if the voter has already voted before showing the appropriate dialog
   Future<void> _checkVoterStatusAndShowDialog(BuildContext context, String candidate, Election election) async {
     User? currentUser = _firebaseService.getCurrentUser();
     if (currentUser != null) {
       String? voterId = await _firebaseService.fetchVoterId(currentUser.uid);
       if (voterId != null) {
-        DocumentReference voterRef = _firebaseService.getFirestoreInstance()
-            .collection('voters').doc(voterId);
-
+        DocumentReference voterRef = _firebaseService.getFirestoreInstance().collection('voters').doc(voterId);
         DocumentSnapshot voterDoc = await voterRef.get();
 
         if (!voterDoc.exists) {
-          // If the document doesn't exist, create it with hasVoted = false
           await voterRef.set({'hasVoted': false});
           voterDoc = await voterRef.get(); // Re-fetch the document after creating it
         }
 
         if (voterDoc['hasVoted'] == false) {
-          // If the voter hasn't voted, show the confirmation dialog
           _showConfirmationDialog(context, candidate, election, voterId);
         } else {
-          // If the voter has already voted, show a different dialog
           _showAlreadyVotedDialog(context);
         }
       }
     }
   }
 
-  // Show the confirmation dialog for first-time voters
   void _showConfirmationDialog(BuildContext context, String candidate, Election election, String voterId) {
     showDialog(
       context: context,
@@ -73,13 +74,13 @@ class VotingScreen extends StatelessWidget {
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(), // Dismiss the dialog
+              onPressed: () => Navigator.of(context).pop(),
               child: Text("Cancel"),
             ),
             TextButton(
               onPressed: () async {
                 Navigator.of(context).pop(); // Close the dialog
-                await _castVoteAndNavigate(context, candidate, election, voterId); // Proceed to cast the vote
+                await _castVoteAndShowSuccessDialog(context, candidate, election, voterId);
               },
               child: Text("Confirm"),
             ),
@@ -89,14 +90,13 @@ class VotingScreen extends StatelessWidget {
     );
   }
 
-  // Show the dialog informing the user that they have already voted
   void _showAlreadyVotedDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text("Already Voted"),
-          content: Column(
+          content: const Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(Icons.error_outline, color: Colors.red, size: 50),
@@ -106,7 +106,7 @@ class VotingScreen extends StatelessWidget {
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(), // Close the dialog
+              onPressed: () => Navigator.of(context).pop(),
               child: Text("OK"),
             ),
           ],
@@ -115,25 +115,53 @@ class VotingScreen extends StatelessWidget {
     );
   }
 
-  // Cast the vote and navigate to the results screen for first-time voters
-  Future<void> _castVoteAndNavigate(BuildContext context, String candidate, Election election, String voterId) async {
+  Future<void> _castVoteAndShowSuccessDialog(BuildContext context, String candidate, Election election, String voterId) async {
     try {
       // Cast the vote
       await _firebaseService.castVote(voterId, election.id, candidate);
 
-      // Show success message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Vote for $candidate has been cast successfully!")),
-      );
+      // Show success dialog
+      final completer = Completer<void>();
+      _showSuccessDialog(context, candidate, completer);
 
-      // Navigate to the results page after a brief delay
-      await Future.delayed(Duration(seconds: 2));
+      // Wait for the success dialog to be closed
+      await completer.future;
+
+      // Navigate to the results page
       Navigator.pushNamed(context, '/results', arguments: election.id);
     } catch (e) {
-      // Handle any potential errors and show a failure message
+      // Handle errors and show a failure message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('An error occurred while casting the vote: ${e.toString()}')),
       );
     }
+  }
+
+  void _showSuccessDialog(BuildContext context, String candidate, Completer<void> completer) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Vote Cast Successfully"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.check_circle_outline, color: Colors.green, size: 50),
+              SizedBox(height: 10),
+              Text("Your vote for $candidate has been cast successfully!"),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the success dialog
+                completer.complete(); // Complete the completer
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

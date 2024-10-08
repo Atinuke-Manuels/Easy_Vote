@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../services/firebase_service.dart';
+import 'chart_screen.dart';
 
 class ResultsScreen extends StatelessWidget {
   final FirebaseService _firebaseService = FirebaseService();
@@ -7,6 +8,7 @@ class ResultsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String electionId = ModalRoute.of(context)?.settings.arguments as String;
+
     return Scaffold(
       appBar: AppBar(title: Text("Results")),
       body: StreamBuilder<Map<String, int>>(
@@ -21,8 +23,13 @@ class ResultsScreen extends StatelessWidget {
           }
 
           Map<String, int> results = snapshot.data!;
+          // Sort results in descending order
+          var sortedResults = Map.fromEntries(
+            results.entries.toList()..sort((e1, e2) => e2.value.compareTo(e1.value)),
+          );
+
           return ListView(
-            children: results.entries.map((entry) {
+            children: sortedResults.entries.map((entry) {
               return ListTile(
                 title: Text("Candidate: ${entry.key}"),
                 trailing: Text("Votes: ${entry.value}"),
@@ -30,6 +37,27 @@ class ResultsScreen extends StatelessWidget {
             }).toList(),
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Get the current results from the StreamBuilder
+          _firebaseService.getResults(electionId).first.then((results) {
+            // Sort results in descending order
+            var sortedResults = Map.fromEntries(
+              results.entries.toList()..sort((e1, e2) => e2.value.compareTo(e1.value)),
+            );
+
+            // Navigate to the ChartScreen with the sorted results
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChartScreen(results: sortedResults),
+              ),
+            );
+          });
+        },
+        child: Icon(Icons.bar_chart),
+        tooltip: "View Chart",
       ),
     );
   }
