@@ -1,10 +1,10 @@
-import 'package:easy_vote/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import the intl package
-import '../models/election.dart';
-import '../services/firebase_service.dart';
+import '../../models/election.dart';
+import '../../services/firebase_service.dart';
+import 'login_screen.dart';
 import 'update_elections_screen.dart';
-import 'election_screen.dart'; // Ensure this import is present
+import 'voting_screen.dart'; // Ensure this import is present
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -17,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void navigateToLoginScreen(BuildContext context) {
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => LoginScreen()),
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
           (Route<dynamic> route) => false, // This predicate removes all previous routes
     );
   }
@@ -25,19 +25,19 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Elections'),
+      appBar: AppBar(title: const Text('Elections'),
       actions: [
         TextButton(onPressed: (){
           _firebaseService.signOut();
           navigateToLoginScreen(context);
-        }, child: Icon(Icons.exit_to_app_outlined))
+        }, child: const Icon(Icons.exit_to_app_outlined))
       ],
       ),
       body: StreamBuilder<List<Election>>(
         stream: _firebaseService.fetchElections(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {

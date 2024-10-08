@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import '../services/firebase_service.dart';
+import '../../constants/app_colors.dart';
+import '../../services/firebase_service.dart';
+import '../../widgets/CustomButton.dart';
+import '../../widgets/CustomTextField.dart';
 import 'home_screen.dart';
-import '../constants/app_colors.dart'; // Import your app colors
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -18,7 +21,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _voterIdController = TextEditingController();
 
   bool _isLoading = false;
-  bool _isPasswordVisible = false;
 
   // Show SnackBar for displaying messages
   void _showSnackBar(String message, Color color) {
@@ -80,58 +82,55 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Login', style: AppTextStyles.headingStyle)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(
-                labelText: 'Email',
-                labelStyle: TextStyle(color: AppColors.primaryColor), // Use primary color for labels
-              ),
-            ),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(
-                labelText: 'Password',
-                labelStyle: TextStyle(color: AppColors.primaryColor), // Use primary color for labels
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _isPasswordVisible = !_isPasswordVisible;
-                    });
+        child: SingleChildScrollView(
+          reverse: false,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Login', style: AppTextStyles.headingStyle),
+                SizedBox(height: 30,),
+                CustomTextField(
+                  controller: _emailController,
+                  labelText: 'Email',
+                  onChanged: (value) {
+                    // Convert the input to lowercase as the user types
+                    _emailController.value = TextEditingValue(
+                      text: value.toLowerCase(),
+                      selection: _emailController.selection,
+                    );
                   },
                 ),
-              ),
-              obscureText: !_isPasswordVisible,
+                CustomTextField(
+                  controller: _passwordController,
+                  labelText: 'Password',
+                  isPassword: true,
+                ),
+                CustomTextField(
+                  controller: _voterIdController,
+                  labelText: 'Voter ID',
+                ),
+                Container(
+                    alignment: Alignment.bottomRight,
+                    child: TextButton(onPressed: (){
+                      Navigator.pushNamed(context, '/forgotPassword');
+                    }, child: const Text("Forgot Password", style: TextStyle(color: AppColors.primaryColor),))),
+                const SizedBox(height: 20,),
+                CustomButton(
+                  onPressed: _isLoading ? null : _submitLogin,
+                  child: Text(_isLoading ? 'Loading...' : 'Login'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, '/signup');
+                  },
+                  child: Text('Not registered? Signup', style: AppTextStyles.bodyTextStyle),
+                ),
+              ],
             ),
-            TextField(
-              controller: _voterIdController,
-              decoration: InputDecoration(
-                labelText: 'Voter ID',
-                labelStyle: TextStyle(color: AppColors.primaryColor), // Use primary color for labels
-              ),
-            ),
-            ElevatedButton(
-              onPressed: _isLoading ? null : _submitLogin,
-              child: Text(_isLoading ? 'Loading...' : 'Login'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.secondaryColor, // Use the secondary color for buttons
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pushReplacementNamed(context, '/signup');
-              },
-              child: Text('Not registered? Signup', style: AppTextStyles.bodyTextStyle),
-            ),
-          ],
+          ),
         ),
       ),
     );

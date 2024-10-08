@@ -8,6 +8,17 @@ class FirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
+  // Public method to get the current user
+  User? getCurrentUser() {
+    return _auth.currentUser;
+  }
+
+  // Public method to access Firestore instance
+  FirebaseFirestore getFirestoreInstance() {
+    return _db;
+  }
+
+
   // Generate a random 6-digit voter ID
   String generateVoterId() {
     Random random = Random();
@@ -49,6 +60,9 @@ class FirebaseService {
       return null;
     }
   }
+
+
+
 
   // Fetch voter ID from Firestore
   Future<String?> fetchVoterId(String userId) async {
@@ -131,15 +145,34 @@ class FirebaseService {
     final voterRef = _db.collection('voters').doc(voterId);
     final voterSnapshot = await voterRef.get();
 
-    if (!voterSnapshot['hasVoted']) {
+    // Check if the voter document exists
+    if (!voterSnapshot.exists) {
+      // If the document doesn't exist, create it with hasVoted = false
+      await voterRef.set({
+        'hasVoted': false, // Initial status for the voter
+        'name': 'Unknown', // Default value, update with actual name if needed
+      });
+    }
+
+    // Now re-fetch the voter document after ensuring it exists
+    final updatedVoterSnapshot = await voterRef.get();
+
+    // Proceed to check if the voter has already voted
+    if (updatedVoterSnapshot['hasVoted'] == false) {
+      // Cast the vote if the voter hasn't voted yet
       await _db.collection('votes').add({
         'voterId': voterId,
         'candidateId': candidateId,
         'electionId': electionId,
       });
+
+      // Mark the voter as having voted
       await voterRef.update({'hasVoted': true});
+    } else {
+      throw Exception('Voter has already voted');
     }
   }
+
 
   // Fetch results
   Stream<Map<String, int>> getResults(String electionId) {

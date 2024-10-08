@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import '../services/firebase_service.dart';
-import '../constants/app_colors.dart'; // Import your app colors
+import '../../services/firebase_service.dart';
+import '../../constants/app_colors.dart'; // Import your app colors
+import '../../widgets/CustomButton.dart';
+import '../../widgets/CustomTextField.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -18,8 +20,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _nameController = TextEditingController();
 
   bool _isLoading = false;
-  bool _isPasswordVisible = false;
-  bool _isConfirmPasswordVisible = false;
 
   // Show SnackBar for displaying messages
   void _showSnackBar(String message, Color color) {
@@ -41,7 +41,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _isLoading = true;
     });
 
-    // Call the signup method from AuthService
     var userCredential = await _authService.signUp(
       _emailController.text,
       _passwordController.text,
@@ -49,7 +48,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
 
     if (userCredential != null) {
-      // Show the Voter ID in a dialog before navigating away
       await showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -57,21 +55,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
             title: Text('Signup Successful', style: AppTextStyles.headingStyle),
             content: RichText(
               text: TextSpan(
-                style: const TextStyle(color: Colors.black), // Default text style
+                style: const TextStyle(color: Colors.black),
                 children: <TextSpan>[
-                  const TextSpan(
-                    text: 'Your Voter ID is: ', // Regular text
-                  ),
+                  const TextSpan(text: 'Your Voter ID is: '),
                   TextSpan(
-                    text: _authService.generateVoterId(), // Voter ID text
+                    text: _authService.generateVoterId(),
                     style: const TextStyle(
-                      fontWeight: FontWeight.bold, // Make the Voter ID bold
-                      color: AppColors.voterIdColor, // Use the defined Voter ID color
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.voterIdColor,
                     ),
                   ),
-                  const TextSpan(
-                    text: '. Please make sure to save it, as you will need it to log in.', // Regular text
-                  ),
+                  const TextSpan(text: '. Please make sure to save it.'),
                 ],
               ),
             ),
@@ -87,18 +81,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
         },
       );
 
-      // Clear the fields after successful signup
       _emailController.clear();
       _passwordController.clear();
       _confirmPasswordController.clear();
       _nameController.clear();
 
-      // Reset loading state before navigation
       setState(() {
         _isLoading = false;
       });
 
-      // Navigate to login screen after successful signup
       Navigator.pushReplacementNamed(context, '/');
     } else {
       _showSnackBar('Signup failed. Please try again.', AppColors.errorColor);
@@ -119,62 +110,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextField(
+              CustomTextField(
                 controller: _nameController,
-                decoration: InputDecoration(
-                  labelText: 'Full Name',
-                  labelStyle: TextStyle(color: AppColors.primaryColor), // Use the primary color for labels
-                ),
+                labelText: 'Full Name',
               ),
-              TextField(
+              CustomTextField(
                 controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  labelStyle: TextStyle(color: AppColors.primaryColor), // Use the primary color for labels
-                ),
+                labelText: 'Email',
+                onChanged: (value) {
+                  // Convert the input to lowercase as the user types
+                  _emailController.value = TextEditingValue(
+                    text: value.toLowerCase(),
+                    selection: _emailController.selection,
+                  );
+                },
               ),
-              TextField(
+              CustomTextField(
                 controller: _passwordController,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  labelStyle: TextStyle(color: AppColors.primaryColor), // Use the primary color for labels
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _isPasswordVisible = !_isPasswordVisible;
-                      });
-                    },
-                  ),
-                ),
-                obscureText: !_isPasswordVisible,
+                labelText: 'Password',
+                isPassword: true,
               ),
-              TextField(
+              CustomTextField(
                 controller: _confirmPasswordController,
-                decoration: InputDecoration(
-                  labelText: 'Confirm Password',
-                  labelStyle: TextStyle(color: AppColors.primaryColor), // Use the primary color for labels
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _isConfirmPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
-                      });
-                    },
-                  ),
-                ),
-                obscureText: !_isConfirmPasswordVisible,
+                labelText: 'Confirm Password',
+                isConfirmPassword: true,
               ),
-              ElevatedButton(
+              CustomButton(
                 onPressed: _isLoading ? null : _submitSignup,
                 child: Text(_isLoading ? 'Loading...' : 'Signup'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.secondaryColor, // Use the secondary color for buttons
-                ),
               ),
               TextButton(
                 onPressed: () {

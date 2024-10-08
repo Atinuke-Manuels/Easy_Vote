@@ -1,13 +1,14 @@
-import 'package:easy_vote/screens/sign_up_screen.dart';
-import 'package:easy_vote/screens/update_elections_screen.dart';
+import 'package:easy_vote/screens/auth/forgot_password_screen.dart';
+import 'package:easy_vote/screens/voter/sign_up_screen.dart';
+import 'package:easy_vote/screens/voter/update_elections_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'models/election.dart';
-import 'screens/login_screen.dart';
-import 'screens/home_screen.dart';
-import 'screens/election_screen.dart';
-import 'screens/results_screen.dart';
+import 'screens/voter/login_screen.dart';
+import 'screens/voter/home_screen.dart';
+import 'screens/voter/voting_screen.dart';
+import 'screens/voter/results_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,10 +26,11 @@ class EasyVoteApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const LoginScreen(),
-        '/signup': (context) => SignUpScreen(),
+        '/signup': (context) => const SignUpScreen(),
+        '/forgotPassword': (context) => ForgotPasswordScreen(),
         '/home': (context) => HomeScreen(),
         '/updateElection': (context) => UpdateElectionScreen(election: Election(id: '', title: '', candidates: [], startDate: DateTime.now(), endDate: DateTime.now().add(Duration(days: 7)))),
-        '/election': (context) => ElectionScreen(),
+        '/election': (context) => VotingScreen(),
         '/results': (context) => ResultsScreen(),
       },
     );

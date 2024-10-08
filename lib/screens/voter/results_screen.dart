@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/firebase_service.dart';
+import '../../services/firebase_service.dart';
 
 class ResultsScreen extends StatelessWidget {
   final FirebaseService _firebaseService = FirebaseService();
@@ -12,7 +12,14 @@ class ResultsScreen extends StatelessWidget {
       body: StreamBuilder<Map<String, int>>(
         stream: _firebaseService.getResults(electionId),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) return CircularProgressIndicator();
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(child: Text("No votes yet."));
+          }
+
           Map<String, int> results = snapshot.data!;
           return ListView(
             children: results.entries.map((entry) {

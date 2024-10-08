@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../models/election.dart';
-import '../services/firebase_service.dart';
+import '../../models/election.dart';
+import '../../services/firebase_service.dart';
 import 'package:intl/intl.dart'; // Import for date formatting
 
 class UpdateElectionScreen extends StatefulWidget {
