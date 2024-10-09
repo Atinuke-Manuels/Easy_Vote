@@ -116,10 +116,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
               CustomTextField(
                 controller: _nameController,
                 labelText: 'Full Name',
+                prefix: Icons.ac_unit,
               ),
               CustomTextField(
                 controller: _emailController,
                 labelText: 'Email',
+                prefix: Icons.ac_unit,
                 onChanged: (value) {
                   // Convert the input to lowercase as the user types
                   _emailController.value = TextEditingValue(
@@ -132,11 +134,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 controller: _passwordController,
                 labelText: 'Password',
                 isPassword: true,
+                prefix: Icons.ac_unit,
               ),
               CustomTextField(
                 controller: _confirmPasswordController,
                 labelText: 'Confirm Password',
                 isConfirmPassword: true,
+                prefix: Icons.ac_unit,
               ),
               CustomButton(
                 onPressed: _isLoading ? null : _submitSignup,

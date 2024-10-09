@@ -8,6 +8,7 @@ class CustomTextField extends StatefulWidget {
   final bool isConfirmPassword;
   final bool isObscure;
   final Function(String)? onChanged; // Add an onChanged callback
+  final IconData prefix;
 
   const CustomTextField({
     Key? key,
@@ -17,6 +18,7 @@ class CustomTextField extends StatefulWidget {
     this.isConfirmPassword = false,
     this.isObscure = false,
     this.onChanged, // Accept an onChanged callback
+    required this.prefix
   }) : super(key: key);
 
   @override
@@ -33,6 +35,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       decoration: InputDecoration(
         labelText: widget.labelText,
         labelStyle: AppTextStyles.hintTextStyle(context), // Use the primary color for labels
+        prefixIcon: Icon(widget.prefix, color: Theme.of(context).colorScheme.tertiary,),
         suffixIcon: widget.isPassword || widget.isConfirmPassword
             ? IconButton(
           icon: Icon(

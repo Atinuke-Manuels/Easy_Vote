@@ -76,6 +76,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               CustomTextField(
                 controller: _emailController,
                 labelText: 'Email',
+                prefix: Icons.ac_unit,
               ),
               SizedBox(height: 20),
               CustomButton(

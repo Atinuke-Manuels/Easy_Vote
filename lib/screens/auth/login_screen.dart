@@ -3,7 +3,7 @@ import '../../constants/app_text_styles.dart';
 import '../../services/firebase_service.dart';
 import '../../widgets/CustomButton.dart';
 import '../../widgets/CustomTextField.dart';
-import 'home_screen.dart';
+import '../voter/home_screen.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -96,6 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 CustomTextField(
                   controller: _emailController,
                   labelText: 'Email',
+                  prefix: Icons.ac_unit,
                   onChanged: (value) {
                     // Convert the input to lowercase as the user types
                     _emailController.value = TextEditingValue(
@@ -108,10 +109,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: _passwordController,
                   labelText: 'Password',
                   isPassword: true,
+                  prefix: Icons.ac_unit,
                 ),
                 CustomTextField(
                   controller: _voterIdController,
                   labelText: 'Voter ID',
+                  prefix: Icons.ac_unit,
                 ),
                 Container(
                     alignment: Alignment.bottomRight,

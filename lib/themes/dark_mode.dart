@@ -13,5 +13,6 @@ ThemeData darkMode = ThemeData(
             onError: Colors.black,
             tertiary: Colors.grey.shade600,
             inversePrimary: Colors.green,
+            onPrimaryFixed: Colors.purple.shade300
       ),
 );

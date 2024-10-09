@@ -4,7 +4,7 @@ import 'package:intl/intl.dart'; // Import the intl package
 import '../../models/election.dart';
 import '../../services/firebase_service.dart';
 import '../../widgets/my_drawer.dart';
-import 'login_screen.dart';
+import '../auth/login_screen.dart';
 import 'update_elections_screen.dart';
 import 'voting_screen.dart'; // Ensure this import is present
 

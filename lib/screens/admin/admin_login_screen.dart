@@ -96,6 +96,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen > {
                 CustomTextField(
                   controller: _emailController,
                   labelText: 'Email',
+                  prefix: Icons.ac_unit,
                   onChanged: (value) {
                     // Convert the input to lowercase as the user types
                     _emailController.value = TextEditingValue(
@@ -108,10 +109,12 @@ class _AdminLoginScreenState extends State<AdminLoginScreen > {
                   controller: _passwordController,
                   labelText: 'Password',
                   isPassword: true,
+                  prefix: Icons.ac_unit,
                 ),
                 CustomTextField(
                   controller: _voterIdController,
                   labelText: 'Voter ID',
+                  prefix: Icons.ac_unit,
                 ),
                 Container(
                     alignment: Alignment.bottomRight,
