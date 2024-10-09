@@ -1,7 +1,8 @@
+import 'package:easy_vote/widgets/CustomButton.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../services/firebase_service.dart';
-import '../../constants/app_colors.dart';
+import '../../constants/app_text_styles.dart';
 import '../../widgets/CustomTextField.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -36,7 +37,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
     // Validate email format
     if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
-      _showSnackBar('Please enter a valid email address.', AppColors.errorColor);
+      _showSnackBar('Please enter a valid email address.', Theme.of(context).colorScheme.error);
       setState(() {
         isSignReset = false;
       });
@@ -46,13 +47,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
 
-      _showSnackBar('Password reset email sent. Please check your email.', AppColors.successColor);
+      _showSnackBar('Password reset email sent. Please check your email.', Theme.of(context).colorScheme.onError);
 
       // Navigate to login screen
       Navigator.pushNamed(context, '/');
     } catch (e) {
       // Show detailed error message if password reset fails
-      _showSnackBar('Failed to send password reset email: ${e.toString()}', AppColors.errorColor);
+      _showSnackBar('Failed to send password reset email: ${e.toString()}', Theme.of(context).colorScheme.error);
       // print('Error sending password reset email: $e');
     } finally {
       setState(() {
@@ -77,12 +78,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 labelText: 'Email',
               ),
               SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _isLoading ? null : () => _resetPassword(context),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.secondaryColor,
-                ),
-                child: Text(_isLoading ? 'Loading...' : 'Send Reset Link'),
+              CustomButton(
+                  onPressed: _isLoading ? null : () => _resetPassword(context),
+                  child: Text(_isLoading ? 'Loading...' : 'Send Reset Link'),
               ),
             ],
           ),

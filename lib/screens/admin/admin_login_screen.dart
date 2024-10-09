@@ -1,6 +1,6 @@
 import 'package:easy_vote/screens/admin/admin_home_screen.dart';
 import 'package:flutter/material.dart';
-import '../../constants/app_colors.dart';
+import '../../constants/app_text_styles.dart';
 import '../../services/firebase_service.dart';
 import '../../widgets/CustomButton.dart';
 import '../../widgets/CustomTextField.dart';
@@ -49,7 +49,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen > {
 
       // Check if the provided Voter ID matches the stored one
       if (storedVoterId == null) {
-        _showSnackBar('User data not found in database.', AppColors.errorColor);
+        _showSnackBar('User data not found in database.', Theme.of(context).colorScheme.error);
         setState(() {
           _isLoading = false;
         });
@@ -57,14 +57,14 @@ class _AdminLoginScreenState extends State<AdminLoginScreen > {
       }
 
       if (_voterIdController.text != storedVoterId) {
-        _showSnackBar('Invalid Voter ID. Please try again.', AppColors.errorColor);
+        _showSnackBar('Invalid Voter ID. Please try again.', Theme.of(context).colorScheme.error);
         setState(() {
           _isLoading = false;
         });
         return; // Stop further execution if the Voter ID does not match
       }
 
-      _showSnackBar('Logged in successfully!', AppColors.successColor);
+      _showSnackBar('Logged in successfully!', Theme.of(context).colorScheme.onError);
 
       // Navigate to HomeScreen after successful login
       Navigator.pushReplacement(
@@ -72,7 +72,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen > {
         MaterialPageRoute(builder: (context) => AdminHomeScreen()),
       );
     } else {
-      _showSnackBar('Login failed. Please try again.', AppColors.errorColor);
+      _showSnackBar('Login failed. Please try again.', Theme.of(context).colorScheme.error);
       setState(() {
         _isLoading = false;
       });
@@ -91,7 +91,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen > {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Login', style: AppTextStyles.headingStyle),
+                Text('Login', style: AppTextStyles.headingStyle(context)),
                 SizedBox(height: 30,),
                 CustomTextField(
                   controller: _emailController,
@@ -117,7 +117,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen > {
                     alignment: Alignment.bottomRight,
                     child: TextButton(onPressed: (){
                       Navigator.pushNamed(context, '/forgotPassword');
-                    }, child: const Text("Forgot Password", style: TextStyle(color: AppColors.primaryColor),))),
+                    }, child: Text("Forgot Password", style: AppTextStyles.voterIdTextStyle(context),))),
                 const SizedBox(height: 20,),
                 CustomButton(
                   onPressed: _isLoading ? null : _submitLogin,
@@ -127,7 +127,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen > {
                   onPressed: () {
                     Navigator.pushReplacementNamed(context, '/signup');
                   },
-                  child: Text('Not registered? Signup', style: AppTextStyles.bodyTextStyle),
+                  child: Text('Not registered? Signup', style: AppTextStyles.bodyTextStyle(context)),
                 ),
               ],
             ),

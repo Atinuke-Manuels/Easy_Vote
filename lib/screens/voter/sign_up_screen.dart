@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../services/firebase_service.dart';
-import '../../constants/app_colors.dart'; // Import your app colors
+import '../../constants/app_text_styles.dart'; // Import your app colors
 import '../../widgets/CustomButton.dart';
 import '../../widgets/CustomTextField.dart';
 
@@ -34,7 +34,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 // Submit Signup
   Future<void> _submitSignup() async {
     if (_passwordController.text != _confirmPasswordController.text) {
-      _showSnackBar('Passwords do not match', AppColors.errorColor);
+      _showSnackBar('Passwords do not match', Theme.of(context).colorScheme.error);
       return;
     }
 
@@ -56,7 +56,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Signup Successful', style: AppTextStyles.headingStyle),
+            title: Text('Signup Successful', style: AppTextStyles.headingStyle(context)),
             content: RichText(
               text: TextSpan(
                 style: const TextStyle(color: Colors.black),
@@ -64,10 +64,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const TextSpan(text: 'Your Voter ID is: '),
                   TextSpan(
                     text: voterId, // Use the returned voterId
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.voterIdColor,
-                    ),
+                    style: AppTextStyles.voterIdTextStyle(context)
                   ),
                   const TextSpan(text: '. Please make sure to save it.'),
                 ],
@@ -78,7 +75,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: const Text('OK', style: AppTextStyles.bodyTextStyle),
+                child: Text('OK', style: AppTextStyles.bodyTextStyle(context)),
               ),
             ],
           );
@@ -96,7 +93,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
       Navigator.pushReplacementNamed(context, '/');
     } else {
-      _showSnackBar('Signup failed. Please try again.', AppColors.errorColor);
+      _showSnackBar('Signup failed. Please try again.', Theme.of(context).colorScheme.error);
       setState(() {
         _isLoading = false;
       });
@@ -108,7 +105,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(title: Text('Signup', style: AppTextStyles.headingStyle)),
+      appBar: AppBar(title: Text('Signup', style: AppTextStyles.headingStyle(context))),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -149,7 +146,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 onPressed: () {
                   Navigator.pushReplacementNamed(context, '/');
                 },
-                child: Text('Already have an account? Login', style: AppTextStyles.bodyTextStyle),
+                child: Text('Already have an account? Login', style: AppTextStyles.bodyTextStyle(context)),
               ),
             ],
           ),

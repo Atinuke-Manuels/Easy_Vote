@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../constants/app_colors.dart';
+import '../constants/app_text_styles.dart';
 
 class CustomButton extends StatelessWidget {
   final Function()? onPressed;
@@ -12,10 +12,10 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
         onPressed: onPressed,
-        child: child,
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.secondaryColor, // Use the secondary color for buttons
+        backgroundColor: Theme.of(context).colorScheme.onSurface, // Use the secondary color for buttons
       ),
+        child: child,
     );
   }
 }

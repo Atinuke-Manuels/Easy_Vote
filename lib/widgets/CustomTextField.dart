@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../constants/app_colors.dart'; // Import your app colors
+import '../../constants/app_text_styles.dart'; // Import your app colors
 
 class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
@@ -32,7 +32,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       controller: widget.controller,
       decoration: InputDecoration(
         labelText: widget.labelText,
-        labelStyle: const TextStyle(color: AppColors.primaryColor), // Use the primary color for labels
+        labelStyle: AppTextStyles.hintTextStyle(context), // Use the primary color for labels
         suffixIcon: widget.isPassword || widget.isConfirmPassword
             ? IconButton(
           icon: Icon(

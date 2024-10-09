@@ -1,7 +1,7 @@
 import 'package:easy_vote/widgets/CustomButton.dart';
 import 'package:flutter/material.dart';
 
-import '../../constants/app_colors.dart';
+import '../../constants/app_text_styles.dart';
 
 class LoginOptionScreen extends StatelessWidget {
   const LoginOptionScreen({super.key});
@@ -32,7 +32,7 @@ class LoginOptionScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushReplacementNamed(context, '/signup');
                 },
-                child: const Text('Not registered? Signup', style: AppTextStyles.bodyTextStyle),
+                child: Text('Not registered? Signup', style: AppTextStyles.bodyTextStyle(context)),
               ),
             ],
           ),
