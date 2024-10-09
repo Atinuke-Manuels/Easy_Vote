@@ -37,7 +37,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
     // Validate email format
     if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
-      _showSnackBar('Please enter a valid email address.', Theme.of(context).colorScheme.error);
+      _showSnackBar('Please enter a valid email address.',
+          Theme.of(context).colorScheme.error);
       setState(() {
         isSignReset = false;
       });
@@ -47,13 +48,15 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
 
-      _showSnackBar('Password reset email sent. Please check your email.', Theme.of(context).colorScheme.onError);
+      _showSnackBar('Password reset email sent. Please check your email.',
+          Theme.of(context).colorScheme.onError);
 
       // Navigate to login screen
       Navigator.pushNamed(context, '/');
     } catch (e) {
       // Show detailed error message if password reset fails
-      _showSnackBar('Failed to send password reset email: ${e.toString()}', Theme.of(context).colorScheme.error);
+      _showSnackBar('Failed to send password reset email: ${e.toString()}',
+          Theme.of(context).colorScheme.error);
       // print('Error sending password reset email: $e');
     } finally {
       setState(() {
@@ -80,8 +83,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               ),
               SizedBox(height: 20),
               CustomButton(
-                  onPressed: _isLoading ? null : () => _resetPassword(context),
-                  child: Text(_isLoading ? 'Loading...' : 'Send Reset Link'),
+                onPressed: _isLoading ? null : () => _resetPassword(context),
+                child: Text(_isLoading ? 'Loading...' : 'Send Reset Link'),
               ),
             ],
           ),

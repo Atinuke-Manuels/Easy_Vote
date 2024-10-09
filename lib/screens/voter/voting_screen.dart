@@ -11,16 +11,21 @@ class VotingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Election election = ModalRoute.of(context)?.settings.arguments as Election;
+    final Election election =
+        ModalRoute.of(context)?.settings.arguments as Election;
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(title: Text(election.title),
-      actions: [
-        TextButton(onPressed: (){
-          Navigator.pushNamed(context, '/results', arguments: election.id);
-        }, child: const Text("View Result"))
-      ],
+      appBar: AppBar(
+        title: Text(election.title),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/results',
+                    arguments: election.id);
+              },
+              child: const Text("View Result"))
+        ],
       ),
       body: ListView.builder(
         itemCount: election.candidates.length,
@@ -37,17 +42,22 @@ class VotingScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _checkVoterStatusAndShowDialog(BuildContext context, String candidate, Election election) async {
+  Future<void> _checkVoterStatusAndShowDialog(
+      BuildContext context, String candidate, Election election) async {
     User? currentUser = _firebaseService.getCurrentUser();
     if (currentUser != null) {
       String? voterId = await _firebaseService.fetchVoterId(currentUser.uid);
       if (voterId != null) {
-        DocumentReference voterRef = _firebaseService.getFirestoreInstance().collection('voters').doc(voterId);
+        DocumentReference voterRef = _firebaseService
+            .getFirestoreInstance()
+            .collection('voters')
+            .doc(voterId);
         DocumentSnapshot voterDoc = await voterRef.get();
 
         if (!voterDoc.exists) {
           await voterRef.set({'votes': {}}); // Initialize votes map
-          voterDoc = await voterRef.get(); // Re-fetch the document after creating it
+          voterDoc =
+              await voterRef.get(); // Re-fetch the document after creating it
         }
 
         final votes = voterDoc['votes'] as Map<String, dynamic>;
@@ -60,7 +70,8 @@ class VotingScreen extends StatelessWidget {
     }
   }
 
-  void _showConfirmationDialog(BuildContext context, String candidate, Election election, String voterId) {
+  void _showConfirmationDialog(BuildContext context, String candidate,
+      Election election, String voterId) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -82,7 +93,8 @@ class VotingScreen extends StatelessWidget {
             TextButton(
               onPressed: () async {
                 Navigator.of(context).pop(); // Close the dialog
-                await _castVoteAndShowSuccessDialog(context, candidate, election, voterId);
+                await _castVoteAndShowSuccessDialog(
+                    context, candidate, election, voterId);
               },
               child: Text("Confirm"),
             ),
@@ -117,7 +129,8 @@ class VotingScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _castVoteAndShowSuccessDialog(BuildContext context, String candidate, Election election, String voterId) async {
+  Future<void> _castVoteAndShowSuccessDialog(BuildContext context,
+      String candidate, Election election, String voterId) async {
     try {
       // Cast the vote
       await _firebaseService.castVote(voterId, election.id, candidate);
@@ -134,12 +147,15 @@ class VotingScreen extends StatelessWidget {
     } catch (e) {
       // Handle errors and show a failure message
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('An error occurred while casting the vote: ${e.toString()}')),
+        SnackBar(
+            content: Text(
+                'An error occurred while casting the vote: ${e.toString()}')),
       );
     }
   }
 
-  void _showSuccessDialog(BuildContext context, String candidate, Completer<void> completer) {
+  void _showSuccessDialog(
+      BuildContext context, String candidate, Completer<void> completer) {
     showDialog(
       context: context,
       builder: (BuildContext context) {

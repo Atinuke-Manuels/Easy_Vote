@@ -5,16 +5,16 @@ import '../../services/firebase_service.dart';
 import '../../widgets/CustomButton.dart';
 import '../../widgets/CustomTextField.dart';
 
-
 class AdminLoginScreen extends StatefulWidget {
-  const AdminLoginScreen ({super.key});
+  const AdminLoginScreen({super.key});
 
   @override
   _AdminLoginScreenState createState() => _AdminLoginScreenState();
 }
 
-class _AdminLoginScreenState extends State<AdminLoginScreen > {
-  final FirebaseService _authService = FirebaseService(); // Initialize AuthService
+class _AdminLoginScreenState extends State<AdminLoginScreen> {
+  final FirebaseService _authService =
+      FirebaseService(); // Initialize AuthService
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -45,11 +45,13 @@ class _AdminLoginScreenState extends State<AdminLoginScreen > {
 
     if (userCredential != null) {
       // Retrieve the Voter ID from Firestore
-      String? storedVoterId = await _authService.fetchVoterId(userCredential.user!.uid);
+      String? storedVoterId =
+          await _authService.fetchVoterId(userCredential.user!.uid);
 
       // Check if the provided Voter ID matches the stored one
       if (storedVoterId == null) {
-        _showSnackBar('User data not found in database.', Theme.of(context).colorScheme.error);
+        _showSnackBar('User data not found in database.',
+            Theme.of(context).colorScheme.error);
         setState(() {
           _isLoading = false;
         });
@@ -57,14 +59,16 @@ class _AdminLoginScreenState extends State<AdminLoginScreen > {
       }
 
       if (_voterIdController.text != storedVoterId) {
-        _showSnackBar('Invalid Voter ID. Please try again.', Theme.of(context).colorScheme.error);
+        _showSnackBar('Invalid Voter ID. Please try again.',
+            Theme.of(context).colorScheme.error);
         setState(() {
           _isLoading = false;
         });
         return; // Stop further execution if the Voter ID does not match
       }
 
-      _showSnackBar('Logged in successfully!', Theme.of(context).colorScheme.onError);
+      _showSnackBar(
+          'Logged in successfully!', Theme.of(context).colorScheme.onError);
 
       // Navigate to HomeScreen after successful login
       Navigator.pushReplacement(
@@ -72,7 +76,8 @@ class _AdminLoginScreenState extends State<AdminLoginScreen > {
         MaterialPageRoute(builder: (context) => AdminHomeScreen()),
       );
     } else {
-      _showSnackBar('Login failed. Please try again.', Theme.of(context).colorScheme.error);
+      _showSnackBar('Login failed. Please try again.',
+          Theme.of(context).colorScheme.error);
       setState(() {
         _isLoading = false;
       });
@@ -92,7 +97,9 @@ class _AdminLoginScreenState extends State<AdminLoginScreen > {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text('Login', style: AppTextStyles.headingStyle(context)),
-                SizedBox(height: 30,),
+                SizedBox(
+                  height: 30,
+                ),
                 CustomTextField(
                   controller: _emailController,
                   labelText: 'Email',
@@ -118,10 +125,17 @@ class _AdminLoginScreenState extends State<AdminLoginScreen > {
                 ),
                 Container(
                     alignment: Alignment.bottomRight,
-                    child: TextButton(onPressed: (){
-                      Navigator.pushNamed(context, '/forgotPassword');
-                    }, child: Text("Forgot Password", style: AppTextStyles.voterIdTextStyle(context),))),
-                const SizedBox(height: 20,),
+                    child: TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/forgotPassword');
+                        },
+                        child: Text(
+                          "Forgot Password",
+                          style: AppTextStyles.voterIdTextStyle(context),
+                        ))),
+                const SizedBox(
+                  height: 20,
+                ),
                 CustomButton(
                   onPressed: _isLoading ? null : _submitLogin,
                   child: Text(_isLoading ? 'Loading...' : 'Login'),
@@ -130,7 +144,8 @@ class _AdminLoginScreenState extends State<AdminLoginScreen > {
                   onPressed: () {
                     Navigator.pushReplacementNamed(context, '/signup');
                   },
-                  child: Text('Not registered? Signup', style: AppTextStyles.bodyTextStyle(context)),
+                  child: Text('Not registered? Signup',
+                      style: AppTextStyles.bodyTextStyle(context)),
                 ),
               ],
             ),

@@ -12,7 +12,8 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  final FirebaseService _authService = FirebaseService(); // Initialize AuthService
+  final FirebaseService _authService =
+      FirebaseService(); // Initialize AuthService
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -34,7 +35,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 // Submit Signup
   Future<void> _submitSignup() async {
     if (_passwordController.text != _confirmPasswordController.text) {
-      _showSnackBar('Passwords do not match', Theme.of(context).colorScheme.error);
+      _showSnackBar(
+          'Passwords do not match', Theme.of(context).colorScheme.error);
       return;
     }
 
@@ -56,16 +58,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Signup Successful', style: AppTextStyles.headingStyle(context)),
+            title: Text('Signup Successful',
+                style: AppTextStyles.headingStyle(context)),
             content: RichText(
               text: TextSpan(
                 style: const TextStyle(color: Colors.black),
                 children: <TextSpan>[
                   const TextSpan(text: 'Your Voter ID is: '),
                   TextSpan(
-                    text: voterId, // Use the returned voterId
-                    style: AppTextStyles.voterIdTextStyle(context)
-                  ),
+                      text: voterId, // Use the returned voterId
+                      style: AppTextStyles.voterIdTextStyle(context)),
                   const TextSpan(text: '. Please make sure to save it.'),
                 ],
               ),
@@ -93,19 +95,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
       Navigator.pushReplacementNamed(context, '/');
     } else {
-      _showSnackBar('Signup failed. Please try again.', Theme.of(context).colorScheme.error);
+      _showSnackBar('Signup failed. Please try again.',
+          Theme.of(context).colorScheme.error);
       setState(() {
         _isLoading = false;
       });
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(title: Text('Signup', style: AppTextStyles.headingStyle(context))),
+      appBar: AppBar(
+          title: Text('Signup', style: AppTextStyles.headingStyle(context))),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -150,7 +153,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 onPressed: () {
                   Navigator.pushReplacementNamed(context, '/');
                 },
-                child: Text('Already have an account? Login', style: AppTextStyles.bodyTextStyle(context)),
+                child: Text('Already have an account? Login',
+                    style: AppTextStyles.bodyTextStyle(context)),
               ),
             ],
           ),

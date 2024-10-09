@@ -11,6 +11,8 @@ class MyDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return Drawer(
       backgroundColor: Theme.of(context).colorScheme.surface,
       child: Column(
@@ -20,13 +22,14 @@ class MyDrawer extends StatelessWidget {
             children: [
               // logo
               DrawerHeader(
-                  child: Center(
-                child: Icon(
-                  Icons.check_circle_outline,
-                  color: Theme.of(context).colorScheme.primary,
-                  size: 62,
+                child: Center(
+                  child: Image.asset(
+                    themeProvider.logoAsset,
+                    width: 100, // adjust size as needed
+                    height: 100,
+                  ),
                 ),
-              )),
+              ),
 
               // home list tile
               // Padding(
@@ -51,10 +54,8 @@ class MyDrawer extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 25),
                 child: ListTile(
-                  title: Text(
-                    "Switch Mode",
-                    style:  AppTextStyles.bodyTextStyle(context)
-                  ),
+                  title: Text("Switch Mode",
+                      style: AppTextStyles.bodyTextStyle(context)),
                   leading: CupertinoSwitch(
                       value: Provider.of<ThemeProvider>(context, listen: false)
                           .isDarkMode,
@@ -76,10 +77,8 @@ class MyDrawer extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 25, bottom: 25),
             child: ListTile(
-              title: Text(
-                "L O G O U T",
-                style: AppTextStyles.bodyTextStyle(context)
-              ),
+              title: Text("L O G O U T",
+                  style: AppTextStyles.bodyTextStyle(context)),
               leading: Icon(
                 Icons.logout,
                 color: Theme.of(context).colorScheme.primary,

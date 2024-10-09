@@ -11,11 +11,13 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-        onPressed: onPressed,
+      onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.onSurface, // Use the secondary color for buttons
+        backgroundColor: Theme.of(context)
+            .colorScheme
+            .onSurface, // Use the secondary color for buttons
       ),
-        child: child,
+      child: child,
     );
   }
 }

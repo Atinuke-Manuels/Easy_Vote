@@ -6,7 +6,8 @@ import 'package:intl/intl.dart'; // Import for date formatting
 class UpdateElectionScreen extends StatefulWidget {
   final Election election;
 
-  const UpdateElectionScreen({Key? key, required this.election}) : super(key: key);
+  const UpdateElectionScreen({Key? key, required this.election})
+      : super(key: key);
 
   @override
   _UpdateElectionScreenState createState() => _UpdateElectionScreenState();
@@ -27,13 +28,16 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
   void initState() {
     super.initState();
     _titleController = TextEditingController(text: widget.election.title);
-    _candidatesController = TextEditingController(text: widget.election.candidates.join(', '));
+    _candidatesController =
+        TextEditingController(text: widget.election.candidates.join(', '));
     _startDate = widget.election.startDate;
     _endDate = widget.election.endDate;
 
     // Initialize the date controllers with formatted dates
-    _startDateController = TextEditingController(text: DateFormat('dd/MM/yyyy HH:mm').format(_startDate!));
-    _endDateController = TextEditingController(text: DateFormat('dd/MM/yyyy HH:mm').format(_endDate!));
+    _startDateController = TextEditingController(
+        text: DateFormat('dd/MM/yyyy HH:mm').format(_startDate!));
+    _endDateController = TextEditingController(
+        text: DateFormat('dd/MM/yyyy HH:mm').format(_endDate!));
   }
 
   @override
@@ -46,7 +50,8 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
   }
 
   Future<void> _updateElection() async {
-    List<String> candidates = _candidatesController.text.split(',').map((s) => s.trim()).toList();
+    List<String> candidates =
+        _candidatesController.text.split(',').map((s) => s.trim()).toList();
 
     Election updatedElection = Election(
       id: widget.election.id,
@@ -92,7 +97,8 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
             pickedTime.minute,
           );
           // Update the controller text after selection
-          _startDateController.text = DateFormat('dd/MM/yyyy HH:mm').format(_startDate!);
+          _startDateController.text =
+              DateFormat('dd/MM/yyyy HH:mm').format(_startDate!);
         });
       }
     }
@@ -122,7 +128,8 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
             pickedTime.minute,
           );
           // Update the controller text after selection
-          _endDateController.text = DateFormat('dd/MM/yyyy HH:mm').format(_endDate!);
+          _endDateController.text =
+              DateFormat('dd/MM/yyyy HH:mm').format(_endDate!);
         });
       }
     }
@@ -143,7 +150,8 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
             ),
             TextField(
               controller: _candidatesController,
-              decoration: const InputDecoration(labelText: 'Candidates (comma-separated)'),
+              decoration: const InputDecoration(
+                  labelText: 'Candidates (comma-separated)'),
             ),
             TextField(
               controller: _startDateController,

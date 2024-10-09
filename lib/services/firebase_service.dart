@@ -18,7 +18,6 @@ class FirebaseService {
     return _db;
   }
 
-
   // Generate a random 6-digit voter ID
   String generateVoterId() {
     Random random = Random();
@@ -28,9 +27,11 @@ class FirebaseService {
 
   // Sign up a new user
 // Sign up a new user
-  Future<Map<String, dynamic>?> signUp(String email, String password, String name) async {
+  Future<Map<String, dynamic>?> signUp(
+      String email, String password, String name) async {
     try {
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -55,24 +56,22 @@ class FirebaseService {
     }
   }
 
-
   // Sign in a user
   Future<UserCredential?> signIn(String email, String password) async {
     try {
-      return await _auth.signInWithEmailAndPassword(email: email, password: password);
+      return await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
     } catch (e) {
       // Handle error appropriately, perhaps logging it or throwing a custom exception
       return null;
     }
   }
 
-
-
-
   // Fetch voter ID from Firestore
   Future<String?> fetchVoterId(String userId) async {
     try {
-      DocumentSnapshot userDoc = await _db.collection('VotersRegister').doc(userId).get();
+      DocumentSnapshot userDoc =
+          await _db.collection('VotersRegister').doc(userId).get();
       if (userDoc.exists) {
         return userDoc.get('voterId');
       }
@@ -91,7 +90,9 @@ class FirebaseService {
   Future<void> addElection(Election election) async {
     try {
       // If the id is not set, generate a new document ID
-      String docId = election.id.isEmpty ? _db.collection('Elections').doc().id : election.id;
+      String docId = election.id.isEmpty
+          ? _db.collection('Elections').doc().id
+          : election.id;
 
       await _db.collection('Elections').doc(docId).set({
         'title': election.title,
@@ -104,8 +105,6 @@ class FirebaseService {
       print('Error adding election: $e');
     }
   }
-
-
 
   Future<void> updateElection(Election election) async {
     try {
@@ -120,7 +119,6 @@ class FirebaseService {
       print('Error updating election: $e');
     }
   }
-
 
   // Fetch elections
   Stream<List<Election>> fetchElections() {
@@ -146,7 +144,8 @@ class FirebaseService {
   }
 
   // Cast vote
-  Future<void> castVote(String voterId, String electionId, String candidateId) async {
+  Future<void> castVote(
+      String voterId, String electionId, String candidateId) async {
     final voterRef = _db.collection('voters').doc(voterId);
     final voterSnapshot = await voterRef.get();
 
@@ -154,8 +153,10 @@ class FirebaseService {
     if (!voterSnapshot.exists) {
       // If the document doesn't exist, create it with an empty map for votes
       await voterRef.set({
-        'votes': {}, // Initialize with an empty map to track votes by electionId
-        'name': 'Unknown', // Default value, update with actual name if needed
+        'votes': {},
+        // Initialize with an empty map to track votes by electionId
+        'name': 'Unknown',
+        // Default value, update with actual name if needed
       });
     }
 
@@ -180,11 +181,13 @@ class FirebaseService {
     }
   }
 
-
-
   // Fetch results
   Stream<Map<String, int>> getResults(String electionId) {
-    return _db.collection('votes').where('electionId', isEqualTo: electionId).snapshots().map((snapshot) {
+    return _db
+        .collection('votes')
+        .where('electionId', isEqualTo: electionId)
+        .snapshots()
+        .map((snapshot) {
       Map<String, int> results = {};
       snapshot.docs.forEach((doc) {
         String candidateId = doc['candidateId'];

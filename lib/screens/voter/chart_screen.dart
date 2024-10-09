@@ -23,7 +23,9 @@ class ChartScreen extends StatelessWidget {
                   getTitlesWidget: (value, meta) {
                     // Displaying numbers in increments of 1 up to the maximum votes
                     int votes = value.toInt();
-                    return votes % 1 == 0 ? Text(votes.toString()) : Container(); // Show only integer values
+                    return votes % 1 == 0
+                        ? Text(votes.toString())
+                        : Container(); // Show only integer values
                   },
                 ),
               ),
@@ -33,9 +35,12 @@ class ChartScreen extends StatelessWidget {
                   reservedSize: 40, // Reserve space for bottom titles
                   getTitlesWidget: (value, meta) {
                     // Get the candidate name from the results
-                    String candidateName = results.keys.elementAt(value.toInt());
+                    String candidateName =
+                        results.keys.elementAt(value.toInt());
                     // Return the first five letters of the candidate's name
-                    return Text(candidateName.length > 5 ? candidateName.substring(0, 5) : candidateName);
+                    return Text(candidateName.length > 5
+                        ? candidateName.substring(0, 5)
+                        : candidateName);
                   },
                 ),
               ),

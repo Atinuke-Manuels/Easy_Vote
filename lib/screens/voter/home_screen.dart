@@ -20,7 +20,8 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => const LoginOptionScreen()),
-          (Route<dynamic> route) => false, // This predicate removes all previous routes
+      (Route<dynamic> route) =>
+          false, // This predicate removes all previous routes
     );
   }
 
@@ -28,13 +29,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(title: const Text('Elections'),
-      actions: [
-        TextButton(onPressed: (){
-          _firebaseService.signOut();
-          navigateToLoginScreen(context);
-        }, child: const Icon(Icons.exit_to_app_outlined))
-      ],
+      appBar: AppBar(
+        title: const Text('Elections'),
+        actions: [
+          TextButton(
+              onPressed: () {
+                _firebaseService.signOut();
+                navigateToLoginScreen(context);
+              },
+              child: const Icon(Icons.exit_to_app_outlined))
+        ],
       ),
       drawer: const MyDrawer(),
       body: StreamBuilder<List<Election>>(
@@ -66,12 +70,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   title: Text(election.title),
                   subtitle: Text(
                     'Voting starts: ${DateFormat('dd/MM/yyyy HH:mm').format(election.startDate)}\n'
-                        'Voting ends: ${DateFormat('dd/MM/yyyy HH:mm').format(election.endDate)}',
+                    'Voting ends: ${DateFormat('dd/MM/yyyy HH:mm').format(election.endDate)}',
                   ),
                   onTap: () {
                     Navigator.pushNamed(
                       context,
-                      '/election',  // Make sure this route matches with your main app routes
+                      '/election',
+                      // Make sure this route matches with your main app routes
                       arguments: election,
                     );
                   },

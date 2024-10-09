@@ -26,7 +26,6 @@
 //
 // }
 
-
 import 'package:flutter/material.dart';
 
 import 'dark_mode.dart';
@@ -62,5 +61,10 @@ class ThemeProvider extends ChangeNotifier {
   void updateSystemTheme() {
     final brightness = WidgetsBinding.instance.window.platformBrightness;
     themeData = brightness == Brightness.dark ? darkMode : lightMode;
+  }
+
+  // app logo
+  String get logoAsset {
+    return isDarkMode ? 'assets/logo_white.png' : 'assets/logo_light3.png';
   }
 }

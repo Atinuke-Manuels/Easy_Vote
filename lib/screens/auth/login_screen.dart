@@ -5,7 +5,6 @@ import '../../widgets/CustomButton.dart';
 import '../../widgets/CustomTextField.dart';
 import '../voter/home_screen.dart';
 
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -14,7 +13,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final FirebaseService _authService = FirebaseService(); // Initialize AuthService
+  final FirebaseService _authService =
+      FirebaseService(); // Initialize AuthService
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -45,11 +45,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (userCredential != null) {
       // Retrieve the Voter ID from Firestore
-      String? storedVoterId = await _authService.fetchVoterId(userCredential.user!.uid);
+      String? storedVoterId =
+          await _authService.fetchVoterId(userCredential.user!.uid);
 
       // Check if the provided Voter ID matches the stored one
       if (storedVoterId == null) {
-        _showSnackBar('User data not found in database.', Theme.of(context).colorScheme.error);
+        _showSnackBar('User data not found in database.',
+            Theme.of(context).colorScheme.error);
         setState(() {
           _isLoading = false;
         });
@@ -57,14 +59,16 @@ class _LoginScreenState extends State<LoginScreen> {
       }
 
       if (_voterIdController.text != storedVoterId) {
-        _showSnackBar('Invalid Voter ID. Please try again.', Theme.of(context).colorScheme.error);
+        _showSnackBar('Invalid Voter ID. Please try again.',
+            Theme.of(context).colorScheme.error);
         setState(() {
           _isLoading = false;
         });
         return; // Stop further execution if the Voter ID does not match
       }
 
-      _showSnackBar('Logged in successfully!', Theme.of(context).colorScheme.inversePrimary);
+      _showSnackBar('Logged in successfully!',
+          Theme.of(context).colorScheme.inversePrimary);
 
       // Navigate to HomeScreen after successful login
       Navigator.pushReplacement(
@@ -72,7 +76,8 @@ class _LoginScreenState extends State<LoginScreen> {
         MaterialPageRoute(builder: (context) => HomeScreen()),
       );
     } else {
-      _showSnackBar('Login failed. Please try again.', Theme.of(context).colorScheme.error);
+      _showSnackBar('Login failed. Please try again.',
+          Theme.of(context).colorScheme.error);
       setState(() {
         _isLoading = false;
       });
@@ -92,7 +97,9 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text('Login', style: AppTextStyles.headingStyle(context)),
-                SizedBox(height: 30,),
+                SizedBox(
+                  height: 30,
+                ),
                 CustomTextField(
                   controller: _emailController,
                   labelText: 'Email',
@@ -118,10 +125,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 Container(
                     alignment: Alignment.bottomRight,
-                    child: TextButton(onPressed: (){
-                      Navigator.pushNamed(context, '/forgotPassword');
-                    }, child: Text("Forgot Password", style: TextStyle(color: Theme.of(context).colorScheme.primary),))),
-                const SizedBox(height: 20,),
+                    child: TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/forgotPassword');
+                        },
+                        child: Text(
+                          "Forgot Password",
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary),
+                        ))),
+                const SizedBox(
+                  height: 20,
+                ),
                 CustomButton(
                   onPressed: _isLoading ? null : _submitLogin,
                   child: Text(_isLoading ? 'Loading...' : 'Login'),
@@ -130,7 +145,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {
                     Navigator.pushReplacementNamed(context, '/signup');
                   },
-                  child: Text('Not registered? Signup', style: AppTextStyles.bodyTextStyle(context)),
+                  child: Text('Not registered? Signup',
+                      style: AppTextStyles.bodyTextStyle(context)),
                 ),
               ],
             ),

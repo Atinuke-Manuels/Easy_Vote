@@ -7,7 +7,8 @@ class ResultsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String electionId = ModalRoute.of(context)?.settings.arguments as String;
+    final String electionId =
+        ModalRoute.of(context)?.settings.arguments as String;
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -26,7 +27,8 @@ class ResultsScreen extends StatelessWidget {
           Map<String, int> results = snapshot.data!;
           // Sort results in descending order
           var sortedResults = Map.fromEntries(
-            results.entries.toList()..sort((e1, e2) => e2.value.compareTo(e1.value)),
+            results.entries.toList()
+              ..sort((e1, e2) => e2.value.compareTo(e1.value)),
           );
 
           return ListView(
@@ -45,7 +47,8 @@ class ResultsScreen extends StatelessWidget {
           _firebaseService.getResults(electionId).first.then((results) {
             // Sort results in descending order
             var sortedResults = Map.fromEntries(
-              results.entries.toList()..sort((e1, e2) => e2.value.compareTo(e1.value)),
+              results.entries.toList()
+                ..sort((e1, e2) => e2.value.compareTo(e1.value)),
             );
 
             // Navigate to the ChartScreen with the sorted results
