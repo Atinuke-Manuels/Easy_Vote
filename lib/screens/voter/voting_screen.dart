@@ -14,6 +14,7 @@ class VotingScreen extends StatelessWidget {
     final Election election = ModalRoute.of(context)?.settings.arguments as Election;
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text(election.title),
       actions: [
         TextButton(onPressed: (){

@@ -1,4 +1,5 @@
 import 'package:easy_vote/screens/auth/login_option_screen.dart';
+import 'package:easy_vote/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import the intl package
 import '../../models/election.dart';
@@ -25,6 +26,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: const Text('Elections'),
         actions: [
           TextButton(onPressed: (){
@@ -33,6 +35,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           }, child: const Icon(Icons.exit_to_app_outlined))
         ],
       ),
+      drawer: const MyDrawer(),
       body: StreamBuilder<List<Election>>(
         stream: _firebaseService.fetchElections(),
         builder: (context, snapshot) {

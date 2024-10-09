@@ -10,6 +10,7 @@ class ResultsScreen extends StatelessWidget {
     final String electionId = ModalRoute.of(context)?.settings.arguments as String;
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text("Results")),
       body: StreamBuilder<Map<String, int>>(
         stream: _firebaseService.getResults(electionId),

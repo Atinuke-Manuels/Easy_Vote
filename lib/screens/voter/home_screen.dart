@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import the intl package
 import '../../models/election.dart';
 import '../../services/firebase_service.dart';
+import '../../widgets/my_drawer.dart';
 import 'login_screen.dart';
 import 'update_elections_screen.dart';
 import 'voting_screen.dart'; // Ensure this import is present
@@ -26,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: const Text('Elections'),
       actions: [
         TextButton(onPressed: (){
@@ -34,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
         }, child: const Icon(Icons.exit_to_app_outlined))
       ],
       ),
+      drawer: const MyDrawer(),
       body: StreamBuilder<List<Election>>(
         stream: _firebaseService.fetchElections(),
         builder: (context, snapshot) {
