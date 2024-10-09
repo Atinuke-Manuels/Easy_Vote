@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../screens/auth/login_option_screen.dart';
 import '../themes/theme_provider.dart';
 
 class MyDrawer extends StatelessWidget {
@@ -76,16 +77,23 @@ class MyDrawer extends StatelessWidget {
           // logout button
           Padding(
             padding: const EdgeInsets.only(left: 25, bottom: 25),
-            child: ListTile(
-              title: Text("L O G O U T",
-                  style: AppTextStyles.bodyTextStyle(context)),
-              leading: Icon(
-                Icons.logout,
-                color: Theme.of(context).colorScheme.primary,
-              ),
+            child: GestureDetector(
+              onTap: (){
+                logout(context);
+              },
+              child: ListTile(
+                title: Text("L O G O U T",
+                    style: AppTextStyles.bodyTextStyle(context)),
+                leading: Icon(
+                  Icons.logout,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
 
-              // to log out
-              onTap: logout,
+                // to log out
+                onTap: (){
+                  logout(context);
+                },
+              ),
             ),
           ),
         ],
@@ -93,9 +101,40 @@ class MyDrawer extends StatelessWidget {
     );
   }
 
-  void logout() {
-    // get auth service
-    final auth = FirebaseService();
-    auth.signOut();
+  void logout(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Logout"),
+          content: Text("Are you sure you want to logout?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // Cancel the logout and close the dialog
+                Navigator.of(context).pop();
+              },
+              child: Text("No"),
+            ),
+            TextButton(
+              onPressed: () {
+                // Proceed with logout
+                final auth = FirebaseService();
+                auth.signOut();
+
+                // Navigate to the login screen and remove previous routes
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginOptionScreen()),
+                      (Route<dynamic> route) => false,
+                );
+              },
+              child: Text("Yes"),
+            ),
+          ],
+        );
+      },
+    );
   }
+
 }
