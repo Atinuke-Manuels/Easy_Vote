@@ -1,3 +1,4 @@
+import 'package:easy_vote/constants/app_text_styles.dart';
 import 'package:easy_vote/services/firebase_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,41 +23,37 @@ class MyDrawer extends StatelessWidget {
                   child: Center(
                 child: Icon(
                   Icons.check_circle_outline,
-                  color: Theme.of(context).colorScheme.tertiary,
+                  color: Theme.of(context).colorScheme.primary,
                   size: 62,
                 ),
               )),
 
               // home list tile
-              Padding(
-                padding: const EdgeInsets.only(left: 25),
-                child: ListTile(
-                  title: Text(
-                    "View Result",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.tertiary,
-                    ),
-                  ),
-                  leading: Icon(
-                    Icons.home,
-                    color: Theme.of(context).colorScheme.tertiary,
-                  ),
-
-                  // to close the drawer
-                  onTap: () {
-                    Navigator.pushNamed(context, '/results');
-                  },
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 25),
+              //   child: ListTile(
+              //     title: Text(
+              //       "View Result",
+              //       style: AppTextStyles.bodyTextStyle(context)
+              //     ),
+              //     leading: Icon(
+              //       Icons.home,
+              //       color: Theme.of(context).colorScheme.primary,
+              //     ),
+              //
+              //     // to close the drawer
+              //     onTap: () {
+              //       Navigator.pushNamed(context, '/election');
+              //     },
+              //   ),
+              // ),
 
               Padding(
                 padding: const EdgeInsets.only(left: 25),
                 child: ListTile(
                   title: Text(
                     "Switch Mode",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.tertiary,
-                    ),
+                    style:  AppTextStyles.bodyTextStyle(context)
                   ),
                   leading: CupertinoSwitch(
                       value: Provider.of<ThemeProvider>(context, listen: false)
@@ -81,13 +78,11 @@ class MyDrawer extends StatelessWidget {
             child: ListTile(
               title: Text(
                 "L O G O U T",
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.tertiary,
-                ),
+                style: AppTextStyles.bodyTextStyle(context)
               ),
               leading: Icon(
                 Icons.logout,
-                color: Theme.of(context).colorScheme.tertiary,
+                color: Theme.of(context).colorScheme.primary,
               ),
 
               // to log out
