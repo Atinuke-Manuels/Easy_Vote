@@ -1,7 +1,9 @@
 import 'package:easy_vote/screens/admin/admin_home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../constants/app_text_styles.dart';
 import '../../services/firebase_service.dart';
+import '../../themes/theme_provider.dart';
 import '../../widgets/CustomButton.dart';
 import '../../widgets/CustomTextField.dart';
 
@@ -86,24 +88,36 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(top:100, right: 16.0, left: 16),
         child: SingleChildScrollView(
           reverse: false,
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Login', style: AppTextStyles.headingStyle(context)),
+                //Text('Login', style: AppTextStyles.headingStyle(context)),
+                Center(
+                  child: Image.asset(
+                    themeProvider.logoAsset,
+                    width: 120, // adjust size as needed
+                    height: 120,
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Text('Welcome Admin!', textAlign: TextAlign.center, style: AppTextStyles.headingStyle(context)),
                 SizedBox(
                   height: 30,
                 ),
                 CustomTextField(
                   controller: _emailController,
                   labelText: 'Email',
-                  prefix: Icons.ac_unit,
+                  prefix: Icons.email_outlined,
                   onChanged: (value) {
                     // Convert the input to lowercase as the user types
                     _emailController.value = TextEditingValue(
@@ -112,16 +126,22 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                     );
                   },
                 ),
+                SizedBox(
+                  height: 15,
+                ),
                 CustomTextField(
                   controller: _passwordController,
                   labelText: 'Password',
                   isPassword: true,
-                  prefix: Icons.ac_unit,
+                  prefix: Icons.lock,
+                ),
+                SizedBox(
+                  height: 15,
                 ),
                 CustomTextField(
                   controller: _voterIdController,
                   labelText: 'Voter ID',
-                  prefix: Icons.ac_unit,
+                  prefix: Icons.how_to_vote,
                 ),
                 Container(
                     alignment: Alignment.bottomRight,
@@ -140,12 +160,21 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                   onPressed: _isLoading ? null : _submitLogin,
                   child: Text(_isLoading ? 'Loading...' : 'Login'),
                 ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/signup');
-                  },
-                  child: Text('Not registered? Signup',
-                      style: AppTextStyles.bodyTextStyle(context)),
+                SizedBox(
+                  height: 15,
+                ),
+                Row(mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Don't Have An Account?",
+                        style: AppTextStyles.bodyTextStyle(context)),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(context, '/signup');
+                      },
+                      child: Text("Sign Up",
+                          style: AppTextStyles.bodyTextStyle(context)),
+                    ),
+                  ],
                 ),
               ],
             ),
