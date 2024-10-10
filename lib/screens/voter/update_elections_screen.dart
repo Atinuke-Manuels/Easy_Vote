@@ -20,6 +20,7 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
   late TextEditingController _candidatesController;
   late TextEditingController _startDateController;
   late TextEditingController _endDateController;
+  TextEditingController _voterIdsController = TextEditingController();
 
   DateTime? _startDate;
   DateTime? _endDate;
@@ -51,8 +52,8 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
 
   Future<void> _updateElection() async {
     String title = _titleController.text.trim();
-    List<String> candidates =
-    _candidatesController.text.split(',').map((s) => s.trim()).toList();
+    List<String> candidates = _candidatesController.text.split(',').map((s) => s.trim()).toList();
+    List<String> registeredVoters = _voterIdsController.text.split(',').map((s) => s.trim()).toList(); // Assuming _votersController is for registered voters
 
     // Validation checks
     if (title.isEmpty) {
@@ -70,15 +71,6 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
         _showErrorDialog('End date and time must be after the start date and time.');
         return;
       }
-
-      // If start and end dates are on the same day, check the time
-      if (_startDate!.day == _endDate!.day &&
-          _startDate!.month == _endDate!.month &&
-          _startDate!.year == _endDate!.year &&
-          _endDate!.isBefore(_startDate!)) {
-        _showErrorDialog('End time must be after start time if both are on the same day.');
-        return;
-      }
     } else {
       _showErrorDialog('Both start and end dates must be selected.');
       return;
@@ -90,20 +82,18 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
       candidates: candidates,
       startDate: _startDate!,
       endDate: _endDate!,
+      registeredVoters: registeredVoters, // Add registered voters
     );
 
-    // Check if the election exists
     if (widget.election.id.isEmpty) {
-      // If no ID exists, create a new election
       await _firebaseService.addElection(updatedElection);
     } else {
-      // If an ID exists, update the existing election
       await _firebaseService.updateElection(updatedElection);
     }
 
     Navigator.pop(context);
-    Navigator.pop(context); // Go back after updating
   }
+
 
 // Helper function to display error messages
   void _showErrorDialog(String message) {
@@ -205,6 +195,11 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
                 controller: _candidatesController,
                 decoration: const InputDecoration(
                     labelText: 'Candidates (comma-separated)'),
+              ),
+              // Inside the build method, add a new text field
+              TextField(
+                controller: _voterIdsController,
+                decoration: const InputDecoration(labelText: 'Voter IDs (comma-separated)'),
               ),
               TextField(
                 controller: _startDateController,

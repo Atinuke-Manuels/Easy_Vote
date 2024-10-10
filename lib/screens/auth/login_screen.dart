@@ -5,6 +5,7 @@ import '../../services/firebase_service.dart';
 import '../../themes/theme_provider.dart';
 import '../../widgets/CustomButton.dart';
 import '../../widgets/CustomTextField.dart';
+import '../voter/election_id_screen.dart';
 import '../voter/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -33,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  // Submit Login
+// Submit Login
   Future<void> _submitLogin() async {
     setState(() {
       _isLoading = true;
@@ -47,44 +48,42 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (userCredential != null) {
       // Retrieve the Voter ID from Firestore
-      String? storedVoterId =
-          await _authService.fetchVoterId(userCredential.user!.uid);
+      String? storedVoterId = await _authService.fetchVoterId(userCredential.user!.uid);
 
       // Check if the provided Voter ID matches the stored one
       if (storedVoterId == null) {
-        _showSnackBar('User data not found in database.',
-            Theme.of(context).colorScheme.error);
+        _showSnackBar('User data not found in database.', Theme.of(context).colorScheme.error);
         setState(() {
           _isLoading = false;
         });
         return; // Stop further execution if user data is not found
       }
 
-      if (_voterIdController.text != storedVoterId) {
-        _showSnackBar('Invalid Voter ID. Please try again.',
-            Theme.of(context).colorScheme.error);
+      // Validate the provided Voter ID
+      if (_voterIdController.text == storedVoterId) {
+        _showSnackBar('Logged in successfully!', Theme.of(context).colorScheme.inversePrimary);
+
+        // Pass the Voter ID as the election ID (or modify this logic as needed)
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => ElectionIdScreen(electionId: _voterIdController.text)), // Pass the election ID here
+        );
+      } else {
+        _showSnackBar('Invalid Voter ID. Please try again.', Theme.of(context).colorScheme.error);
         setState(() {
           _isLoading = false;
         });
         return; // Stop further execution if the Voter ID does not match
       }
-
-      _showSnackBar('Logged in successfully!',
-          Theme.of(context).colorScheme.inversePrimary);
-
-      // Navigate to HomeScreen after successful login
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-      );
     } else {
-      _showSnackBar('Login failed. Please try again.',
-          Theme.of(context).colorScheme.error);
+      _showSnackBar('Login failed. Please try again.', Theme.of(context).colorScheme.error);
       setState(() {
         _isLoading = false;
       });
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {

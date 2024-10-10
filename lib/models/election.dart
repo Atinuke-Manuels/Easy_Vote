@@ -6,6 +6,7 @@ class Election {
   final List<String> candidates;
   final DateTime startDate;
   final DateTime endDate;
+  final List<String> registeredVoters; // New field
 
   Election({
     required this.id,
@@ -13,6 +14,7 @@ class Election {
     required this.candidates,
     required this.startDate,
     required this.endDate,
+    required this.registeredVoters, // Initialize the new field
   });
 
   factory Election.fromFirestore(DocumentSnapshot doc) {
@@ -23,6 +25,18 @@ class Election {
       candidates: List<String>.from(data['candidates']),
       startDate: (data['startDate'] as Timestamp).toDate(),
       endDate: (data['endDate'] as Timestamp).toDate(),
+      registeredVoters: List<String>.from(data['registeredVoters'] ?? []), // Handle null
     );
+  }
+
+  // Convert election to map for Firestore
+  Map<String, dynamic> toFirestore() {
+    return {
+      'title': title,
+      'candidates': candidates,
+      'startDate': Timestamp.fromDate(startDate),
+      'endDate': Timestamp.fromDate(endDate),
+      'registeredVoters': registeredVoters, // Ensure it's saved in Firestore
+    };
   }
 }

@@ -36,6 +36,7 @@ class ElectionDetailsScreen extends StatelessWidget {
                 onPressed: () async {
                   await _firebaseService.deleteElection(election.id);
                   Navigator.pop(context);
+                  Navigator.pop(context);
                 },
                 child: Text("Delete"),
               ),

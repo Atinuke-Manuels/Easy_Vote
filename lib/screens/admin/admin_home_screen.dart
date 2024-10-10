@@ -92,7 +92,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
             title: '',
             candidates: [],
             startDate: DateTime.now(),
-            endDate: DateTime.now().add(Duration(days: 7)),
+            endDate: DateTime.now().add(Duration(days: 7)), registeredVoters: [],
           );
 
           Navigator.push(

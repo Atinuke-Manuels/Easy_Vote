@@ -141,7 +141,7 @@ class FirebaseService {
     try {
       DocumentSnapshot doc = await _db.collection('Elections').doc(id).get();
       if (doc.exists) {
-        return Election.fromFirestore(doc);
+        return Election.fromFirestore(doc); // Ensure you have a fromFirestore method in your Election model
       } else {
         print('No election found with the provided ID.');
         return null;
@@ -151,6 +151,7 @@ class FirebaseService {
       return null;
     }
   }
+
 
   // Cast vote
   Future<void> castVote(

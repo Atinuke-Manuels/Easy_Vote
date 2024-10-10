@@ -9,9 +9,14 @@ import 'update_elections_screen.dart';
 import 'voting_screen.dart'; // Ensure this import is present
 
 class HomeScreen extends StatefulWidget {
+  final String electionId; // Accept electionId as a parameter
+
+  const HomeScreen({Key? key, required this.electionId}) : super(key: key); // Make the electionId required
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
+
 
 class _HomeScreenState extends State<HomeScreen> {
   final FirebaseService _firebaseService = FirebaseService();
@@ -33,59 +38,54 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Elections'),
         actions: [
           TextButton(
-              onPressed: () {
-                _firebaseService.signOut();
-                navigateToLoginScreen(context);
-              },
-              child: const Icon(Icons.exit_to_app_outlined))
+            onPressed: () {
+              _firebaseService.signOut();
+              navigateToLoginScreen(context);
+            },
+            child: const Icon(Icons.exit_to_app_outlined),
+          ),
         ],
       ),
       drawer: const MyDrawer(),
-      body: StreamBuilder<List<Election>>(
-        stream: _firebaseService.fetchElections(),
+      body: FutureBuilder<Election?>(
+        future: _firebaseService.fetchElectionById(widget.electionId), // Use electionId here
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          } else if (!snapshot.hasData) {
             return const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('No elections available.'),
-                ],
-              ),
+              child: Text('Election not found.'),
             );
           }
 
-          List<Election> elections = snapshot.data!;
+          Election election = snapshot.data!;
 
-          return ListView.builder(
-            itemCount: elections.length,
-            itemBuilder: (context, index) {
-              Election election = elections[index];
-              return Card(
+          return ListView(
+            children: [
+              Card(
                 child: ListTile(
                   title: Text(election.title),
                   subtitle: Text(
                     'Voting starts: ${DateFormat('dd/MM/yyyy HH:mm').format(election.startDate)}\n'
-                    'Voting ends: ${DateFormat('dd/MM/yyyy HH:mm').format(election.endDate)}',
+                        'Voting ends: ${DateFormat('dd/MM/yyyy HH:mm').format(election.endDate)}',
                   ),
                   onTap: () {
                     Navigator.pushNamed(
                       context,
                       '/election',
-                      // Make sure this route matches with your main app routes
                       arguments: election,
                     );
                   },
                 ),
-              );
-            },
+              ),
+            ],
           );
         },
       ),
     );
   }
+
+
 }
