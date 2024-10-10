@@ -70,6 +70,7 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
       await _firebaseService.updateElection(updatedElection);
     }
 
+    Navigator.pop(context);
     Navigator.pop(context); // Go back after updating
   }
 

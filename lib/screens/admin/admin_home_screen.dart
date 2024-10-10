@@ -5,6 +5,7 @@ import 'package:intl/intl.dart'; // Import the intl package
 import '../../models/election.dart';
 import '../../services/firebase_service.dart';
 import '../voter/update_elections_screen.dart';
+import 'election_details_screen.dart';
 
 class AdminHomeScreen extends StatefulWidget {
   @override
@@ -68,14 +69,14 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                   title: Text(election.title),
                   subtitle: Text(
                     'Voting starts: ${DateFormat('dd/MM/yyyy HH:mm').format(election.startDate)}\n'
-                    'Voting ends: ${DateFormat('dd/MM/yyyy HH:mm').format(election.endDate)}',
+                        'Voting ends: ${DateFormat('dd/MM/yyyy HH:mm').format(election.endDate)}',
                   ),
                   onTap: () {
-                    Navigator.pushNamed(
+                    Navigator.push(
                       context,
-                      '/election',
-                      // Make sure this route matches with your main app routes
-                      arguments: election,
+                      MaterialPageRoute(
+                        builder: (context) => ElectionDetailsScreen(election: election),
+                      ),
                     );
                   },
                 ),

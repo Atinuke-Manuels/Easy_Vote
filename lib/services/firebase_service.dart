@@ -120,6 +120,15 @@ class FirebaseService {
     }
   }
 
+  Future<void> deleteElection(String id) async {
+    try {
+      await _db.collection('Elections').doc(id).delete();
+      print('Election deleted successfully!');
+    } catch (e) {
+      print('Error deleting election: $e');
+    }
+  }
+
   // Fetch elections
   Stream<List<Election>> fetchElections() {
     return _db.collection('Elections').snapshots().map((snapshot) {
