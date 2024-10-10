@@ -13,6 +13,38 @@ class ElectionDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final FirebaseService _firebaseService = FirebaseService();
 
+    void _showConfirmationDialog(BuildContext context) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Delete Election"),
+            content: const Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.cancel_outlined, color: Colors.red, size: 50),
+                SizedBox(height: 10),
+                Text("Are you sure you want to delete this election?"),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text("Cancel"),
+              ),
+              TextButton(
+                onPressed: () async {
+                  await _firebaseService.deleteElection(election.id);
+                  Navigator.pop(context);
+                },
+                child: Text("Delete"),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(election.title),
@@ -27,7 +59,7 @@ class ElectionDetailsScreen extends StatelessWidget {
             Text('Candidates: ${election.candidates.join(', ')}', style: TextStyle(fontSize: 16)),
             SizedBox(height: 10),
             Text('Voting starts: ${DateFormat('dd/MM/yyyy HH:mm').format(election.startDate)}', style: TextStyle(fontSize: 16)),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text('Voting ends: ${DateFormat('dd/MM/yyyy HH:mm').format(election.endDate)}', style: TextStyle(fontSize: 16)),
             SizedBox(height: 20),
             Row(
@@ -45,9 +77,8 @@ class ElectionDetailsScreen extends StatelessWidget {
                   child: const Text('Edit'),
                 ),
                 ElevatedButton(
-                  onPressed: () async {
-                    await _firebaseService.deleteElection(election.id);
-                    Navigator.pop(context); // Go back after deletion
+                  onPressed: (){
+                    _showConfirmationDialog(context);
                   },
                   child: const Text('Delete'),
                 ),

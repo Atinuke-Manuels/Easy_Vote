@@ -50,12 +50,43 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
   }
 
   Future<void> _updateElection() async {
+    String title = _titleController.text.trim();
     List<String> candidates =
-        _candidatesController.text.split(',').map((s) => s.trim()).toList();
+    _candidatesController.text.split(',').map((s) => s.trim()).toList();
+
+    // Validation checks
+    if (title.isEmpty) {
+      _showErrorDialog('Election title is required.');
+      return;
+    }
+
+    if (candidates.length < 2) {
+      _showErrorDialog('At least two candidates are required.');
+      return;
+    }
+
+    if (_startDate != null && _endDate != null) {
+      if (_endDate!.isBefore(_startDate!)) {
+        _showErrorDialog('End date and time must be after the start date and time.');
+        return;
+      }
+
+      // If start and end dates are on the same day, check the time
+      if (_startDate!.day == _endDate!.day &&
+          _startDate!.month == _endDate!.month &&
+          _startDate!.year == _endDate!.year &&
+          _endDate!.isBefore(_startDate!)) {
+        _showErrorDialog('End time must be after start time if both are on the same day.');
+        return;
+      }
+    } else {
+      _showErrorDialog('Both start and end dates must be selected.');
+      return;
+    }
 
     Election updatedElection = Election(
       id: widget.election.id,
-      title: _titleController.text,
+      title: title,
       candidates: candidates,
       startDate: _startDate!,
       endDate: _endDate!,
@@ -73,6 +104,24 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
     Navigator.pop(context);
     Navigator.pop(context); // Go back after updating
   }
+
+// Helper function to display error messages
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Error'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
 
   Future<void> _selectStartDateTime() async {
     DateTime? pickedDate = await showDatePicker(
@@ -136,6 +185,7 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -143,45 +193,48 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
       appBar: AppBar(title: Text('Update Election')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(labelText: 'Election Title'),
-            ),
-            TextField(
-              controller: _candidatesController,
-              decoration: const InputDecoration(
-                  labelText: 'Candidates (comma-separated)'),
-            ),
-            TextField(
-              controller: _startDateController,
-              readOnly: true, // Make it read-only so users can't type in it
-              decoration: InputDecoration(
-                labelText: 'Start Date & Time',
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.calendar_today),
-                  onPressed: _selectStartDateTime,
+        child: SingleChildScrollView(
+          reverse: false,
+          child: Column(
+            children: [
+              TextField(
+                controller: _titleController,
+                decoration: const InputDecoration(labelText: 'Election Title'),
+              ),
+              TextField(
+                controller: _candidatesController,
+                decoration: const InputDecoration(
+                    labelText: 'Candidates (comma-separated)'),
+              ),
+              TextField(
+                controller: _startDateController,
+                readOnly: true, // Make it read-only so users can't type in it
+                decoration: InputDecoration(
+                  labelText: 'Start Date & Time',
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.calendar_today),
+                    onPressed: _selectStartDateTime,
+                  ),
                 ),
               ),
-            ),
-            TextField(
-              controller: _endDateController,
-              readOnly: true, // Make it read-only so users can't type in it
-              decoration: InputDecoration(
-                labelText: 'End Date & Time',
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.calendar_today),
-                  onPressed: _selectEndDateTime,
+              TextField(
+                controller: _endDateController,
+                readOnly: true, // Make it read-only so users can't type in it
+                decoration: InputDecoration(
+                  labelText: 'End Date & Time',
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.calendar_today),
+                    onPressed: _selectEndDateTime,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _updateElection,
-              child: const Text('Update Election'),
-            ),
-          ],
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _updateElection,
+                child: const Text('Update Election'),
+              ),
+            ],
+          ),
         ),
       ),
     );
