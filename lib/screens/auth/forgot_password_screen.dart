@@ -1,10 +1,8 @@
 import 'package:easy_vote/widgets/CustomButton.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../../services/firebase_service.dart';
 import '../../constants/app_text_styles.dart';
-import '../../themes/theme_provider.dart';
 import '../../widgets/CustomTextField.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -69,36 +67,21 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text('Forgot Password')),
       body: Padding(
-        padding: const EdgeInsets.only(top:100, right: 16.0, left: 16),
+        padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Center(
-                child: Image.asset(
-                  themeProvider.logoAsset,
-                  width: 120, // adjust size as needed
-                  height: 120,
-                ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Text("Enter your email to reset your password", textAlign: TextAlign.center, style: AppTextStyles.headingStyle(context)),
-              SizedBox(
-                height: 30,
-              ),
               CustomTextField(
                 controller: _emailController,
                 labelText: 'Email',
-                prefix: Icons.email_outlined,
+                prefix: Icons.ac_unit,
               ),
-              SizedBox(height: 40),
+              SizedBox(height: 20),
               CustomButton(
                 onPressed: _isLoading ? null : () => _resetPassword(context),
                 child: Text(_isLoading ? 'Loading...' : 'Send Reset Link'),

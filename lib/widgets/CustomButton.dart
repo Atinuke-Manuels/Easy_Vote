@@ -13,13 +13,9 @@ class CustomButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.secondary, // Use the secondary color for buttons
-        foregroundColor: Theme.of(context).colorScheme.onSurface,
-        minimumSize: Size(280, 70),
-        shape: RoundedRectangleBorder(
-
-          side: BorderSide(color:Theme.of(context).colorScheme.onSurface, width:3),
-        )
+        backgroundColor: Theme.of(context)
+            .colorScheme
+            .onSurface, // Use the secondary color for buttons
       ),
       child: child,
     );
