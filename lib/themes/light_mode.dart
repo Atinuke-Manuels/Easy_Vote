@@ -15,7 +15,7 @@ ThemeData lightMode = ThemeData(
       // Text on primary color
       onSecondary: Colors.blue,
       // Text on secondary color
-      onSurface: Colors.black,
+      onSurface: Colors.black54,
       // Text on background
       onError: Colors.white,
       // Text on error color
@@ -23,5 +23,9 @@ ThemeData lightMode = ThemeData(
       // Custom color (tertiary)
       inversePrimary: Colors.green,
       // Another custom color
-      onPrimaryFixed: Colors.purple),
+      onPrimaryFixed: Colors.purple,
+      //Another color
+
+  ),
+
 );
