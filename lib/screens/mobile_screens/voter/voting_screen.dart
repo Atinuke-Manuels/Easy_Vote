@@ -134,8 +134,14 @@ class VotingScreen extends StatelessWidget {
   Future<void> _castVoteAndShowSuccessDialog(BuildContext context,
       String candidate, Election election, String voterId) async {
     try {
-      // Cast the vote
-      await _firebaseService.castVote(voterId, election.id, candidate);
+      // Cast the vote with the election start and end dates
+      await _firebaseService.castVote(
+        voterId,
+        election.id,
+        candidate,
+        election.startDate,
+        election.endDate,
+      );
 
       // Show success dialog
       final completer = Completer<void>();
@@ -150,11 +156,14 @@ class VotingScreen extends StatelessWidget {
       // Handle errors and show a failure message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text(
-                'An error occurred while casting the vote: ${e.toString()}')),
+          content: Text(
+              'An error occurred while casting the vote: ${e.toString()}'
+          ),
+        ),
       );
     }
   }
+
 
   void _showSuccessDialog(
       BuildContext context, String candidate, Completer<void> completer) {

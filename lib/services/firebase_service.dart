@@ -196,7 +196,19 @@ class FirebaseService {
 
   // Cast vote
   Future<void> castVote(
-      String voterId, String electionId, String candidateId) async {
+      String voterId,
+      String electionId,
+      String candidateId,
+      DateTime startDate,
+      DateTime endDate,
+      ) async {
+    final currentDate = DateTime.now();
+
+    // Check if the current date is within the voting period
+    if (currentDate.isBefore(startDate) || currentDate.isAfter(endDate)) {
+      throw Exception('Voting is not allowed outside of the election period.');
+    }
+
     final voterRef = _db.collection('voters').doc(voterId);
     final voterSnapshot = await voterRef.get();
 
@@ -204,10 +216,8 @@ class FirebaseService {
     if (!voterSnapshot.exists) {
       // If the document doesn't exist, create it with an empty map for votes
       await voterRef.set({
-        'votes': {},
-        // Initialize with an empty map to track votes by electionId
-        'name': 'Unknown',
-        // Default value, update with actual name if needed
+        'votes': {}, // Initialize with an empty map to track votes by electionId
+        'name': 'Unknown', // Default value, update with actual name if needed
       });
     }
 
@@ -231,6 +241,7 @@ class FirebaseService {
       throw Exception('Voter has already voted in this election');
     }
   }
+
 
   // Fetch results
   Stream<Map<String, int>> getResults(String electionId) {

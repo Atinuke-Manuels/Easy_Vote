@@ -9,6 +9,7 @@ class CustomTextField extends StatefulWidget {
   final bool isObscure;
   final Function(String)? onChanged; // Add an onChanged callback
   final IconData prefix;
+  final bool? isReadOnly;
 
   const CustomTextField(
       {Key? key,
@@ -18,7 +19,7 @@ class CustomTextField extends StatefulWidget {
       this.isConfirmPassword = false,
       this.isObscure = false,
       this.onChanged, // Accept an onChanged callback
-      required this.prefix})
+      required this.prefix, this.isReadOnly = false})
       : super(key: key);
 
   @override
@@ -55,6 +56,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       ),
       obscureText: (widget.isPassword || widget.isConfirmPassword) &&
           !_isPasswordVisible,
+      readOnly: widget.isReadOnly ?? false, // Set readOnly based on isReadOnly
       onChanged: (value) {
         // If an onChanged function is provided, call it
         if (widget.onChanged != null) {

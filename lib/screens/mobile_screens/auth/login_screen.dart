@@ -16,14 +16,14 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final FirebaseService _authService =
-      FirebaseService(); // Initialize AuthService
+  final FirebaseService _authService = FirebaseService(); // Initialize AuthService
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _voterIdController = TextEditingController();
 
   bool _isLoading = false;
+  bool _isRetrieving = false;
 
   // Show SnackBar for displaying messages
   void _showSnackBar(String message, Color color) {
@@ -34,7 +34,95 @@ class _LoginScreenState extends State<LoginScreen> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-// Submit Login
+  // Show dialog to retrieve Voter ID
+  Future<void> _retrieveVoterId() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        final _retrieveEmailController = TextEditingController();
+        final _retrievePasswordController = TextEditingController();
+        final _voterIdController = TextEditingController();
+        bool _voterIdRetrieved = false;
+
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              title: Text("Retrieve Voter ID"),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CustomTextField(
+                    controller: _retrieveEmailController,
+                    labelText: 'Email',
+                    prefix: Icons.email_outlined,
+                  ),
+                  SizedBox(height: 15),
+                  CustomTextField(
+                    controller: _retrievePasswordController,
+                    labelText: 'Password',
+                    isPassword: true,
+                    prefix: Icons.lock,
+                  ),
+                  if (_voterIdRetrieved) ...[
+                    SizedBox(height: 15),
+                    CustomTextField(
+                      controller: _voterIdController,
+                      labelText: 'Voter ID',
+                      prefix: Icons.how_to_vote,
+                      isReadOnly: true, // Make it read-only since it’s a retrieved value
+                    ),
+                  ]
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text("Cancel"),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    setState(() {
+                      _isRetrieving = true;
+                    });
+
+                    var userCredential = await _authService.signIn(
+                      _retrieveEmailController.text,
+                      _retrievePasswordController.text,
+                    );
+
+                    if (userCredential != null) {
+                      String? storedVoterId = await _authService.fetchVoterId(userCredential.user!.uid);
+
+                      if (storedVoterId != null) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          setState(() {
+                            _voterIdRetrieved = true;
+                            _voterIdController.text = storedVoterId; // Set Voter ID in the controller
+                          });
+                        });
+                      } else {
+                        _showSnackBar('Voter ID not found.', Theme.of(context).colorScheme.error);
+                      }
+                    } else {
+                      _showSnackBar('Enter valid details. Please try again.', Theme.of(context).colorScheme.error);
+                    }
+
+                    setState(() {
+                      _isRetrieving = false;
+                    });
+                  },
+                  child: Text(_isRetrieving ? "Retrieving..." : "Retrieve"),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+
+  // Submit Login
   Future<void> _submitLogin() async {
     setState(() {
       _isLoading = true;
@@ -81,7 +169,6 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -89,7 +176,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Padding(
-        padding: const EdgeInsets.only(top:80, right: 16.0, left: 16),
+        padding: const EdgeInsets.only(top: 80, right: 16.0, left: 16),
         child: SingleChildScrollView(
           reverse: false,
           child: Center(
@@ -103,13 +190,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 80,
                   ),
                 ),
-                SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: 20),
                 Text('Welcome, login to continue', textAlign: TextAlign.center, style: AppTextStyles.headingStyle(context)),
-                SizedBox(
-                  height: 50,
-                ),
+                SizedBox(height: 50),
                 CustomTextField(
                   controller: _emailController,
                   labelText: 'Email',
@@ -122,55 +205,59 @@ class _LoginScreenState extends State<LoginScreen> {
                     );
                   },
                 ),
-                SizedBox(
-                  height: 15,
-                ),
+                SizedBox(height: 15),
                 CustomTextField(
                   controller: _passwordController,
                   labelText: 'Password',
                   isPassword: true,
                   prefix: Icons.lock,
                 ),
-                SizedBox(
-                  height: 15,
-                ),
+                SizedBox(height: 15),
                 CustomTextField(
                   controller: _voterIdController,
                   labelText: 'Voter ID',
                   prefix: Icons.how_to_vote,
                 ),
-                Container(
-                    alignment: Alignment.bottomRight,
-                    child: TextButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/forgotPassword');
-                        },
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      alignment: Alignment.bottomRight,
+                      child: TextButton(
+                        onPressed: _retrieveVoterId, // Call retrieve Voter ID
                         child: Text(
-                          "Forgot Password",
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary),
-                        ))),
-                const SizedBox(
-                  height: 20,
+                          "Retrieve Voter ID",
+                          style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                        ),
+                      ),
+                    ),
+                    Container(
+                        alignment: Alignment.bottomRight,
+                        child: TextButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/forgotPassword');
+                            },
+                            child: Text(
+                              "Forgot Password",
+                              style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                            ))),
+                  ],
                 ),
+                const SizedBox(height: 20),
                 CustomButton(
                   onPressed: _isLoading ? null : _submitLogin,
                   child: Text(_isLoading ? 'Loading...' : 'Login'),
                 ),
-                SizedBox(
-                  height: 15,
-                ),
+                SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Don't Have An Account?",
-                    style: AppTextStyles.bodyTextStyle(context)),
+                    Text("Don't Have An Account?", style: AppTextStyles.bodyTextStyle(context)),
                     TextButton(
                       onPressed: () {
                         Navigator.pushReplacementNamed(context, '/signup');
                       },
-                      child: Text('Sign Up',
-                          style: AppTextStyles.bodyTextStyle(context)),
+                      child: Text('Sign Up', style: AppTextStyles.bodyTextStyle(context)),
                     ),
                   ],
                 ),

@@ -46,6 +46,11 @@ class ElectionDetailsScreen extends StatelessWidget {
       );
     }
 
+    bool isEditable() {
+      // Check if the current date is before the election start date
+      return DateTime.now().isBefore(election.startDate);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(election.title),
@@ -59,7 +64,7 @@ class ElectionDetailsScreen extends StatelessWidget {
             SizedBox(height: 10),
             Text('Candidates: ${election.candidates.join(', ')}', style: TextStyle(fontSize: 16)),
             SizedBox(height: 10),
-            Text('registeredVoters: ${election.registeredVoters.join(', ')}', style: TextStyle(fontSize: 16)),
+            Text('Registered Voters: ${election.registeredVoters.join(', ')}', style: TextStyle(fontSize: 16)),
             SizedBox(height: 10),
             Text('Voting starts: ${DateFormat('dd/MM/yyyy HH:mm').format(election.startDate)}', style: TextStyle(fontSize: 16)),
             const SizedBox(height: 10),
@@ -69,20 +74,20 @@ class ElectionDetailsScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: isEditable() ? () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => UpdateElectionScreen(election: election),
                       ),
                     );
-                  },
+                  } : null, // Disable button if not editable
                   child: const Text('Edit'),
                 ),
                 ElevatedButton(
-                  onPressed: (){
+                  onPressed: isEditable() ? () {
                     _showConfirmationDialog(context);
-                  },
+                  } : null, // Disable button if not editable
                   child: const Text('Delete'),
                 ),
               ],
