@@ -188,13 +188,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("Already Have An Account? ",
-                      style: AppTextStyles.bodyTextStyle(context)),
+                      style: AppTextStyles.smallBodyTextStyle(context)),
                   TextButton(
                     onPressed: () {
                       Navigator.pushReplacementNamed(context, '/');
                     },
                     child: Text('Log In',
-                        style: AppTextStyles.bodyTextStyle(context)),
+                        style: AppTextStyles.smallBodyTextStyle(context)),
                   ),
                 ],
               ),

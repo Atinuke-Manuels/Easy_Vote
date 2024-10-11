@@ -271,13 +271,13 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                 Row(mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text("Don't Have An Account?",
-                        style: AppTextStyles.bodyTextStyle(context)),
+                        style: AppTextStyles.smallBodyTextStyle(context)),
                     TextButton(
                       onPressed: () {
                         Navigator.pushReplacementNamed(context, '/signup');
                       },
                       child: Text("Sign Up",
-                          style: AppTextStyles.bodyTextStyle(context)),
+                          style: AppTextStyles.smallBodyTextStyle(context)),
                     ),
                   ],
                 ),

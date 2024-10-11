@@ -52,14 +52,14 @@ class LoginOptionScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text("Not Registered?",
-                          style: AppTextStyles.bodyTextStyle(context)),
+                          style: AppTextStyles.smallBodyTextStyle(context)),
 
                       TextButton(
                         onPressed: () {
                           Navigator.pushReplacementNamed(context, '/signup');
                         },
                         child: Text('Sign Up',
-                            style: AppTextStyles.bodyTextStyle(context)),
+                            style: AppTextStyles.smallBodyTextStyle(context)),
                       ),
                     ],
                   ),

@@ -252,12 +252,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Don't Have An Account?", style: AppTextStyles.bodyTextStyle(context)),
+                    Text("Don't Have An Account?", style: AppTextStyles.smallBodyTextStyle(context)),
                     TextButton(
                       onPressed: () {
                         Navigator.pushReplacementNamed(context, '/signup');
                       },
-                      child: Text('Sign Up', style: AppTextStyles.bodyTextStyle(context)),
+                      child: Text('Sign Up', style: AppTextStyles.smallBodyTextStyle(context)),
                     ),
                   ],
                 ),

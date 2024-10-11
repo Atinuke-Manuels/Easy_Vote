@@ -19,7 +19,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => const LoginOptionScreen()),
-          (Route<dynamic> route) => false, // This predicate removes all previous routes
+      (Route<dynamic> route) =>
+          false, // This predicate removes all previous routes
     );
   }
 
@@ -29,14 +30,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: const Text('Elections'),
-        actions: [
-          TextButton(
-              onPressed: () {
-                _firebaseService.signOut();
-                navigateToLoginScreen(context);
-              },
-              child: const Icon(Icons.exit_to_app_outlined))
-        ],
+        centerTitle: true,
       ),
       drawer: const MyDrawer(),
       body: StreamBuilder<List<Election>>(
@@ -68,13 +62,14 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                   title: Text(election.title),
                   subtitle: Text(
                     'Voting starts: ${DateFormat('dd/MM/yyyy HH:mm').format(election.startDate)}\n'
-                        'Voting ends: ${DateFormat('dd/MM/yyyy HH:mm').format(election.endDate)}',
+                    'Voting ends: ${DateFormat('dd/MM/yyyy HH:mm').format(election.endDate)}',
                   ),
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ElectionDetailsScreen(election: election),
+                        builder: (context) =>
+                            ElectionDetailsScreen(election: election),
                       ),
                     );
                   },
@@ -89,7 +84,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           Election temporaryElection = Election(
             id: '',
             title: '',
-            creatorId: _firebaseService.currentUserId!, // Set creatorId here
+            creatorId: _firebaseService.currentUserId!,
+            // Set creatorId here
             candidates: [],
             startDate: DateTime.now(),
             endDate: DateTime.now().add(Duration(days: 7)),
@@ -99,7 +95,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => UpdateElectionScreen(election: temporaryElection),
+              builder: (context) =>
+                  UpdateElectionScreen(election: temporaryElection),
             ),
           ).then((_) {
             // No need to setState here; the StreamBuilder will handle updates.
