@@ -29,8 +29,7 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
   void initState() {
     super.initState();
     _titleController = TextEditingController(text: widget.election.title);
-    _candidatesController =
-        TextEditingController(text: widget.election.candidates.join(', '));
+    _candidatesController = TextEditingController(text: widget.election.candidates.join(', '));
     _startDate = widget.election.startDate;
     _endDate = widget.election.endDate;
 
@@ -39,7 +38,13 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
         text: DateFormat('dd/MM/yyyy HH:mm').format(_startDate!));
     _endDateController = TextEditingController(
         text: DateFormat('dd/MM/yyyy HH:mm').format(_endDate!));
+
+    // Initialize voter IDs controller
+    _voterIdsController = TextEditingController(
+      text: widget.election.registeredVoters.join(', '),
+    ); // Ensure existing voter IDs are loaded if they exist
   }
+
 
   @override
   void dispose() {

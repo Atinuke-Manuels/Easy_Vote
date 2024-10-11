@@ -59,6 +59,8 @@ class ElectionDetailsScreen extends StatelessWidget {
             SizedBox(height: 10),
             Text('Candidates: ${election.candidates.join(', ')}', style: TextStyle(fontSize: 16)),
             SizedBox(height: 10),
+            Text('registeredVoters: ${election.registeredVoters.join(', ')}', style: TextStyle(fontSize: 16)),
+            SizedBox(height: 10),
             Text('Voting starts: ${DateFormat('dd/MM/yyyy HH:mm').format(election.startDate)}', style: TextStyle(fontSize: 16)),
             const SizedBox(height: 10),
             Text('Voting ends: ${DateFormat('dd/MM/yyyy HH:mm').format(election.endDate)}', style: TextStyle(fontSize: 16)),

@@ -111,6 +111,7 @@ class FirebaseService {
       await _db.collection('Elections').doc(election.id).update({
         'title': election.title,
         'candidates': election.candidates,
+        'registeredVoters': election.registeredVoters,
         'startDate': Timestamp.fromDate(election.startDate),
         'endDate': Timestamp.fromDate(election.endDate),
       });
