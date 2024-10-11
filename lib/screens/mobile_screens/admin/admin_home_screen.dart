@@ -1,9 +1,9 @@
-import 'package:easy_vote/screens/auth/login_option_screen.dart';
 import 'package:easy_vote/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import the intl package
-import '../../models/election.dart';
-import '../../services/firebase_service.dart';
+import '../../../models/election.dart';
+import '../../../services/firebase_service.dart';
+import '../auth/login_option_screen.dart';
 import '../voter/update_elections_screen.dart';
 import 'election_details_screen.dart';
 

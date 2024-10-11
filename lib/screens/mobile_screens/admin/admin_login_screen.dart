@@ -1,11 +1,14 @@
-import 'package:easy_vote/screens/admin/admin_home_screen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../constants/app_text_styles.dart';
-import '../../services/firebase_service.dart';
-import '../../themes/theme_provider.dart';
-import '../../widgets/CustomButton.dart';
-import '../../widgets/CustomTextField.dart';
+
+import '../../../constants/app_text_styles.dart';
+import '../../../services/firebase_service.dart';
+import '../../../themes/theme_provider.dart';
+import '../../../widgets/CustomButton.dart';
+import '../../../widgets/CustomTextField.dart';
+import 'admin_home_screen.dart';
+
 
 class AdminLoginScreen extends StatefulWidget {
   const AdminLoginScreen({super.key});

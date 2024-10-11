@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../constants/app_text_styles.dart';
-import '../../models/election.dart';
-import '../../services/firebase_service.dart';
-import '../../themes/theme_provider.dart';
-import '../../widgets/CustomButton.dart';
-import '../../widgets/CustomTextField.dart';
-import '../voter/election_id_screen.dart';
+import '../../../constants/app_text_styles.dart';
+import '../../../models/election.dart';
+import '../../../services/firebase_service.dart';
+import '../../../themes/theme_provider.dart';
+import '../../../widgets/CustomButton.dart';
+import '../../../widgets/CustomTextField.dart';
 import '../voter/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {

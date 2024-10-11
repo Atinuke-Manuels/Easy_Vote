@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../screens/auth/login_option_screen.dart';
+import '../screens/mobile_screens/auth/login_option_screen.dart';
 import '../themes/theme_provider.dart';
 
 class MyDrawer extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../services/firebase_service.dart';
+import '../../../services/firebase_service.dart';
 import 'chart_screen.dart';
 
 class ResultsScreen extends StatelessWidget {

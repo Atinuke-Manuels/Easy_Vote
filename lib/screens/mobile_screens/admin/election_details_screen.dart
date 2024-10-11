@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../../models/election.dart';
-import '../../services/firebase_service.dart';
+import '../../../models/election.dart';
+import '../../../services/firebase_service.dart';
 import '../voter/update_elections_screen.dart';
 
 class ElectionDetailsScreen extends StatelessWidget {

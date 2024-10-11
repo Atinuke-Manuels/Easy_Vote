@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../services/firebase_service.dart';
-import '../../constants/app_text_styles.dart'; // Import your app colors
-import '../../themes/theme_provider.dart';
-import '../../widgets/CustomButton.dart';
-import '../../widgets/CustomTextField.dart';
+import '../../../constants/app_text_styles.dart';
+import '../../../services/firebase_service.dart';
+import '../../../themes/theme_provider.dart';
+import '../../../widgets/CustomButton.dart';
+import '../../../widgets/CustomTextField.dart';
+
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});

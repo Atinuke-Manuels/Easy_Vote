@@ -2,10 +2,12 @@ import 'package:easy_vote/widgets/CustomButton.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../services/firebase_service.dart';
-import '../../constants/app_text_styles.dart';
-import '../../themes/theme_provider.dart';
-import '../../widgets/CustomTextField.dart';
+
+import '../../../constants/app_text_styles.dart';
+import '../../../services/firebase_service.dart';
+import '../../../themes/theme_provider.dart';
+import '../../../widgets/CustomTextField.dart';
+
 
 class ForgotPasswordScreen extends StatefulWidget {
   @override
@@ -74,7 +76,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text('Forgot Password')),
       body: Padding(
-        padding: const EdgeInsets.only(top:100, right: 16.0, left: 16),
+        padding: const EdgeInsets.only(top:80, right: 16.0, left: 16),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -82,16 +84,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               Center(
                 child: Image.asset(
                   themeProvider.logoAsset,
-                  width: 120, // adjust size as needed
-                  height: 120,
+                  width: 80, // adjust size as needed
+                  height: 80,
                 ),
               ),
               SizedBox(
-                height: 30,
+                height: 20,
               ),
               Text("Enter your email to reset your password", textAlign: TextAlign.center, style: AppTextStyles.headingStyle(context)),
               SizedBox(
-                height: 30,
+                height: 50,
               ),
               CustomTextField(
                 controller: _emailController,
