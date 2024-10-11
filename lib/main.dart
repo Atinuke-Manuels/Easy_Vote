@@ -42,7 +42,7 @@ class EasyVoteApp extends StatelessWidget {
         '/adminLogin': (context) => const AdminLoginScreen(),
         '/signup': (context) => const SignUpScreen(),
         '/forgotPassword': (context) => ForgotPasswordScreen(),
-        '/home': (context) => const HomeScreen(electionId: '',),
+        '/home': (context) => const HomeScreen(voterId: '', registeredElections: [],),
         '/adminHome': (context) => AdminHomeScreen(),
         '/updateElection': (context) => UpdateElectionScreen(election: Election(id: '', title: '', candidates: [], startDate: DateTime.now(), endDate: DateTime.now().add(Duration(days: 7)), registeredVoters: [])),
         '/election': (context) => VotingScreen(),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../constants/app_text_styles.dart';
+import '../../models/election.dart';
 import '../../services/firebase_service.dart';
 import '../../themes/theme_provider.dart';
 import '../../widgets/CustomButton.dart';
@@ -40,49 +41,46 @@ class _LoginScreenState extends State<LoginScreen> {
       _isLoading = true;
     });
 
-    // Call the signIn method from AuthService
     var userCredential = await _authService.signIn(
       _emailController.text,
       _passwordController.text,
     );
 
     if (userCredential != null) {
-      // Retrieve the Voter ID from Firestore
       String? storedVoterId = await _authService.fetchVoterId(userCredential.user!.uid);
 
-      // Check if the provided Voter ID matches the stored one
       if (storedVoterId == null) {
         _showSnackBar('User data not found in database.', Theme.of(context).colorScheme.error);
         setState(() {
           _isLoading = false;
         });
-        return; // Stop further execution if user data is not found
+        return;
       }
 
-      // Validate the provided Voter ID
       if (_voterIdController.text == storedVoterId) {
         _showSnackBar('Logged in successfully!', Theme.of(context).colorScheme.inversePrimary);
 
-        // Pass the Voter ID as the election ID (or modify this logic as needed)
+        // Fetch elections that the voter is registered for
+        List<Election> registeredElections = await _authService.fetchRegisteredElections(_voterIdController.text);
+
+        // Navigate to HomeScreen and pass the list of registered elections
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => ElectionIdScreen(electionId: _voterIdController.text)), // Pass the election ID here
+          MaterialPageRoute(
+            builder: (context) => HomeScreen(voterId: _voterIdController.text, registeredElections: registeredElections),
+          ),
         );
       } else {
         _showSnackBar('Invalid Voter ID. Please try again.', Theme.of(context).colorScheme.error);
-        setState(() {
-          _isLoading = false;
-        });
-        return; // Stop further execution if the Voter ID does not match
       }
     } else {
       _showSnackBar('Login failed. Please try again.', Theme.of(context).colorScheme.error);
-      setState(() {
-        _isLoading = false;
-      });
     }
-  }
 
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
 
   @override

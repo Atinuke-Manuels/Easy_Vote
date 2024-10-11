@@ -153,6 +153,22 @@ class FirebaseService {
     }
   }
 
+  // Fetch elections where the voter is registered
+  Future<List<Election>> fetchRegisteredElections(String voterId) async {
+    try {
+      QuerySnapshot querySnapshot = await _db
+          .collection('Elections')
+          .where('registeredVoters', arrayContains: voterId)
+          .get();
+
+      // Use the fromFirestore factory method
+      return querySnapshot.docs.map((doc) => Election.fromFirestore(doc)).toList();
+    } catch (e) {
+      print('Error fetching elections: $e');
+      return [];
+    }
+  }
+
 
   // Cast vote
   Future<void> castVote(
