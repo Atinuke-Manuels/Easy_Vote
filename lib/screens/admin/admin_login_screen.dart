@@ -92,7 +92,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Padding(
-        padding: const EdgeInsets.only(top:100, right: 16.0, left: 16),
+        padding: const EdgeInsets.only(top:80, right: 16.0, left: 16),
         child: SingleChildScrollView(
           reverse: false,
           child: Center(
@@ -103,16 +103,16 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                 Center(
                   child: Image.asset(
                     themeProvider.logoAsset,
-                    width: 120, // adjust size as needed
-                    height: 120,
+                    width: 80, // adjust size as needed
+                    height: 80,
                   ),
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 20,
                 ),
                 Text('Welcome Admin!', textAlign: TextAlign.center, style: AppTextStyles.headingStyle(context)),
                 SizedBox(
-                  height: 30,
+                  height: 50,
                 ),
                 CustomTextField(
                   controller: _emailController,

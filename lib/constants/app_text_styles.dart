@@ -7,9 +7,9 @@ class AppTextStyles {
   static TextStyle headingStyle(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return TextStyle(
-      fontSize: 24,
+      fontSize: 18,
       fontWeight: FontWeight.bold,
-      color: colorScheme.primary,  // Use primary color directly
+      color: colorScheme.onSurface,  // Use primary color directly
     );
   }
 
@@ -27,7 +27,7 @@ class AppTextStyles {
     final colorScheme = Theme.of(context).colorScheme;
     return TextStyle(
       fontSize: 16,
-      color: colorScheme.onSurface,  // Use onSurface color directly
+      color: colorScheme.secondary,  // Use onSurface color directly
     );
   }
 

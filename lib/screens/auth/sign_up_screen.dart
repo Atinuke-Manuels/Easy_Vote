@@ -115,7 +115,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       //     title: Text('Create Your Account', style: AppTextStyles.headingStyle(context))),
 
       body: Padding(
-        padding: const EdgeInsets.only(top:100, right: 16.0, left: 16),
+        padding: const EdgeInsets.only(top:80, right: 16.0, left: 16),
         child: SingleChildScrollView(
           reverse: false,
           child: Column(
@@ -124,16 +124,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Center(
                 child: Image.asset(
                   themeProvider.logoAsset,
-                  width: 120, // adjust size as needed
-                  height: 120,
+                  width: 80, // adjust size as needed
+                  height: 80,
                 ),
               ),
               SizedBox(
-                height: 30,
+                height: 20,
               ),
               Text("Let's create your account", textAlign: TextAlign.center, style: AppTextStyles.headingStyle(context)),
               SizedBox(
-                height: 30,
+                height: 50,
               ),
               CustomTextField(
                 controller: _nameController,
@@ -173,14 +173,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 isConfirmPassword: true,
                 prefix: Icons.lock,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               CustomButton(
                 onPressed: _isLoading ? null : _submitSignup,
                 child: Text(_isLoading ? 'Loading...' : 'Signup'),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Row(
