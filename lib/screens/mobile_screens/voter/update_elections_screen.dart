@@ -88,6 +88,7 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
       candidates: candidates,
       startDate: _startDate!,
       endDate: _endDate!,
+      creatorId: _firebaseService.currentUserId!,
       registeredVoters: registeredVoters, // Add registered voters
     );
 

@@ -7,6 +7,8 @@ import '../models/election.dart'; // For generating a random voter ID
 class FirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
+  // Getter for current user's ID
+  String? get currentUserId => _auth.currentUser?.uid;
 
   // Public method to get the current user
   User? getCurrentUser() {
@@ -131,12 +133,34 @@ class FirebaseService {
   }
 
   // Fetch elections
-  Stream<List<Election>> fetchElections() {
-    return _db.collection('Elections').snapshots().map((snapshot) {
-      // print('Fetched elections: ${snapshot.docs.length}'); // Log the number of fetched elections
-      return snapshot.docs.map((doc) => Election.fromFirestore(doc)).toList();
-    });
+  Stream<List<Election>> fetchElections() async* {
+    String? userId = _auth.currentUser?.uid; // Get current user ID
+    if (userId == null) {
+      yield [];
+      return;
+    }
+
+    // Fetch elections from Firestore where the creatorId matches the current user's ID
+    final QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('elections')
+        .where('creatorId', isEqualTo: userId) // Filter by creatorId
+        .get();
+
+    List<Election> elections = snapshot.docs.map((doc) {
+      return Election(
+        id: doc.id,
+        title: doc['title'],
+        creatorId: doc['creatorId'],
+        candidates: List<String>.from(doc['candidates']),
+        startDate: (doc['startDate'] as Timestamp).toDate(),
+        endDate: (doc['endDate'] as Timestamp).toDate(),
+        registeredVoters: List<String>.from(doc['registeredVoters']),
+      );
+    }).toList();
+
+    yield elections; // Yield the filtered list of elections
   }
+
 
   Future<Election?> fetchElectionById(String id) async {
     try {

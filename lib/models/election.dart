@@ -6,6 +6,7 @@ class Election {
   final List<String> candidates;
   final DateTime startDate;
   final DateTime endDate;
+  String creatorId; // Add this field to track the creator
   final List<String> registeredVoters; // New field
 
   Election({
@@ -14,6 +15,7 @@ class Election {
     required this.candidates,
     required this.startDate,
     required this.endDate,
+    required this.creatorId, // Include this in constructor
     required this.registeredVoters, // Initialize the new field
   });
 
@@ -25,6 +27,7 @@ class Election {
       candidates: List<String>.from(data['candidates']),
       startDate: (data['startDate'] as Timestamp).toDate(),
       endDate: (data['endDate'] as Timestamp).toDate(),
+      creatorId: doc['creatorId'],
       registeredVoters: List<String>.from(data['registeredVoters'] ?? []), // Handle null
     );
   }

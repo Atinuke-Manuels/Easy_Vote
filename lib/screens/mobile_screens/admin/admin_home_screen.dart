@@ -19,8 +19,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => const LoginOptionScreen()),
-      (Route<dynamic> route) =>
-          false, // This predicate removes all previous routes
+          (Route<dynamic> route) => false, // This predicate removes all previous routes
     );
   }
 
@@ -90,22 +89,23 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           Election temporaryElection = Election(
             id: '',
             title: '',
+            creatorId: _firebaseService.currentUserId!, // Set creatorId here
             candidates: [],
             startDate: DateTime.now(),
-            endDate: DateTime.now().add(Duration(days: 7)), registeredVoters: [],
+            endDate: DateTime.now().add(Duration(days: 7)),
+            registeredVoters: [],
           );
 
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  UpdateElectionScreen(election: temporaryElection),
+              builder: (context) => UpdateElectionScreen(election: temporaryElection),
             ),
           ).then((_) {
             // No need to setState here; the StreamBuilder will handle updates.
           });
         },
-        tooltip: "View Chart",
+        tooltip: "Add Election",
         child: const Icon(Icons.add),
       ),
     );
