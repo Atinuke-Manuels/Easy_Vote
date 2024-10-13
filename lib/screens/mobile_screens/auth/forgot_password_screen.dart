@@ -73,54 +73,64 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(top:80, right: 16.0, left: 16),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(
-                  child: Image.asset(
-                    themeProvider.logoAsset,
-                    width: 120, // adjust size as needed
-                    height: 120,
-                  ),
-                ),
-                SizedBox(
-                  height: 60,
-                ),
-                Text("Enter your email to reset your password", textAlign: TextAlign.center, style: AppTextStyles.headingStyle(context)),
-                SizedBox(
-                  height: 40,
-                ),
-                CustomTextField(
-                  controller: _emailController,
-                  labelText: 'Email',
-                  prefix: Icons.email_outlined,
-                ),
-                SizedBox(height: 40),
-                CustomButton(
-                  onPressed: _isLoading ? null : () => _resetPassword(context),
-                  child: Text(_isLoading ? 'Loading...' : 'Send Reset Link'),
-                ),
-                const SizedBox(height: 15),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("You now remember your password?",
-                        style: AppTextStyles.smallBodyTextStyle(context)),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushReplacementNamed(context, '/');
-                      },
-                      child: Text('Log In',
-                          style: AppTextStyles.smallBodyTextStyle(context)),
+      //backgroundColor: Theme.of(context).colorScheme.surface,
+      body: Container(
+        // width: double.infinity,
+        // height: double.infinity,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/evbg1.png"),
+              fit: BoxFit.cover,
+            )
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(top:80, right: 16.0, left: 16),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Image.asset(
+                      themeProvider.logoAsset,
+                      width: 120, // adjust size as needed
+                      height: 120,
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                  SizedBox(
+                    height: 60,
+                  ),
+                  Text("Enter your email to reset your password", textAlign: TextAlign.center, style: AppTextStyles.headingStyle(context)),
+                  SizedBox(
+                    height: 40,
+                  ),
+                  CustomTextField(
+                    controller: _emailController,
+                    labelText: 'Email',
+                    prefix: Icons.email_outlined,
+                  ),
+                  SizedBox(height: 40),
+                  CustomButton(
+                    onPressed: _isLoading ? null : () => _resetPassword(context),
+                    child: Text(_isLoading ? 'Loading...' : 'Send Reset Link'),
+                  ),
+                  const SizedBox(height: 15),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("You now remember your password?",
+                          style: AppTextStyles.smallBodyTextStyle(context)),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushReplacementNamed(context, '/');
+                        },
+                        child: Text('Log In',
+                            style: AppTextStyles.smallBodyTextStyle(context)),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

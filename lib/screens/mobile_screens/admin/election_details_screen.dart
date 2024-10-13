@@ -55,44 +55,54 @@ class ElectionDetailsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(election.title),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Election Title: ${election.title}', style: TextStyle(fontSize: 20)),
-            SizedBox(height: 10),
-            Text('Candidates: ${election.candidates.join(', ')}', style: TextStyle(fontSize: 16)),
-            SizedBox(height: 10),
-            Text('Registered Voters: ${election.registeredVoters.join(', ')}', style: TextStyle(fontSize: 16)),
-            SizedBox(height: 10),
-            Text('Voting starts: ${DateFormat('dd/MM/yyyy HH:mm').format(election.startDate)}', style: TextStyle(fontSize: 16)),
-            const SizedBox(height: 10),
-            Text('Voting ends: ${DateFormat('dd/MM/yyyy HH:mm').format(election.endDate)}', style: TextStyle(fontSize: 16)),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: isEditable() ? () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => UpdateElectionScreen(election: election),
-                      ),
-                    );
-                  } : null, // Disable button if not editable
-                  child: const Text('Edit'),
-                ),
-                ElevatedButton(
-                  onPressed: isEditable() ? () {
-                    _showConfirmationDialog(context);
-                  } : null, // Disable button if not editable
-                  child: const Text('Delete'),
-                ),
-              ],
-            ),
-          ],
+      body: Container(
+        // width: double.infinity,
+        // height: double.infinity,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/evbg1.png"),
+              fit: BoxFit.cover,
+            )
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Election Title: ${election.title}', style: TextStyle(fontSize: 20)),
+              SizedBox(height: 10),
+              Text('Candidates: ${election.candidates.join(', ')}', style: TextStyle(fontSize: 16)),
+              SizedBox(height: 10),
+              Text('Registered Voters: ${election.registeredVoters.join(', ')}', style: TextStyle(fontSize: 16)),
+              SizedBox(height: 10),
+              Text('Voting starts: ${DateFormat('dd/MM/yyyy HH:mm').format(election.startDate)}', style: TextStyle(fontSize: 16)),
+              const SizedBox(height: 10),
+              Text('Voting ends: ${DateFormat('dd/MM/yyyy HH:mm').format(election.endDate)}', style: TextStyle(fontSize: 16)),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: isEditable() ? () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UpdateElectionScreen(election: election),
+                        ),
+                      );
+                    } : null, // Disable button if not editable
+                    child: const Text('Edit'),
+                  ),
+                  ElevatedButton(
+                    onPressed: isEditable() ? () {
+                      _showConfirmationDialog(context);
+                    } : null, // Disable button if not editable
+                    child: const Text('Delete'),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

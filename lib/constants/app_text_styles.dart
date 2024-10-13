@@ -35,7 +35,7 @@ class AppTextStyles {
     final colorScheme = Theme.of(context).colorScheme;
     return TextStyle(
       fontSize: 16,
-      color: colorScheme.secondary,  // Use onSurface color directly
+      color: colorScheme.error,  // Use onSurface color directly
     );
   }
 

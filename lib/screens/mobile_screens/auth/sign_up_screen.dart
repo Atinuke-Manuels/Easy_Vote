@@ -111,94 +111,104 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      //backgroundColor: Theme.of(context).colorScheme.surface,
       // appBar: AppBar(
       //     title: Text('Create Your Account', style: AppTextStyles.headingStyle(context))),
 
-      body: Padding(
-        padding: const EdgeInsets.only(top:80, right: 16.0, left: 16),
-        child: SingleChildScrollView(
-          reverse: false,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(
-                child: Image.asset(
-                  themeProvider.logoAsset,
-                  width: 80, // adjust size as needed
-                  height: 80,
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text("Let's create your account", textAlign: TextAlign.center, style: AppTextStyles.headingStyle(context)),
-              SizedBox(
-                height: 50,
-              ),
-              CustomTextField(
-                controller: _nameController,
-                labelText: 'Full Name',
-                prefix: Icons.person,
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              CustomTextField(
-                controller: _emailController,
-                labelText: 'Email',
-                prefix: Icons.email_outlined,
-                onChanged: (value) {
-                  // Convert the input to lowercase as the user types
-                  _emailController.value = TextEditingValue(
-                    text: value.toLowerCase(),
-                    selection: _emailController.selection,
-                  );
-                },
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              CustomTextField(
-                controller: _passwordController,
-                labelText: 'Password',
-                isPassword: true,
-                prefix: Icons.lock,
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              CustomTextField(
-                controller: _confirmPasswordController,
-                labelText: 'Confirm Password',
-                isConfirmPassword: true,
-                prefix: Icons.lock,
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              CustomButton(
-                onPressed: _isLoading ? null : _submitSignup,
-                child: Text(_isLoading ? 'Loading...' : 'Signup'),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Already Have An Account? ",
-                      style: AppTextStyles.smallBodyTextStyle(context)),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(context, '/');
-                    },
-                    child: Text('Log In',
-                        style: AppTextStyles.smallBodyTextStyle(context)),
+      body: Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/evbg1.png"),
+                fit: BoxFit.cover,
+              )
+          ),
+        child: Padding(
+          padding: const EdgeInsets.only(top:80, right: 16.0, left: 16),
+          child: SingleChildScrollView(
+            reverse: false,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: Image.asset(
+                    themeProvider.logoAsset,
+                    width: 80, // adjust size as needed
+                    height: 80,
                   ),
-                ],
-              ),
-            ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text("Let's create your account", textAlign: TextAlign.center, style: AppTextStyles.headingStyle(context)),
+                SizedBox(
+                  height: 50,
+                ),
+                CustomTextField(
+                  controller: _nameController,
+                  labelText: 'Full Name',
+                  prefix: Icons.person,
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                CustomTextField(
+                  controller: _emailController,
+                  labelText: 'Email',
+                  prefix: Icons.email_outlined,
+                  onChanged: (value) {
+                    // Convert the input to lowercase as the user types
+                    _emailController.value = TextEditingValue(
+                      text: value.toLowerCase(),
+                      selection: _emailController.selection,
+                    );
+                  },
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                CustomTextField(
+                  controller: _passwordController,
+                  labelText: 'Password',
+                  isPassword: true,
+                  prefix: Icons.lock,
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                CustomTextField(
+                  controller: _confirmPasswordController,
+                  labelText: 'Confirm Password',
+                  isConfirmPassword: true,
+                  prefix: Icons.lock,
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                CustomButton(
+                  onPressed: _isLoading ? null : _submitSignup,
+                  child: Text(_isLoading ? 'Loading...' : 'Signup'),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Already Have An Account? ",
+                        style: AppTextStyles.smallBodyTextStyle(context)),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(context, '/');
+                      },
+                      child: Text('Log In',
+                          style: AppTextStyles.smallBodyTextStyle(context)),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
