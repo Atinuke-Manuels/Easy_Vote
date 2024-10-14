@@ -30,6 +30,14 @@ class AppTextStyles {
     );
   }
 
+  static TextStyle signupSmallBodyTextStyle(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return TextStyle(
+      fontSize: 13,
+      color: colorScheme.onPrimaryFixed,  // Use onSurface color directly
+    );
+  }
+
   // Hint text style using the onSurface color
   static TextStyle hintTextStyle(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
