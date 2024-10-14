@@ -187,66 +187,80 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(title: Text('Update Election')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          reverse: false,
-          child: Column(
-            children: [
-              TextField(
-                controller: _titleController,
-                decoration: const InputDecoration(labelText: 'Election Title'),
-              ),
-              TextField(
-                controller: _candidatesController,
-                decoration: const InputDecoration(
-                    labelText: 'Candidates (comma-separated)'),
-              ),
-              // Inside the build method, add a new text field
-              TextField(
-                controller: _voterIdsController,
-                decoration: const InputDecoration(labelText: 'Voter IDs (comma-separated)'),
-              ),
-              TextField(
-                controller: _startDateController,
-                readOnly: true, // Make it read-only so users can't type in it
-                decoration: InputDecoration(
-                  labelText: 'Start Date & Time',
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.calendar_today),
-                    onPressed: _selectStartDateTime,
-                  ),
+      appBar: AppBar(title: Text('Update Election'),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
+        elevation: 0,
+      ),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/evbg1.png"),
+              fit: BoxFit.cover,
+            )
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            reverse: false,
+            child: Column(
+              children: [
+                TextField(
+                  controller: _titleController,
+                  decoration: const InputDecoration(labelText: 'Election Title'),
                 ),
-              ),
-              TextField(
-                controller: _endDateController,
-                readOnly: true, // Make it read-only so users can't type in it
-                decoration: InputDecoration(
-                  labelText: 'End Date & Time',
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.calendar_today),
-                    onPressed: _selectEndDateTime,
-                  ),
+                TextField(
+                  controller: _candidatesController,
+                  decoration: const InputDecoration(
+                      labelText: 'Candidates (comma-separated)'),
                 ),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _updateElection,
-                style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.primary),
-                  foregroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onPrimary),
-                  padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0)), // Padding
-                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                // Inside the build method, add a new text field
+                TextField(
+                  controller: _voterIdsController,
+                  decoration: const InputDecoration(labelText: 'Voter IDs (comma-separated)'),
+                ),
+                TextField(
+                  controller: _startDateController,
+                  readOnly: true, // Make it read-only so users can't type in it
+                  decoration: InputDecoration(
+                    labelText: 'Start Date & Time',
+                    suffixIcon: IconButton(
+                      icon: const Icon(Icons.calendar_today),
+                      onPressed: _selectStartDateTime,
                     ),
                   ),
-                  elevation: MaterialStateProperty.all(5), // Elevation
                 ),
-                child: const Text('Update Election'),
-              ),
-            ],
+                TextField(
+                  controller: _endDateController,
+                  readOnly: true, // Make it read-only so users can't type in it
+                  decoration: InputDecoration(
+                    labelText: 'End Date & Time',
+                    suffixIcon: IconButton(
+                      icon: const Icon(Icons.calendar_today),
+                      onPressed: _selectEndDateTime,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _updateElection,
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.primary),
+                    foregroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onPrimary),
+                    padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0)), // Padding
+                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                      ),
+                    ),
+                    elevation: MaterialStateProperty.all(5), // Elevation
+                  ),
+                  child: const Text('Update Election'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

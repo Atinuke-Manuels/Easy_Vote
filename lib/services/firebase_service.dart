@@ -146,7 +146,7 @@ class FirebaseService {
     }
   }
 
-  // Fetch elections
+
   // Fetch elections
   Stream<List<Election>> fetchElections() async* {
     String? userId = _auth.currentUser?.uid; // Get current user ID
@@ -158,7 +158,8 @@ class FirebaseService {
     // Fetch elections from Firestore where the creatorId matches the current user's ID
     final QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('Elections')
-        .where('creatorId', isEqualTo: userId) // Filter by creatorId
+        .where('creatorId', isEqualTo: userId)
+        // .orderBy('startDate') // Order by startDate
         .get();
 
     List<Election> elections = snapshot.docs.map((doc) {
@@ -195,13 +196,31 @@ class FirebaseService {
   // Fetch elections where the voter is registered
   Future<List<Election>> fetchRegisteredElections(String voterId) async {
     try {
+      print('Attempting to fetch elections for voterId: $voterId');
+
       QuerySnapshot querySnapshot = await _db
           .collection('Elections')
           .where('registeredVoters', arrayContains: voterId)
           .get();
 
-      // Use the fromFirestore factory method
-      return querySnapshot.docs.map((doc) => Election.fromFirestore(doc)).toList();
+      // Log the number of documents found
+      print('Number of elections found: ${querySnapshot.docs.length}');
+
+      if (querySnapshot.docs.isEmpty) {
+        print('No elections found for voter ID: $voterId');
+      } else {
+        // Log each election title for debugging purposes
+        for (var doc in querySnapshot.docs) {
+          print('Election title: ${doc['title']}');
+        }
+      }
+
+      // Convert querySnapshot to a list of Election objects using fromFirestore factory method
+      return querySnapshot.docs.map((doc) {
+        print('Mapping document with ID: ${doc.id}');
+        return Election.fromFirestore(doc);
+      }).toList();
+
     } catch (e) {
       print('Error fetching elections: $e');
       return [];

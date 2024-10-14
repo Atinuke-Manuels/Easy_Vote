@@ -50,6 +50,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
+              backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
               title: Text("Retrieve Voter ID"),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -59,7 +60,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                     labelText: 'Email',
                     prefix: Icons.email_outlined,
                   ),
-                  SizedBox(height: 15),
+                  SizedBox(height: 5),
                   CustomTextField(
                     controller: _retrievePasswordController,
                     labelText: 'Password',

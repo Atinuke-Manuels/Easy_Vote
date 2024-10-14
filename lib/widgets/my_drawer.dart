@@ -95,7 +95,8 @@ class MyDrawer extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Logout", style: AppTextStyles.headingStyle(context)), // Use heading style for title
+          backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
+          title: Text("Logout", style: AppTextStyles.headingStyle(context), textAlign: TextAlign.center,), // Use heading style for title
           content: Text("Are you sure you want to logout?",
               style: AppTextStyles.bodyTextStyle(context)), // Use body style for content
           actions: [

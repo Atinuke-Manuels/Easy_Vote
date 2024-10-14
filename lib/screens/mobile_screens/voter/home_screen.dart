@@ -6,15 +6,20 @@ import '../../../constants/app_text_styles.dart';
 import '../../../models/election.dart';
 
 class HomeScreen extends StatelessWidget {
-  final String voterId; // Voter ID
-  final List<Election> registeredElections; // List of registered elections
+  final String voterId;
+  final List<Election> registeredElections;
 
-  const HomeScreen(
-      {Key? key, required this.voterId, required this.registeredElections})
-      : super(key: key);
+  const HomeScreen({
+    Key? key,
+    required this.voterId,
+    required this.registeredElections,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print('Voter ID: $voterId');
+    print('Number of registered elections: ${registeredElections.length}');
+
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -43,6 +48,7 @@ class HomeScreen extends StatelessWidget {
           itemCount: registeredElections.length,
           itemBuilder: (context, index) {
             final election = registeredElections[index];
+            print('Election ${index + 1}: ${election.title}, starts at ${election.startDate}, ends at ${election.endDate}');
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Card(
@@ -88,7 +94,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      backgroundColor: theme.colorScheme.background, // Use background color for better contrast
+      backgroundColor: theme.colorScheme.surface, // Use background color for better contrast
     );
   }
 }

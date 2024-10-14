@@ -47,6 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
+              backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
               title: Text("Retrieve Voter ID"),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -56,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     labelText: 'Email',
                     prefix: Icons.email_outlined,
                   ),
-                  SizedBox(height: 15),
+                  SizedBox(height: 5),
                   CustomTextField(
                     controller: _retrievePasswordController,
                     labelText: 'Password',
@@ -122,11 +123,13 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
 
-  // Submit Login
+// Submit Login
   Future<void> _submitLogin() async {
     setState(() {
       _isLoading = true;
     });
+
+    print('Attempting to sign in with email: ${_emailController.text} and password: ${_passwordController.text}');
 
     var userCredential = await _authService.signIn(
       _emailController.text,
@@ -134,7 +137,9 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     if (userCredential != null) {
+      print('User signed in successfully with UID: ${userCredential.user!.uid}');
       String? storedVoterId = await _authService.fetchVoterId(userCredential.user!.uid);
+      print('Fetched Voter ID from the database: $storedVoterId');
 
       if (storedVoterId == null) {
         _showSnackBar('User data not found in database.', Theme.of(context).colorScheme.error);
@@ -147,16 +152,22 @@ class _LoginScreenState extends State<LoginScreen> {
       if (_voterIdController.text == storedVoterId) {
         _showSnackBar('Logged in successfully!', Theme.of(context).colorScheme.inversePrimary);
 
+        print('Fetching registered elections for Voter ID: ${_voterIdController.text}');
         // Fetch elections that the voter is registered for
         List<Election> registeredElections = await _authService.fetchRegisteredElections(_voterIdController.text);
 
+        print('Number of registered elections fetched: ${registeredElections.length}');
         // Navigate to HomeScreen and pass the list of registered elections
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => HomeScreen(voterId: _voterIdController.text, registeredElections: registeredElections),
+            builder: (context) => HomeScreen(
+              voterId: _voterIdController.text,
+              registeredElections: registeredElections,
+            ),
           ),
         );
+
       } else {
         _showSnackBar('Invalid Voter ID. Please try again.', Theme.of(context).colorScheme.error);
       }
@@ -169,6 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -178,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage("assets/evbg1.png"),
               fit: BoxFit.cover,
@@ -199,9 +211,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 80,
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Text('Welcome, login to continue', textAlign: TextAlign.center, style: AppTextStyles.headingStyle(context)),
-                  SizedBox(height: 50),
+                  const SizedBox(height: 50),
                   CustomTextField(
                     controller: _emailController,
                     labelText: 'Email',

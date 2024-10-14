@@ -41,7 +41,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         // Use the primary color for labels
         prefixIcon: Icon(
           widget.prefix,
-          color: Theme.of(context).colorScheme.error,
+          color: Theme.of(context).colorScheme.onSecondary,
         ),
         suffixIcon: widget.isPassword || widget.isConfirmPassword
             ? IconButton(
