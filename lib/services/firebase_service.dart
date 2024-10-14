@@ -97,12 +97,24 @@ class FirebaseService {
           ? _db.collection('Elections').doc().id
           : election.id;
 
+      // Create a new Election object with the generated docId
+      Election newElection = Election(
+        id: docId,
+        title: election.title,
+        candidates: election.candidates,
+        startDate: election.startDate,
+        endDate: election.endDate,
+        creatorId: _auth.currentUser!.uid,
+        registeredVoters: election.registeredVoters,
+      );
+
       await _db.collection('Elections').doc(docId).set({
-        'title': election.title,
-        'candidates': election.candidates,
-        'startDate': Timestamp.fromDate(election.startDate),
-        'endDate': Timestamp.fromDate(election.endDate),
-        'registeredVoters': election.registeredVoters, // Add this field
+        'title': newElection.title,
+        'candidates': newElection.candidates,
+        'startDate': Timestamp.fromDate(newElection.startDate),
+        'endDate': Timestamp.fromDate(newElection.endDate),
+        'registeredVoters': newElection.registeredVoters,
+        'creatorId': newElection.creatorId,
       });
       print('Election added successfully!');
     } catch (e) {
@@ -135,6 +147,7 @@ class FirebaseService {
   }
 
   // Fetch elections
+  // Fetch elections
   Stream<List<Election>> fetchElections() async* {
     String? userId = _auth.currentUser?.uid; // Get current user ID
     if (userId == null) {
@@ -144,7 +157,7 @@ class FirebaseService {
 
     // Fetch elections from Firestore where the creatorId matches the current user's ID
     final QuerySnapshot snapshot = await FirebaseFirestore.instance
-        .collection('elections')
+        .collection('Elections')
         .where('creatorId', isEqualTo: userId) // Filter by creatorId
         .get();
 
@@ -156,7 +169,7 @@ class FirebaseService {
         candidates: List<String>.from(doc['candidates']),
         startDate: (doc['startDate'] as Timestamp).toDate(),
         endDate: (doc['endDate'] as Timestamp).toDate(),
-        registeredVoters: doc['registeredVoters'] ?? [], // Handle empty registeredVoters field
+        registeredVoters: List<String>.from(doc['registeredVoters']),
       );
     }).toList();
 

@@ -36,7 +36,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage("assets/evbg1.png"),
               fit: BoxFit.cover,
