@@ -233,6 +233,17 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _updateElection,
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.primary),
+                  foregroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onPrimary),
+                  padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0)), // Padding
+                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                    ),
+                  ),
+                  elevation: MaterialStateProperty.all(5), // Elevation
+                ),
                 child: const Text('Update Election'),
               ),
             ],

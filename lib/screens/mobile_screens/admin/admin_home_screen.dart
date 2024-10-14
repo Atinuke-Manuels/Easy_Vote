@@ -1,6 +1,7 @@
 import 'package:easy_vote/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import the intl package
+import '../../../constants/app_text_styles.dart';
 import '../../../models/election.dart';
 import '../../../services/firebase_service.dart';
 import '../auth/login_option_screen.dart';
@@ -31,6 +32,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
       appBar: AppBar(
         title: const Text('Elections'),
         centerTitle: true,
+        backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
+        elevation: 0,
       ),
       drawer: const MyDrawer(),
       body: Container(
@@ -66,23 +69,27 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
               itemCount: elections.length,
               itemBuilder: (context, index) {
                 Election election = elections[index];
-                return Card(
-                  color: Colors.white.withOpacity(0.8),
-                  child: ListTile(
-                    title: Text(election.title),
-                    subtitle: Text(
-                      'Voting starts: ${DateFormat('dd/MM/yyyy HH:mm').format(election.startDate)}\n'
-                          'Voting ends: ${DateFormat('dd/MM/yyyy HH:mm').format(election.endDate)}',
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  child: Card(
+                    color: Colors.white.withOpacity(0.8),
+                    child: ListTile(
+                      title: Text(election.title, style: AppTextStyles.cardTextStyle(context),),
+                      subtitle: Text(
+                        'Voting starts: ${DateFormat('dd/MM/yyyy HH:mm').format(election.startDate)}\n'
+                            'Voting ends: ${DateFormat('dd/MM/yyyy HH:mm').format(election.endDate)}',
+                      ),
+                      subtitleTextStyle: AppTextStyles.cardTextStyle(context),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ElectionDetailsScreen(election: election),
+                          ),
+                        );
+                      },
                     ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              ElectionDetailsScreen(election: election),
-                        ),
-                      );
-                    },
                   ),
                 );
               },

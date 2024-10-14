@@ -22,6 +22,15 @@ class AppTextStyles {
     );
   }
 
+  // Body text style using the onSurface color
+  static TextStyle cardTextStyle(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return TextStyle(
+      fontSize: 16,
+      color: colorScheme.onPrimaryFixed,  // Use onSurface color directly
+    );
+  }
+
   static TextStyle smallBodyTextStyle(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return TextStyle(

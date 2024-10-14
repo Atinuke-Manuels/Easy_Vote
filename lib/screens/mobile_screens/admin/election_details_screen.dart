@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../models/election.dart';
 import '../../../services/firebase_service.dart';
@@ -54,6 +58,9 @@ class ElectionDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(election.title),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
+        elevation: 0,
       ),
       body: Container(
         // width: double.infinity,
@@ -90,13 +97,35 @@ class ElectionDetailsScreen extends StatelessWidget {
                           builder: (context) => UpdateElectionScreen(election: election),
                         ),
                       );
-                    } : null, // Disable button if not editable
+                    } : null,
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.primary),
+                      foregroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onPrimary),
+                      padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0)), // Padding
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                        ),
+                      ),
+                      elevation: MaterialStateProperty.all(5), // Elevation
+                    ),// Disable button if not editable
                     child: const Text('Edit'),
                   ),
                   ElevatedButton(
                     onPressed: isEditable() ? () {
                       _showConfirmationDialog(context);
-                    } : null, // Disable button if not editable
+                    } : null,
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.primary),
+                      foregroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onPrimary),
+                      padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0)), // Padding
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                        ),
+                      ),
+                      elevation: MaterialStateProperty.all(5), // Elevation
+                    ), // Disable button if not editable
                     child: const Text('Delete'),
                   ),
                 ],
