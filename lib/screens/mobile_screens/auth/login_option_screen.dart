@@ -52,7 +52,7 @@ class LoginOptionScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.pushNamed(context, '/login');
                         },
-                        child: const Text("Vote - Cast your vote",)),
+                        child: const Text("Voter - Cast your vote",)),
                     const SizedBox(
                       height: 40,
                     ),
