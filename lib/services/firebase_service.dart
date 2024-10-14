@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:math';
@@ -33,7 +34,7 @@ class FirebaseService {
       String email, String password, String name) async {
     try {
       UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
+      await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -73,7 +74,7 @@ class FirebaseService {
   Future<String?> fetchVoterId(String userId) async {
     try {
       DocumentSnapshot userDoc =
-          await _db.collection('VotersRegister').doc(userId).get();
+      await _db.collection('VotersRegister').doc(userId).get();
       if (userDoc.exists) {
         return userDoc.get('voterId');
       }
@@ -101,6 +102,7 @@ class FirebaseService {
         'candidates': election.candidates,
         'startDate': Timestamp.fromDate(election.startDate),
         'endDate': Timestamp.fromDate(election.endDate),
+        'registeredVoters': election.registeredVoters, // Add this field
       });
       print('Election added successfully!');
     } catch (e) {
@@ -154,7 +156,7 @@ class FirebaseService {
         candidates: List<String>.from(doc['candidates']),
         startDate: (doc['startDate'] as Timestamp).toDate(),
         endDate: (doc['endDate'] as Timestamp).toDate(),
-        registeredVoters: List<String>.from(doc['registeredVoters']),
+        registeredVoters: doc['registeredVoters'] ?? [], // Handle empty registeredVoters field
       );
     }).toList();
 

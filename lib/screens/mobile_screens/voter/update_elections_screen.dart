@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../models/election.dart';
-import '../../../services/firebase_service.dart';
-import '../../../widgets/CustomButton.dart'; // Import for date formatting
+import '../../../services/firebase_service.dart'; // Import for date formatting
 
 class UpdateElectionScreen extends StatefulWidget {
   final Election election;
@@ -70,11 +69,6 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
 
     if (candidates.length < 2) {
       _showErrorDialog('At least two candidates are required.');
-      return;
-    }
-
-    if (registeredVoters.length < 2) {
-      _showErrorDialog('At least two registered voters are required.');
       return;
     }
 
@@ -192,67 +186,56 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
-      appBar: AppBar(title: Text('Update Election'), centerTitle: true, backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
-        elevation: 0,),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/evbg1.png"),
-              fit: BoxFit.cover,
-            )
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: SingleChildScrollView(
-            reverse: false,
-            child: Column(
-              children: [
-                TextField(
-                  controller: _titleController,
-                  decoration: const InputDecoration(labelText: 'Election Title'),
-                ),
-                TextField(
-                  controller: _candidatesController,
-                  decoration: const InputDecoration(
-                      labelText: 'Candidates (comma-separated)'),
-                ),
-                // Inside the build method, add a new text field
-                TextField(
-                  controller: _voterIdsController,
-                  decoration: const InputDecoration(labelText: 'Voter IDs (comma-separated)'),
-                ),
-                TextField(
-                  controller: _startDateController,
-                  readOnly: true, // Make it read-only so users can't type in it
-                  decoration: InputDecoration(
-                    labelText: 'Start Date & Time',
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.calendar_today),
-                      onPressed: _selectStartDateTime,
-                    ),
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(title: Text('Update Election')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          reverse: false,
+          child: Column(
+            children: [
+              TextField(
+                controller: _titleController,
+                decoration: const InputDecoration(labelText: 'Election Title'),
+              ),
+              TextField(
+                controller: _candidatesController,
+                decoration: const InputDecoration(
+                    labelText: 'Candidates (comma-separated)'),
+              ),
+              // Inside the build method, add a new text field
+              TextField(
+                controller: _voterIdsController,
+                decoration: const InputDecoration(labelText: 'Voter IDs (comma-separated)'),
+              ),
+              TextField(
+                controller: _startDateController,
+                readOnly: true, // Make it read-only so users can't type in it
+                decoration: InputDecoration(
+                  labelText: 'Start Date & Time',
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.calendar_today),
+                    onPressed: _selectStartDateTime,
                   ),
                 ),
-                TextField(
-                  controller: _endDateController,
-                  readOnly: true, // Make it read-only so users can't type in it
-                  decoration: InputDecoration(
-                    labelText: 'End Date & Time',
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.calendar_today),
-                      onPressed: _selectEndDateTime,
-                    ),
+              ),
+              TextField(
+                controller: _endDateController,
+                readOnly: true, // Make it read-only so users can't type in it
+                decoration: InputDecoration(
+                  labelText: 'End Date & Time',
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.calendar_today),
+                    onPressed: _selectEndDateTime,
                   ),
                 ),
-                const SizedBox(height: 40),
-                CustomButton(
-                  onPressed: _updateElection,
-                  child: const Text('Update Election'),
-                ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _updateElection,
+                child: const Text('Update Election'),
+              ),
+            ],
           ),
         ),
       ),

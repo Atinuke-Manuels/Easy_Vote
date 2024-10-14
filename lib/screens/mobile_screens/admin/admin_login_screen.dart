@@ -162,7 +162,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
       }
 
       _showSnackBar(
-          'Logged in successfully!', Theme.of(context).colorScheme.onError);
+          'Logged in successfully!', Theme.of(context).colorScheme.onPrimaryFixed);
 
       // Navigate to HomeScreen after successful login
       Navigator.pushReplacement(
