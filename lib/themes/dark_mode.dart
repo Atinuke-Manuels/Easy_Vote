@@ -9,9 +9,9 @@ ThemeData darkMode = ThemeData(
       error: Colors.white,
       onPrimary: Colors.black,
       onSecondary: Colors.white,
-      onSurface: Colors.white,
+     // onSurface: Colors.white,
       onError: Colors.black,
       tertiary: Colors.grey.shade600,
       inversePrimary: Colors.greenAccent,
-      onPrimaryFixed: Colors.purple.shade300),
+      onPrimaryFixed: Colors.purple.shade700),
 );
