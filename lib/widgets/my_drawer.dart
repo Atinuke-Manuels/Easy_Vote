@@ -13,90 +13,79 @@ class MyDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final theme = Theme.of(context);
 
     return Drawer(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            children: [
-              // logo
-              DrawerHeader(
-                child: Center(
-                  child: Image.asset(
-                    themeProvider.logoAsset,
-                    width: 100, // adjust size as needed
-                    height: 100,
+      backgroundColor: theme.colorScheme.surface, // Match drawer background with theme
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/evbg1.png"),
+              fit: BoxFit.cover,
+            )
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              children: [
+                // Logo
+                DrawerHeader(
+                  decoration: BoxDecoration(
+                    // color: theme.colorScheme.onPrimaryFixed.withOpacity(0.8), // Background for drawer header
+                  ),
+                  child: Center(
+                    child: Image.asset(
+                      themeProvider.logoAsset,
+                      width: 100, // Adjust size as needed
+                      height: 100,
+                    ),
                   ),
                 ),
-              ),
 
-              // home list tile
-              // Padding(
-              //   padding: const EdgeInsets.only(left: 25),
-              //   child: ListTile(
-              //     title: Text(
-              //       "View Result",
-              //       style: AppTextStyles.bodyTextStyle(context)
-              //     ),
-              //     leading: Icon(
-              //       Icons.home,
-              //       color: Theme.of(context).colorScheme.primary,
-              //     ),
-              //
-              //     // to close the drawer
-              //     onTap: () {
-              //       Navigator.pushNamed(context, '/election');
-              //     },
-              //   ),
-              // ),
+                // Switch Mode ListTile
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: ListTile(
+                    title: Text("Switch Mode",
+                        style: AppTextStyles.bodyTextStyle(context)),
+                    leading: CupertinoSwitch(
+                        value: themeProvider.isDarkMode,
+                        onChanged: (value) {
+                          themeProvider.toggleTheme();
+                        }),
+                    onTap: () {
+                      Navigator.pop(context); // Close drawer
+                    },
+                  ),
+                ),
+              ],
+            ),
 
-              Padding(
-                padding: const EdgeInsets.only(left: 25),
+            // Logout button
+            Padding(
+              padding: const EdgeInsets.only(left: 25, bottom: 25),
+              child: GestureDetector(
+                onTap: () {
+                  logout(context);
+                },
                 child: ListTile(
-                  title: Text("Switch Mode",
+                  title: Text("L O G O U T",
                       style: AppTextStyles.bodyTextStyle(context)),
-                  leading: CupertinoSwitch(
-                      value: Provider.of<ThemeProvider>(context, listen: false)
-                          .isDarkMode,
-                      onChanged: (value) {
-                        Provider.of<ThemeProvider>(context, listen: false)
-                            .toggleTheme();
-                      }),
-
-                  // to close the drawer
+                  leading: Icon(
+                    Icons.logout,
+                    color: theme.colorScheme.primary,
+                  ),
                   onTap: () {
-                    Navigator.pop(context);
+                    logout(context);
                   },
                 ),
               ),
-            ],
-          ),
-
-          // logout button
-          Padding(
-            padding: const EdgeInsets.only(left: 25, bottom: 25),
-            child: GestureDetector(
-              onTap: (){
-                logout(context);
-              },
-              child: ListTile(
-                title: Text("L O G O U T",
-                    style: AppTextStyles.bodyTextStyle(context)),
-                leading: Icon(
-                  Icons.logout,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-
-                // to log out
-                onTap: (){
-                  logout(context);
-                },
-              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -106,15 +95,16 @@ class MyDrawer extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Logout"),
-          content: Text("Are you sure you want to logout?"),
+          title: Text("Logout", style: AppTextStyles.headingStyle(context)), // Use heading style for title
+          content: Text("Are you sure you want to logout?",
+              style: AppTextStyles.bodyTextStyle(context)), // Use body style for content
           actions: [
             TextButton(
               onPressed: () {
                 // Cancel the logout and close the dialog
                 Navigator.of(context).pop();
               },
-              child: Text("No"),
+              child: Text("No", style: AppTextStyles.bodyTextStyle(context)),
             ),
             TextButton(
               onPressed: () {
@@ -129,12 +119,11 @@ class MyDrawer extends StatelessWidget {
                       (Route<dynamic> route) => false,
                 );
               },
-              child: Text("Yes"),
+              child: Text("Yes", style: AppTextStyles.bodyTextStyle(context)),
             ),
           ],
         );
       },
     );
   }
-
 }

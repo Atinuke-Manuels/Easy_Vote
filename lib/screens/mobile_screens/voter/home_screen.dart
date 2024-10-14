@@ -24,51 +24,71 @@ class HomeScreen extends StatelessWidget {
           style: AppTextStyles.headingStyle(context), // Apply heading style
         ),
         centerTitle: true,
-        backgroundColor: theme.colorScheme.primary,
-        // Apply primary color from the theme
-        iconTheme: IconThemeData(
-            color: theme
-                .colorScheme.onPrimary), // Adjust icon color to match theme
+        backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
+        elevation: 0,
+        iconTheme: IconThemeData(color: theme.colorScheme.onSurface),
       ),
       drawer: const MyDrawer(), // Keep drawer unchanged
-      body: registeredElections.isNotEmpty
-          ? ListView.builder(
-              itemCount: registeredElections.length,
-              itemBuilder: (context, index) {
-                final election = registeredElections[index];
-                return Card(
-                  color: theme.colorScheme.surface, // Set card background color
-                  child: ListTile(
-                    title: Text(
-                      election.title,
-                      style: AppTextStyles.bodyTextStyle(
-                          context), // Apply body text style
-                    ),
-                    subtitle: Text(
-                      'Voting starts: ${DateFormat('dd/MM/yyyy HH:mm').format(election.startDate)}\n'
-                      'Voting ends: ${DateFormat('dd/MM/yyyy HH:mm').format(election.endDate)}',
-                      style: AppTextStyles.hintTextStyle(
-                          context), // Apply hint text style for dates
-                    ),
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        '/election',
-                        arguments: election,
-                      );
-                    },
-                  ),
-                );
-              },
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/evbg1.png"),
+              fit: BoxFit.cover,
             )
-          : Center(
-              child: Text(
-                'No elections available for this voter.',
-                style: AppTextStyles.bodyTextStyle(
-                    context), // Apply body text style for the message
+        ),
+        child: registeredElections.isNotEmpty
+            ? ListView.builder(
+          itemCount: registeredElections.length,
+          itemBuilder: (context, index) {
+            final election = registeredElections[index];
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              child: Card(
+                elevation: 4, // Add elevation for depth
+                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16), // Margin for cards
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10), // Rounded corners
+                ),
+                color: theme.colorScheme.surface, // Set card background color
+                child: ListTile(
+                  title: Text(
+                    election.title,
+                    style: AppTextStyles.bodyTextStyle(context), // Apply body text style
+                  ),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.only(top: 4.0), // Padding for subtitle
+                    child: Text(
+                      'Voting starts: ${DateFormat('dd/MM/yyyy HH:mm').format(election.startDate)}\n'
+                          'Voting ends: ${DateFormat('dd/MM/yyyy HH:mm').format(election.endDate)}',
+                      style: AppTextStyles.hintTextStyle(context), // Apply hint text style for dates
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/election',
+                      arguments: election,
+                    );
+                  },
+                ),
               ),
+            );
+          },
+        )
+            : Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0), // Padding for center message
+            child: Text(
+              'No elections available for this voter.',
+              style: AppTextStyles.bodyTextStyle(context), // Apply body text style for the message
+              textAlign: TextAlign.center, // Center the text
             ),
-      backgroundColor: theme.colorScheme.surface, // Set background color
+          ),
+        ),
+      ),
+      backgroundColor: theme.colorScheme.background, // Use background color for better contrast
     );
   }
 }
