@@ -12,34 +12,46 @@ class ResultsScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(title: Text("Results")),
-      body: StreamBuilder<Map<String, int>>(
-        stream: _firebaseService.getResults(electionId),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text("No votes yet."));
-          }
+      appBar: AppBar(title: Text("Results"), centerTitle: true,
+        backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
+        elevation: 0,),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/evbg1.png"),
+              fit: BoxFit.cover,
+            )
+        ),
+        child: StreamBuilder<Map<String, int>>(
+          stream: _firebaseService.getResults(electionId),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Center(child: Text("No votes yet."));
+            }
 
-          Map<String, int> results = snapshot.data!;
-          // Sort results in descending order
-          var sortedResults = Map.fromEntries(
-            results.entries.toList()
-              ..sort((e1, e2) => e2.value.compareTo(e1.value)),
-          );
+            Map<String, int> results = snapshot.data!;
+            // Sort results in descending order
+            var sortedResults = Map.fromEntries(
+              results.entries.toList()
+                ..sort((e1, e2) => e2.value.compareTo(e1.value)),
+            );
 
-          return ListView(
-            children: sortedResults.entries.map((entry) {
-              return ListTile(
-                title: Text("Candidate: ${entry.key}"),
-                trailing: Text("Votes: ${entry.value}"),
-              );
-            }).toList(),
-          );
-        },
+            return ListView(
+              children: sortedResults.entries.map((entry) {
+                return ListTile(
+                  title: Text("Candidate: ${entry.key}"),
+                  trailing: Text("Votes: ${entry.value}"),
+                );
+              }).toList(),
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

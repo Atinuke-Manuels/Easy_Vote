@@ -50,25 +50,25 @@ class HomeScreen extends StatelessWidget {
             final election = registeredElections[index];
             print('Election ${index + 1}: ${election.title}, starts at ${election.startDate}, ends at ${election.endDate}');
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               child: Card(
                 elevation: 4, // Add elevation for depth
                 margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16), // Margin for cards
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10), // Rounded corners
                 ),
-                color: theme.colorScheme.surface, // Set card background color
+                color: Theme.of(context).colorScheme.onSecondary,// Set card background color
                 child: ListTile(
                   title: Text(
                     election.title,
-                    style: AppTextStyles.bodyTextStyle(context), // Apply body text style
+                      style: AppTextStyles.cardTextStyle(context), // Apply body text style
                   ),
                   subtitle: Padding(
                     padding: const EdgeInsets.only(top: 4.0), // Padding for subtitle
                     child: Text(
                       'Voting starts: ${DateFormat('dd/MM/yyyy HH:mm').format(election.startDate)}\n'
                           'Voting ends: ${DateFormat('dd/MM/yyyy HH:mm').format(election.endDate)}',
-                      style: AppTextStyles.hintTextStyle(context), // Apply hint text style for dates
+                      style: AppTextStyles.cardTextStyle(context), // Apply hint text style for dates
                     ),
                   ),
                   onTap: () {

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../../constants/app_text_styles.dart';
 import '../../../models/election.dart';
 import '../../../services/firebase_service.dart';
 
@@ -20,6 +21,9 @@ class VotingScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: Text(election.title),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
+        elevation: 0,
         actions: [
           TextButton(
               onPressed: () {
@@ -29,17 +33,36 @@ class VotingScreen extends StatelessWidget {
               child: const Text("View Result"))
         ],
       ),
-      body: ListView.builder(
-        itemCount: election.candidates.length,
-        itemBuilder: (context, index) {
-          String candidate = election.candidates[index];
-          return ListTile(
-            title: Text(candidate),
-            onTap: () {
-              _checkVoterStatusAndShowDialog(context, candidate, election);
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/evbg1.png"),
+              fit: BoxFit.cover,
+            )
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          child: ListView.builder(
+            itemCount: election.candidates.length,
+            itemBuilder: (context, index) {
+              String candidate = election.candidates[index];
+              return ListTile(
+                title: Card(
+                  color: Theme.of(context).colorScheme.onSecondary,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text(candidate, style: AppTextStyles.cardTextStyle(context),),
+                  ),
+                ),
+                onTap: () {
+                  _checkVoterStatusAndShowDialog(context, candidate, election);
+                },
+              );
             },
-          );
-        },
+          ),
+        ),
       ),
     );
   }
@@ -78,6 +101,7 @@ class VotingScreen extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
           title: Text("Confirm Vote"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
