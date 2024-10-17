@@ -76,7 +76,7 @@ class WebVotingScreen extends StatelessWidget {
                   color: Theme.of(context).colorScheme.onSecondary,
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: Text(candidate, style: AppTextStyles.cardTextStyle(context),),
+                    child: Text(candidate, style: AppTextStyles.cardTitleTextStyle(context),),
                   ),
                 ),
                 onTap: () {
