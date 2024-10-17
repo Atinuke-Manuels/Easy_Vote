@@ -44,6 +44,8 @@ class ThemeProvider extends ChangeNotifier {
 
   bool get isDarkMode => _themeData == darkMode;
 
+  bool get isLightBackground => _themeData == isLightBackground;
+
   set themeData(ThemeData themeData) {
     _themeData = themeData;
     notifyListeners();
@@ -66,5 +68,11 @@ class ThemeProvider extends ChangeNotifier {
   // app logo
   String get logoAsset {
     return isDarkMode ? 'assets/logo_white.png' : 'assets/logo_light3.png';
+  }
+
+  //background image
+
+  String get backgroundAsset {
+    return isLightBackground ? 'assets/light_img.png' : 'assets/evbg1.png';
   }
 }
