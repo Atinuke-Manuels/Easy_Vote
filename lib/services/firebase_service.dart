@@ -148,34 +148,52 @@ class FirebaseService {
 
 
   // Fetch elections
-  Stream<List<Election>> fetchElections() async* {
+  // Stream<List<Election>> fetchElections() async* {
+  //   String? userId = _auth.currentUser?.uid; // Get current user ID
+  //   if (userId == null) {
+  //     yield [];
+  //     return;
+  //   }
+  //
+  //   // Fetch elections from Firestore where the creatorId matches the current user's ID
+  //   final QuerySnapshot snapshot = await FirebaseFirestore.instance
+  //       .collection('Elections')
+  //       .where('creatorId', isEqualTo: userId)
+  //       // .orderBy('startDate') // Order by startDate
+  //       .get();
+  //
+  //   List<Election> elections = snapshot.docs.map((doc) {
+  //     return Election(
+  //       id: doc.id,
+  //       title: doc['title'],
+  //       creatorId: doc['creatorId'],
+  //       candidates: List<String>.from(doc['candidates']),
+  //       startDate: (doc['startDate'] as Timestamp).toDate(),
+  //       endDate: (doc['endDate'] as Timestamp).toDate(),
+  //       registeredVoters: List<String>.from(doc['registeredVoters']),
+  //     );
+  //   }).toList();
+  //
+  //   yield elections; // Yield the filtered list of elections
+  // }
+
+
+  Stream<List<Election>> fetchElections() {
     String? userId = _auth.currentUser?.uid; // Get current user ID
     if (userId == null) {
-      yield [];
-      return;
+      // If the user is not authenticated, return an empty list
+      return Stream.value([]);
     }
 
-    // Fetch elections from Firestore where the creatorId matches the current user's ID
-    final QuerySnapshot snapshot = await FirebaseFirestore.instance
+    // Listen to real-time updates from the 'elections' collection where creatorId matches the current user ID
+    return _db
         .collection('Elections')
-        .where('creatorId', isEqualTo: userId)
-        // .orderBy('startDate') // Order by startDate
-        .get();
-
-    List<Election> elections = snapshot.docs.map((doc) {
-      return Election(
-        id: doc.id,
-        title: doc['title'],
-        creatorId: doc['creatorId'],
-        candidates: List<String>.from(doc['candidates']),
-        startDate: (doc['startDate'] as Timestamp).toDate(),
-        endDate: (doc['endDate'] as Timestamp).toDate(),
-        registeredVoters: List<String>.from(doc['registeredVoters']),
-      );
-    }).toList();
-
-    yield elections; // Yield the filtered list of elections
+        .where('creatorId', isEqualTo: userId) // Filter based on the user ID
+        .snapshots()
+        .map((snapshot) =>
+        snapshot.docs.map((doc) => Election.fromFirestore(doc)).toList());
   }
+
 
 
   Future<Election?> fetchElectionById(String id) async {
