@@ -69,6 +69,7 @@ class ThemeProvider extends ChangeNotifier {
     return isDarkMode ? 'assets/logo_white.png' : 'assets/logo_light3.png';
   }
 
+
 }
 
 

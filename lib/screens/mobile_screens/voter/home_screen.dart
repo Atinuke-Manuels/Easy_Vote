@@ -17,8 +17,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('Voter ID: $voterId');
-    print('Number of registered elections: ${registeredElections.length}');
+    // print('Voter ID: $voterId');
+    // print('Number of registered elections: ${registeredElections.length}');
 
     final theme = Theme.of(context);
 

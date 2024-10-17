@@ -3,6 +3,8 @@ import 'package:easy_vote/screens/combined_layout_screens/auth/forgot_password_l
 import 'package:easy_vote/screens/combined_layout_screens/auth/login_option_screen_layout.dart';
 import 'package:easy_vote/screens/combined_layout_screens/auth/login_screen_layout.dart';
 import 'package:easy_vote/screens/combined_layout_screens/auth/sign_up_layout.dart';
+import 'package:easy_vote/screens/combined_layout_screens/voter/home_layout.dart';
+import 'package:easy_vote/screens/combined_layout_screens/voter/voting_layout.dart';
 import 'package:easy_vote/screens/mobile_screens/admin/admin_home_screen.dart';
 import 'package:easy_vote/screens/mobile_screens/admin/admin_login_screen.dart';
 import 'package:easy_vote/screens/mobile_screens/admin/election_details_screen.dart';
@@ -52,10 +54,10 @@ class EasyVoteApp extends StatelessWidget {
         '/adminLogin': (context) => const AdminLoginLayout(),
         '/signup': (context) => const SignUpLayout(),
         '/forgotPassword': (context) => const ForgotPasswordLayout(),
-        '/home': (context) => const HomeScreen(voterId: '', registeredElections: [],),
+        '/home': (context) => const HomeLayout(voterId: '', registeredElections: [],),
         '/adminHome': (context) => AdminHomeScreen(),
         '/updateElection': (context) => UpdateElectionScreen(election: Election(id: '', title: '', candidates: [], startDate: DateTime.now(), endDate: DateTime.now().add(Duration(days: 7)), registeredVoters: [], creatorId: '')),
-        '/election': (context) => VotingScreen(),
+        '/election': (context) => const VotingLayout(),
         '/electionDetails': (context) => ElectionDetailsScreen(election: Election(id: '', title: '', candidates: [], startDate: DateTime.now(), endDate: DateTime.now().add(Duration(days: 7)), registeredVoters: [], creatorId: '')),
         '/results': (context) => ResultsScreen(),
       },

@@ -9,18 +9,40 @@ import '../../../models/election.dart';
 import '../../../services/firebase_service.dart';
 
 
-class VotingScreen extends StatelessWidget {
+class WebVotingScreen extends StatelessWidget {
   final FirebaseService _firebaseService = FirebaseService();
+
+  WebVotingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final Election election =
-        ModalRoute.of(context)?.settings.arguments as Election;
+    // Attempt to retrieve the election argument from the route settings
+    final Election? election =
+    ModalRoute.of(context)?.settings.arguments as Election?;
 
-    return Scaffold(
+    // Check if election is null and handle the case
+    if (election == null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Error'),
+          centerTitle: true,
+          backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
+          elevation: 0,
+        ),
+        body: Center(
+          child: Text(
+            'No election data available.',
+            style: AppTextStyles.cardTextStyle(context),
+          ),
+        ),
+      );
+    }
+
+    return
+      Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title:  Text('${election.title} Candidates'),
+        title: Text('${election.title} Candidates'),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
         elevation: 0,
@@ -30,10 +52,11 @@ class VotingScreen extends StatelessWidget {
                 Navigator.pushNamed(context, '/results',
                     arguments: election.id);
               },
-              child: const Text("View Result"))
+              child: Text("View Result",style: AppTextStyles.headingStyle(context) ,))
         ],
       ),
       body: Container(
+        padding: EdgeInsets.only(top:40, right: MediaQuery.of(context).size.width* 0.2, left: MediaQuery.of(context).size.width* 0.2),
         width: double.infinity,
         height: double.infinity,
         decoration: const BoxDecoration(
@@ -82,7 +105,7 @@ class VotingScreen extends StatelessWidget {
         if (!voterDoc.exists) {
           await voterRef.set({'votes': {}}); // Initialize votes map
           voterDoc =
-              await voterRef.get(); // Re-fetch the document after creating it
+          await voterRef.get(); // Re-fetch the document after creating it
         }
 
         final votes = voterDoc['votes'] as Map<String, dynamic>;

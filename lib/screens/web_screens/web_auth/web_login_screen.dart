@@ -6,6 +6,7 @@ import '../../../services/firebase_service.dart';
 import '../../../themes/theme_provider.dart';
 import '../../../widgets/CustomButton.dart';
 import '../../../widgets/CustomTextField.dart';
+import '../../combined_layout_screens/voter/home_layout.dart';
 import '../../mobile_screens/voter/home_screen.dart';
 
 
@@ -130,7 +131,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
       _isLoading = true;
     });
 
-    print('Attempting to sign in with email: ${_emailController.text} and password: ${_passwordController.text}');
+    // print('Attempting to sign in with email: ${_emailController.text} and password: ${_passwordController.text}');
 
     var userCredential = await _authService.signIn(
       _emailController.text,
@@ -138,9 +139,9 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
     );
 
     if (userCredential != null) {
-      print('User signed in successfully with UID: ${userCredential.user!.uid}');
+      // print('User signed in successfully with UID: ${userCredential.user!.uid}');
       String? storedVoterId = await _authService.fetchVoterId(userCredential.user!.uid);
-      print('Fetched Voter ID from the database: $storedVoterId');
+      // print('Fetched Voter ID from the database: $storedVoterId');
 
       if (storedVoterId == null) {
         _showSnackBar('User data not found in database.', Theme.of(context).colorScheme.error);
@@ -153,16 +154,16 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
       if (_voterIdController.text == storedVoterId) {
         _showSnackBar('Logged in successfully!', Theme.of(context).colorScheme.inversePrimary);
 
-        print('Fetching registered elections for Voter ID: ${_voterIdController.text}');
+        // print('Fetching registered elections for Voter ID: ${_voterIdController.text}');
         // Fetch elections that the voter is registered for
         List<Election> registeredElections = await _authService.fetchRegisteredElections(_voterIdController.text);
 
-        print('Number of registered elections fetched: ${registeredElections.length}');
+        // print('Number of registered elections fetched: ${registeredElections.length}');
         // Navigate to HomeScreen and pass the list of registered elections
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => HomeScreen(
+            builder: (context) => HomeLayout(
               voterId: _voterIdController.text,
               registeredElections: registeredElections,
             ),

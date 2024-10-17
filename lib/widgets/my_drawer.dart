@@ -8,7 +8,7 @@ import '../screens/mobile_screens/auth/login_option_screen.dart';
 import '../themes/theme_provider.dart';
 
 class MyDrawer extends StatelessWidget {
-  const MyDrawer({super.key});
+  const MyDrawer( {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class MyDrawer extends StatelessWidget {
               children: [
                 // Logo
                 DrawerHeader(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     // color: theme.colorScheme.onPrimaryFixed.withOpacity(0.8), // Background for drawer header
                   ),
                   child: Center(
@@ -96,7 +96,7 @@ class MyDrawer extends StatelessWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
-          title: Text("Logout", style: AppTextStyles.headingStyle(context), textAlign: TextAlign.center,), // Use heading style for title
+          title: Text("Logout Confirmation", style: AppTextStyles.headingStyle(context), textAlign: TextAlign.center,), // Use heading style for title
           content: Text("Are you sure you want to logout?",
               style: AppTextStyles.bodyTextStyle(context)), // Use body style for content
           actions: [
