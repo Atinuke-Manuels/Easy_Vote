@@ -39,6 +39,14 @@ class AppTextStyles {
     );
   }
 
+  static TextStyle webSmallBodyTextStyle(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return TextStyle(
+      fontSize: 16,
+      color: colorScheme.onSurface,  // Use onSurface color directly
+    );
+  }
+
   // Hint text style using the onSurface color
   static TextStyle hintTextStyle(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;

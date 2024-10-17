@@ -7,19 +7,20 @@ import '../../../services/firebase_service.dart';
 import '../../../themes/theme_provider.dart';
 import '../../../widgets/CustomButton.dart';
 import '../../../widgets/CustomTextField.dart';
-import 'admin_home_screen.dart';
+import '../../mobile_screens/admin/admin_home_screen.dart';
 
 
-class AdminLoginScreen extends StatefulWidget {
-  const AdminLoginScreen({super.key});
+
+class WebAdminLoginScreen extends StatefulWidget {
+  const WebAdminLoginScreen({super.key});
 
   @override
-  _AdminLoginScreenState createState() => _AdminLoginScreenState();
+  _WebAdminLoginScreenState createState() => _WebAdminLoginScreenState();
 }
 
-class _AdminLoginScreenState extends State<AdminLoginScreen> {
+class _WebAdminLoginScreenState extends State<WebAdminLoginScreen> {
   final FirebaseService _authService =
-      FirebaseService(); // Initialize AuthService
+  FirebaseService(); // Initialize AuthService
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -39,105 +40,85 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
 
   // Show dialog to retrieve Voter ID
   Future<void> _retrieveVoterId() async {
-    showModalBottomSheet(
+    showDialog(
       context: context,
-      isScrollControlled: true, // Allows the bottom sheet to be full-screen or to adjust size based on content
-      backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
         final _retrieveEmailController = TextEditingController();
         final _retrievePasswordController = TextEditingController();
         final _voterIdController = TextEditingController();
         bool _voterIdRetrieved = false;
-        bool _isRetrieving = false;
 
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
-            return Container(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom,
-              ),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onPrimaryFixed,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      "Retrieve Voter ID",
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    SizedBox(height: 10),
+            return AlertDialog(
+              backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
+              title: Text("Retrieve Voter ID"),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CustomTextField(
+                    controller: _retrieveEmailController,
+                    labelText: 'Email',
+                    prefix: Icons.email_outlined,
+                  ),
+                  SizedBox(height: 5),
+                  CustomTextField(
+                    controller: _retrievePasswordController,
+                    labelText: 'Password',
+                    isPassword: true,
+                    prefix: Icons.lock,
+                  ),
+                  if (_voterIdRetrieved) ...[
+                    SizedBox(height: 15),
                     CustomTextField(
-                      controller: _retrieveEmailController,
-                      labelText: 'Email',
-                      prefix: Icons.email_outlined,
+                      controller: _voterIdController,
+                      labelText: 'Voter ID',
+                      prefix: Icons.how_to_vote,
+                      isReadOnly: true, // Make it read-only since it’s a retrieved value
                     ),
-                    SizedBox(height: 5),
-                    CustomTextField(
-                      controller: _retrievePasswordController,
-                      labelText: 'Password',
-                      isPassword: true,
-                      prefix: Icons.lock,
-                    ),
-                    if (_voterIdRetrieved) ...[
-                      SizedBox(height: 15),
-                      CustomTextField(
-                        controller: _voterIdController,
-                        labelText: 'Voter ID',
-                        prefix: Icons.how_to_vote,
-                        isReadOnly: true, // Make it read-only since it’s a retrieved value
-                      ),
-                    ],
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: Text("Cancel"),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            setState(() {
-                              _isRetrieving = true;
-                            });
-
-                            var userCredential = await _authService.signIn(
-                              _retrieveEmailController.text,
-                              _retrievePasswordController.text,
-                            );
-
-                            if (userCredential != null) {
-                              String? storedVoterId = await _authService.fetchVoterId(userCredential.user!.uid);
-
-                              if (storedVoterId != null) {
-                                WidgetsBinding.instance.addPostFrameCallback((_) {
-                                  setState(() {
-                                    _voterIdRetrieved = true;
-                                    _voterIdController.text = storedVoterId; // Set Voter ID in the controller
-                                  });
-                                });
-                              } else {
-                                _showSnackBar('Voter ID not found.', Theme.of(context).colorScheme.error);
-                              }
-                            } else {
-                              _showSnackBar('Enter valid details. Please try again.', Theme.of(context).colorScheme.error);
-                            }
-
-                            setState(() {
-                              _isRetrieving = false;
-                            });
-                          },
-                          child: Text(_isRetrieving ? "Retrieving..." : "Retrieve"),
-                        ),
-                      ],
-                    ),
-                  ],
+                  ]
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text("Cancel"),
                 ),
-              ),
+                TextButton(
+                  onPressed: () async {
+                    setState(() {
+                      _isRetrieving = true;
+                    });
+
+                    var userCredential = await _authService.signIn(
+                      _retrieveEmailController.text,
+                      _retrievePasswordController.text,
+                    );
+
+                    if (userCredential != null) {
+                      String? storedVoterId = await _authService.fetchVoterId(userCredential.user!.uid);
+
+                      if (storedVoterId != null) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          setState(() {
+                            _voterIdRetrieved = true;
+                            _voterIdController.text = storedVoterId; // Set Voter ID in the controller
+                          });
+                        });
+                      } else {
+                        _showSnackBar('Voter ID not found.', Theme.of(context).colorScheme.error);
+                      }
+                    } else {
+                      _showSnackBar('Enter valid details. Please try again.', Theme.of(context).colorScheme.error);
+                    }
+
+                    setState(() {
+                      _isRetrieving = false;
+                    });
+                  },
+                  child: Text(_isRetrieving ? "Retrieving..." : "Retrieve"),
+                ),
+              ],
             );
           },
         );
@@ -160,7 +141,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
     if (userCredential != null) {
       // Retrieve the Voter ID from Firestore
       String? storedVoterId =
-          await _authService.fetchVoterId(userCredential.user!.uid);
+      await _authService.fetchVoterId(userCredential.user!.uid);
 
       // Check if the provided Voter ID matches the stored one
       if (storedVoterId == null) {
@@ -207,14 +188,14 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage("assets/evbg1.png"),
               fit: BoxFit.cover,
             )
         ),
         child: Padding(
-          padding: EdgeInsets.only(top:60, right: MediaQuery.of(context).size.width* 0.1, left: MediaQuery.of(context).size.width* 0.1),
+          padding: EdgeInsets.only(top:60, right: MediaQuery.of(context).size.width* 0.25, left: MediaQuery.of(context).size.width* 0.25),
           child: SingleChildScrollView(
             reverse: false,
             child: Center(
@@ -225,15 +206,15 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                   Center(
                     child: Image.asset(
                       themeProvider.logoAsset,
-                      width: 80, // adjust size as needed
-                      height: 80,
+                      width: 110, // adjust size as needed
+                      height: 110,
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 20,
                   ),
                   Text('Welcome Admin!', textAlign: TextAlign.center, style: AppTextStyles.headingStyle(context)),
-                  const SizedBox(
+                  SizedBox(
                     height: 40,
                   ),
                   CustomTextField(
@@ -302,13 +283,13 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                   Row(mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text("Don't Have An Account?",
-                          style: AppTextStyles.smallBodyTextStyle(context)),
+                          style: AppTextStyles.webSmallBodyTextStyle(context)),
                       TextButton(
                         onPressed: () {
                           Navigator.pushReplacementNamed(context, '/signup');
                         },
                         child: Text("Sign Up",
-                            style: AppTextStyles.smallBodyTextStyle(context)),
+                            style: AppTextStyles.webSmallBodyTextStyle(context)),
                       ),
                     ],
                   ),

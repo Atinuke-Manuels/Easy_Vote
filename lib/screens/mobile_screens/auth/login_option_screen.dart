@@ -77,7 +77,6 @@ class LoginOptionScreen extends StatelessWidget {
             ),
           ),
       ),
-
     );
   }
 }

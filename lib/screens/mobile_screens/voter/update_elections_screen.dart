@@ -72,6 +72,11 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
       return;
     }
 
+    if (registeredVoters.length < 2) {
+      _showErrorDialog('At least two voters are required.');
+      return;
+    }
+
     if (_startDate != null && _endDate != null) {
       if (_endDate!.isBefore(_startDate!)) {
         _showErrorDialog('End date and time must be after the start date and time.');
@@ -186,7 +191,7 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      // backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(title: Text('Update Election'),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
@@ -211,16 +216,19 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
                   controller: _titleController,
                   decoration: const InputDecoration(labelText: 'Election Title'),
                 ),
+                SizedBox(height: 15,),
                 TextField(
                   controller: _candidatesController,
                   decoration: const InputDecoration(
                       labelText: 'Candidates (comma-separated)'),
                 ),
+                SizedBox(height: 15,),
                 // Inside the build method, add a new text field
                 TextField(
                   controller: _voterIdsController,
                   decoration: const InputDecoration(labelText: 'Voter IDs (comma-separated)'),
                 ),
+                SizedBox(height: 15,),
                 TextField(
                   controller: _startDateController,
                   readOnly: true, // Make it read-only so users can't type in it
@@ -232,6 +240,7 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
                     ),
                   ),
                 ),
+                SizedBox(height: 15,),
                 TextField(
                   controller: _endDateController,
                   readOnly: true, // Make it read-only so users can't type in it
@@ -255,7 +264,7 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
                         borderRadius: BorderRadius.circular(8.0), // Rounded corners
                       ),
                     ),
-                    elevation: MaterialStateProperty.all(5), // Elevation
+                    elevation: WidgetStateProperty.all(5), // Elevation
                   ),
                   child: const Text('Update Election'),
                 ),
