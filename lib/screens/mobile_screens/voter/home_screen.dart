@@ -1,9 +1,11 @@
 import 'package:easy_vote/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants/app_text_styles.dart';
 import '../../../models/election.dart';
+import '../../../themes/theme_provider.dart';
 
 class HomeScreen extends StatelessWidget {
   final String voterId;
@@ -37,18 +39,15 @@ class HomeScreen extends StatelessWidget {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/evbg1.png"),
-              fit: BoxFit.cover,
-            )
+        decoration: BoxDecoration(
+          gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
         ),
         child: registeredElections.isNotEmpty
             ? ListView.builder(
           itemCount: registeredElections.length,
           itemBuilder: (context, index) {
             final election = registeredElections[index];
-            print('Election ${index + 1}: ${election.title}, starts at ${election.startDate}, ends at ${election.endDate}');
+            // print('Election ${index + 1}: ${election.title}, starts at ${election.startDate}, ends at ${election.endDate}');
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               child: Card(

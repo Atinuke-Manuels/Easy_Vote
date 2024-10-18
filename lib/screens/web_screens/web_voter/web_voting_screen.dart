@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants/app_text_styles.dart';
 import '../../../models/election.dart';
 import '../../../services/firebase_service.dart';
+import '../../../themes/theme_provider.dart';
 
 
 class WebVotingScreen extends StatelessWidget {
@@ -62,11 +64,8 @@ class WebVotingScreen extends StatelessWidget {
         padding: EdgeInsets.only(top:40, right: MediaQuery.of(context).size.width* 0.2, left: MediaQuery.of(context).size.width* 0.2),
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/evbg1.png"),
-              fit: BoxFit.cover,
-            )
+        decoration: BoxDecoration(
+          gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),

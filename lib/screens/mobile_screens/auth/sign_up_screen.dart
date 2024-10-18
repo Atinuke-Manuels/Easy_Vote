@@ -46,7 +46,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     // Check if passwords match
     if (_passwordController.text != _confirmPasswordController.text) {
       _showSnackBar(
-          'Passwords do not match', Theme.of(context).colorScheme.error);
+          'Passwords do not match', Theme.of(context).colorScheme.onError);
       return;
     }
 
@@ -108,7 +108,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       Navigator.pushReplacementNamed(context, '/');
     } else {
       _showSnackBar('Signup failed. Please try again.',
-          Theme.of(context).colorScheme.error);
+          Theme.of(context).colorScheme.onError);
       setState(() {
         _isLoading = false;
       });
@@ -127,11 +127,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: Container(
           width: double.infinity,
           height: double.infinity,
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/evbg1.png"),
-                fit: BoxFit.cover,
-              )
+          decoration: BoxDecoration(
+            gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
           ),
         child: Padding(
           padding: EdgeInsets.only(top:60, right: MediaQuery.of(context).size.width* 0.1, left: MediaQuery.of(context).size.width* 0.1),

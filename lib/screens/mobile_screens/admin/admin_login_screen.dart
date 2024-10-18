@@ -175,7 +175,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
 
       if (_voterIdController.text != storedVoterId) {
         _showSnackBar('Invalid Voter ID. Please try again.',
-            Theme.of(context).colorScheme.error);
+            Theme.of(context).colorScheme.onError);
         setState(() {
           _isLoading = false;
         });
@@ -183,7 +183,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
       }
 
       _showSnackBar(
-          'Logged in successfully!', Theme.of(context).colorScheme.onPrimaryFixed);
+          'Logged in successfully!', Theme.of(context).colorScheme.onSurfaceVariant);
 
       // Navigate to HomeScreen after successful login
       Navigator.pushReplacement(
@@ -192,7 +192,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
       );
     } else {
       _showSnackBar('Login failed. Please try again.',
-          Theme.of(context).colorScheme.error);
+          Theme.of(context).colorScheme.onError);
       setState(() {
         _isLoading = false;
       });
@@ -208,11 +208,8 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/evbg1.png"),
-              fit: BoxFit.cover,
-            )
+        decoration: BoxDecoration(
+          gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
         ),
         child: Padding(
           padding: EdgeInsets.only(top:60, right: MediaQuery.of(context).size.width* 0.1, left: MediaQuery.of(context).size.width* 0.1),
@@ -276,7 +273,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                           onPressed: _retrieveVoterId, // Call retrieve Voter ID
                           child: Text(
                             "Retrieve Voter ID",
-                            style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                            style: TextStyle(color: Theme.of(context).colorScheme.error),
                           ),
                         ),
                       ),
@@ -288,7 +285,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                               },
                               child: Text(
                                 "Forgot Password",
-                                style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                                style: TextStyle(color: Theme.of(context).colorScheme.error),
                               ))),
                     ],
                   ),

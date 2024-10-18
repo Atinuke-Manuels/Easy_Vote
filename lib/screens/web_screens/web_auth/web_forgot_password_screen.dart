@@ -42,7 +42,7 @@ class _WebForgotPasswordScreenState extends State<WebForgotPasswordScreen> {
     // Validate email format
     if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
       _showSnackBar('Please enter a valid email address.',
-          Theme.of(context).colorScheme.error);
+          Theme.of(context).colorScheme.onError);
       setState(() {
         isSignReset = false;
       });
@@ -53,14 +53,14 @@ class _WebForgotPasswordScreenState extends State<WebForgotPasswordScreen> {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
 
       _showSnackBar('Password reset email sent. Please check your email.',
-          Theme.of(context).colorScheme.onError);
+          Theme.of(context).colorScheme.onSurfaceVariant);
 
       // Navigate to login screen
       Navigator.pushNamed(context, '/');
     } catch (e) {
       // Show detailed error message if password reset fails
       _showSnackBar('Failed to send password reset email: ${e.toString()}',
-          Theme.of(context).colorScheme.error);
+          Theme.of(context).colorScheme.onError);
       // print('Error sending password reset email: $e');
     } finally {
       setState(() {
@@ -78,10 +78,7 @@ class _WebForgotPasswordScreenState extends State<WebForgotPasswordScreen> {
         // width: double.infinity,
         // height: double.infinity,
         decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/evbg1.png"),
-              fit: BoxFit.cover,
-            )
+          gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
         ),
         child: Center(
           child: Padding(
@@ -93,8 +90,8 @@ class _WebForgotPasswordScreenState extends State<WebForgotPasswordScreen> {
                   Center(
                     child: Image.asset(
                       themeProvider.logoAsset,
-                      width: 220, // adjust size as needed
-                      height: 220,
+                      width: 180, // adjust size as needed
+                      height: 180,
                     ),
                   ),
                   SizedBox(

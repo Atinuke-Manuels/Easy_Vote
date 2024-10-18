@@ -20,11 +20,8 @@ class MyDrawer extends StatelessWidget {
       child: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/evbg1.png"),
-              fit: BoxFit.cover,
-            )
+        decoration: BoxDecoration(
+          gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -52,6 +49,8 @@ class MyDrawer extends StatelessWidget {
                     title: Text("Switch Mode",
                         style: AppTextStyles.bodyTextStyle(context)),
                     leading: CupertinoSwitch(
+                        activeColor: Colors.grey,
+                        thumbColor: Theme.of(context).colorScheme.onPrimaryFixed,
                         value: themeProvider.isDarkMode,
                         onChanged: (value) {
                           themeProvider.toggleTheme();

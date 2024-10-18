@@ -39,7 +39,7 @@ class _WebSignUpScreenState extends State<WebSignUpScreen> {
   Future<void> _submitSignup() async {
     if (_passwordController.text != _confirmPasswordController.text) {
       _showSnackBar(
-          'Passwords do not match', Theme.of(context).colorScheme.error);
+          'Passwords do not match', Theme.of(context).colorScheme.onError);
       return;
     }
 
@@ -99,7 +99,7 @@ class _WebSignUpScreenState extends State<WebSignUpScreen> {
       Navigator.pushReplacementNamed(context, '/');
     } else {
       _showSnackBar('Signup failed. Please try again.',
-          Theme.of(context).colorScheme.error);
+          Theme.of(context).colorScheme.onError);
       setState(() {
         _isLoading = false;
       });
@@ -118,11 +118,8 @@ class _WebSignUpScreenState extends State<WebSignUpScreen> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/evbg1.png"),
-              fit: BoxFit.cover,
-            )
+        decoration: BoxDecoration(
+          gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
         ),
         child: Padding(
           padding: EdgeInsets.only(top:40, right: MediaQuery.of(context).size.width* 0.25, left: MediaQuery.of(context).size.width* 0.25),

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants/app_text_styles.dart';
 import '../../../models/election.dart';
-import '../../../services/firebase_service.dart'; // Import for date formatting
+import '../../../services/firebase_service.dart';
+import '../../../themes/theme_provider.dart'; // Import for date formatting
 
 class WebUpdateElectionsScreen extends StatefulWidget {
   final Election election;
@@ -206,11 +208,8 @@ class _WebUpdateElectionsScreenState extends State<WebUpdateElectionsScreen > {
           padding: EdgeInsets.only(top:40, right: MediaQuery.of(context).size.width* 0.2, left: MediaQuery.of(context).size.width* 0.2),
           width: double.infinity,
           height: double.infinity,
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/evbg1.png"),
-                fit: BoxFit.cover,
-              )
+          decoration: BoxDecoration(
+            gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
           ),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -220,19 +219,19 @@ class _WebUpdateElectionsScreenState extends State<WebUpdateElectionsScreen > {
                 children: [
                   TextField(
                     controller: _titleController,
-                    decoration: const InputDecoration(labelText: 'Election Title'),
+                    decoration: InputDecoration(labelText: 'Election Title', labelStyle: AppTextStyles.hintTextStyle(context),),
                   ),
                   const SizedBox(height: 25,),
                   TextField(
                     controller: _candidatesController,
-                    decoration: const InputDecoration(
-                        labelText: 'Candidates (comma-separated)'),
+                    decoration: InputDecoration(
+                        labelText: 'Candidates (comma-separated)', labelStyle: AppTextStyles.hintTextStyle(context),),
                   ),
                   const SizedBox(height: 25,),
                   // Inside the build method, add a new text field
                   TextField(
                     controller: _voterIdsController,
-                    decoration: const InputDecoration(labelText: 'Voter IDs (comma-separated)'),
+                    decoration: InputDecoration(labelText: 'Voter IDs (comma-separated)', labelStyle: AppTextStyles.hintTextStyle(context),),
                   ),
                   const SizedBox(height: 25,),
                   TextField(
@@ -252,6 +251,7 @@ class _WebUpdateElectionsScreenState extends State<WebUpdateElectionsScreen > {
                     readOnly: true, // Make it read-only so users can't type in it
                     decoration: InputDecoration(
                       labelText: 'End Date & Time',
+                      labelStyle: AppTextStyles.hintTextStyle(context),
                       suffixIcon: IconButton(
                         icon: const Icon(Icons.calendar_today),
                         onPressed: _selectEndDateTime,
@@ -262,8 +262,8 @@ class _WebUpdateElectionsScreenState extends State<WebUpdateElectionsScreen > {
                   ElevatedButton(
                     onPressed: _updateElection,
                     style: ButtonStyle(
-                      backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.primary),
-                      foregroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onPrimary),
+                      backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onSecondary),
+                      foregroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onTertiary),
                       padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 24.0, horizontal: 30.0)), // Padding
                       shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(

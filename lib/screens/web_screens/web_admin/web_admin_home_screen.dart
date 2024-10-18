@@ -48,7 +48,7 @@ class _WebAdminHomeScreenState extends State<WebAdminHomeScreen> {
         actions: [
           CupertinoSwitch(
               activeColor: Colors.grey,
-              thumbColor: Colors.yellow,
+              thumbColor: Theme.of(context).colorScheme.onPrimaryFixed,
               value: themeProvider.isDarkMode,
               onChanged: (value) {
                 themeProvider.toggleTheme();
@@ -64,11 +64,8 @@ class _WebAdminHomeScreenState extends State<WebAdminHomeScreen> {
         padding: EdgeInsets.only(top:40, right: MediaQuery.of(context).size.width* 0.2, left: MediaQuery.of(context).size.width* 0.2),
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/evbg1.png"),
-              fit: BoxFit.cover,
-            )
+        decoration: BoxDecoration(
+          gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
         ),
         child: StreamBuilder<List<Election>>(
           stream: _firebaseService.fetchElections(),
@@ -97,7 +94,7 @@ class _WebAdminHomeScreenState extends State<WebAdminHomeScreen> {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                   child: Card(
-                    color: Colors.white.withOpacity(0.8),
+                    color: Theme.of(context).colorScheme.onSecondary,
                     child: ListTile(
                       title: Text(election.title, style: AppTextStyles.cardTextStyle(context),),
                       subtitle: Text(
@@ -132,6 +129,7 @@ class _WebAdminHomeScreenState extends State<WebAdminHomeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
         onPressed: () {
           Election temporaryElection = Election(
             id: '',
@@ -152,7 +150,7 @@ class _WebAdminHomeScreenState extends State<WebAdminHomeScreen> {
           });
         },
         tooltip: "Add Election",
-        child: const Icon(Icons.add),
+        child: Icon(Icons.add, color: Theme.of(context).colorScheme.onSecondary,),
       ),
     );
   }

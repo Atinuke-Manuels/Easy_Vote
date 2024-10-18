@@ -104,10 +104,10 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                           });
                         });
                       } else {
-                        _showSnackBar('Voter ID not found.', Theme.of(context).colorScheme.error);
+                        _showSnackBar('Voter ID not found.', Theme.of(context).colorScheme.onError);
                       }
                     } else {
-                      _showSnackBar('Enter valid details. Please try again.', Theme.of(context).colorScheme.error);
+                      _showSnackBar('Enter valid details. Please try again.', Theme.of(context).colorScheme.onError);
                     }
 
                     setState(() {
@@ -144,7 +144,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
       // print('Fetched Voter ID from the database: $storedVoterId');
 
       if (storedVoterId == null) {
-        _showSnackBar('User data not found in database.', Theme.of(context).colorScheme.error);
+        _showSnackBar('User data not found in database.', Theme.of(context).colorScheme.onError);
         setState(() {
           _isLoading = false;
         });
@@ -152,7 +152,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
       }
 
       if (_voterIdController.text == storedVoterId) {
-        _showSnackBar('Logged in successfully!', Theme.of(context).colorScheme.inversePrimary);
+        _showSnackBar('Logged in successfully!', Theme.of(context).colorScheme.onSurfaceVariant);
 
         // print('Fetching registered elections for Voter ID: ${_voterIdController.text}');
         // Fetch elections that the voter is registered for
@@ -171,10 +171,10 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
         );
 
       } else {
-        _showSnackBar('Invalid Voter ID. Please try again.', Theme.of(context).colorScheme.error);
+        _showSnackBar('Invalid Voter ID. Please try again.', Theme.of(context).colorScheme.onError);
       }
     } else {
-      _showSnackBar('Login failed. Please try again.', Theme.of(context).colorScheme.error);
+      _showSnackBar('Login failed. Please try again.', Theme.of(context).colorScheme.onError);
     }
 
     setState(() {
@@ -192,11 +192,8 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/evbg1.png"),
-              fit: BoxFit.cover,
-            )
+        decoration:  BoxDecoration(
+          gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
         ),
         child: Padding(
           padding: EdgeInsets.only(top:60, right: MediaQuery.of(context).size.width* 0.25, left: MediaQuery.of(context).size.width* 0.25),
@@ -228,14 +225,14 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                       );
                     },
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   CustomTextField(
                     controller: _passwordController,
                     labelText: 'Password',
                     isPassword: true,
                     prefix: Icons.lock,
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   CustomTextField(
                     controller: _voterIdController,
                     labelText: 'Voter ID',
@@ -250,7 +247,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                           onPressed: _retrieveVoterId, // Call retrieve Voter ID
                           child: Text(
                             "Retrieve Voter ID",
-                            style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                            style: TextStyle(color: Theme.of(context).colorScheme.error),
                           ),
                         ),
                       ),
@@ -262,7 +259,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                               },
                               child: Text(
                                 "Forgot Password",
-                                style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                                style: TextStyle(color: Theme.of(context).colorScheme.error),
                               ))),
                     ],
                   ),

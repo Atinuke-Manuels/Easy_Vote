@@ -156,7 +156,7 @@ class _WebAdminLoginScreenState extends State<WebAdminLoginScreen> {
 
       if (_voterIdController.text != storedVoterId) {
         _showSnackBar('Invalid Voter ID. Please try again.',
-            Theme.of(context).colorScheme.error);
+            Theme.of(context).colorScheme.onError);
         setState(() {
           _isLoading = false;
         });
@@ -164,7 +164,7 @@ class _WebAdminLoginScreenState extends State<WebAdminLoginScreen> {
       }
 
       _showSnackBar(
-          'Logged in successfully!', Theme.of(context).colorScheme.onPrimaryFixed);
+          'Logged in successfully!', Theme.of(context).colorScheme.onSurfaceVariant);
 
       // Navigate to HomeScreen after successful login
       Navigator.pushReplacement(
@@ -173,7 +173,7 @@ class _WebAdminLoginScreenState extends State<WebAdminLoginScreen> {
       );
     } else {
       _showSnackBar('Login failed. Please try again.',
-          Theme.of(context).colorScheme.error);
+          Theme.of(context).colorScheme.onError);
       setState(() {
         _isLoading = false;
       });
@@ -190,10 +190,7 @@ class _WebAdminLoginScreenState extends State<WebAdminLoginScreen> {
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/evbg1.png"),
-              fit: BoxFit.cover,
-            )
+          gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
         ),
         child: Padding(
           padding: EdgeInsets.only(top:60, right: MediaQuery.of(context).size.width* 0.25, left: MediaQuery.of(context).size.width* 0.25),
@@ -257,7 +254,7 @@ class _WebAdminLoginScreenState extends State<WebAdminLoginScreen> {
                           onPressed: _retrieveVoterId, // Call retrieve Voter ID
                           child: Text(
                             "Retrieve Voter ID",
-                            style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                            style: TextStyle(color: Theme.of(context).colorScheme.error),
                           ),
                         ),
                       ),
@@ -269,7 +266,7 @@ class _WebAdminLoginScreenState extends State<WebAdminLoginScreen> {
                               },
                               child: Text(
                                 "Forgot Password",
-                                style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                                style: TextStyle(color: Theme.of(context).colorScheme.error),
                               ))),
                     ],
                   ),

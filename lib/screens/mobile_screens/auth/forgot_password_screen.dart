@@ -42,7 +42,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     // Validate email format
     if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
       _showSnackBar('Please enter a valid email address.',
-          Theme.of(context).colorScheme.error);
+          Theme.of(context).colorScheme.onError);
       setState(() {
         isSignReset = false;
       });
@@ -53,14 +53,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
 
       _showSnackBar('Password reset email sent. Please check your email.',
-          Theme.of(context).colorScheme.onError);
+          Theme.of(context).colorScheme.onSurfaceVariant);
 
       // Navigate to login screen
       Navigator.pushNamed(context, '/');
     } catch (e) {
       // Show detailed error message if password reset fails
       _showSnackBar('Failed to send password reset email: ${e.toString()}',
-          Theme.of(context).colorScheme.error);
+          Theme.of(context).colorScheme.onError);
       // print('Error sending password reset email: $e');
     } finally {
       setState(() {
@@ -77,11 +77,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       body: Container(
         // width: double.infinity,
         // height: double.infinity,
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/evbg1.png"),
-              fit: BoxFit.cover,
-            )
+        decoration: BoxDecoration(
+          gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
         ),
         child: Center(
           child: Padding(

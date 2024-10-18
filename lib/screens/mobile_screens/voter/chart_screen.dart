@@ -1,5 +1,9 @@
+import 'package:easy_vote/constants/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:provider/provider.dart';
+
+import '../../../themes/theme_provider.dart';
 
 class ChartScreen extends StatelessWidget {
   final Map<String, int> results;
@@ -16,11 +20,8 @@ class ChartScreen extends StatelessWidget {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/evbg1.png"),
-              fit: BoxFit.cover,
-            )
+        decoration: BoxDecoration(
+          gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
         ),
         child: Center(
           child: Padding(
@@ -34,7 +35,7 @@ class ChartScreen extends StatelessWidget {
                       reservedSize: 40, // Reserve space for left titles
                       getTitlesWidget: (value, meta) {
                         // Display all integer values for the y-axis
-                        return Text(value.toInt().toString(), style: TextStyle(color: Colors.white));
+                        return Text(value.toInt().toString(), style: AppTextStyles.bodyTextStyle(context));
                       },
                     ),
                   ),
@@ -48,7 +49,7 @@ class ChartScreen extends StatelessWidget {
                         // Return the first five letters of the candidate's name
                         return Text(
                           candidateName.length > 5 ? candidateName.substring(0, 5) : candidateName,
-                          style: TextStyle(color: Colors.white),
+                          style: AppTextStyles.bodyTextStyle(context),
                         );
                       },
                     ),

@@ -17,11 +17,8 @@ class WebLoginOptionScreen extends StatelessWidget {
       // backgroundColor: Theme.of(context).colorScheme.surface,
 
       body: Container(
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/evbg1.png"),
-              fit: BoxFit.cover,
-            )
+        decoration: BoxDecoration(
+          gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
         ),
         child: Center(
           child: SafeArea(
@@ -33,12 +30,12 @@ class WebLoginOptionScreen extends StatelessWidget {
                   Center(
                     child: Image.asset(
                       themeProvider.logoAsset,
-                      width: 220, // adjust size as needed
-                      height: 220,
+                      width: 180, // adjust size as needed
+                      height: 180,
                     ),
                   ),
                   SizedBox(height: 60,),
-                  const Text("Select Login Option"),
+                  Text("Select Login Option",style: AppTextStyles.headingStyle(context)),
                   SizedBox(height: 40,),
                   CustomButton(
                       onPressed: () {

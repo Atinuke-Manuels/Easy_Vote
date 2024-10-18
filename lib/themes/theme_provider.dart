@@ -26,6 +26,7 @@
 //
 // }
 
+import 'package:easy_vote/themes/theme_gradients.dart';
 import 'package:flutter/material.dart';
 
 import 'dark_mode.dart';
@@ -66,10 +67,17 @@ class ThemeProvider extends ChangeNotifier {
 
   // app logo
   String get logoAsset {
-    return isDarkMode ? 'assets/logo_white.png' : 'assets/logo_white.png';
+    return isDarkMode ? 'assets/new_logo_dark.png' : 'assets/new_logo_light2.png';
   }
 
+  // // app logo
+  // String get backGroundImage {
+  //   return isDarkMode ? 'assets/ev-bg1.png' : 'assets/light_img2.png';
+  // }
 
+  // Background gradient
+  LinearGradient get backgroundGradient {
+    return isDarkMode ? ThemeGradients.darkModeGradient : ThemeGradients.lightModeGradient;
+  }
 }
-
 

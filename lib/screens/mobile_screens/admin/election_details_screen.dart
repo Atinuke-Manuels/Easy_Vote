@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import '../../../constants/app_text_styles.dart';
 import '../../../models/election.dart';
 import '../../../services/firebase_service.dart';
+import '../../../themes/theme_provider.dart';
 import '../voter/update_elections_screen.dart';
 
 class ElectionDetailsScreen extends StatelessWidget {
@@ -78,74 +81,73 @@ class ElectionDetailsScreen extends StatelessWidget {
       ),
       body: Container(
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/evbg1.png"),
-            fit: BoxFit.cover,
-          ),
+          gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
         ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Election Title: ${election.title}', style: const TextStyle(fontSize: 20)),
-              const SizedBox(height: 20),
-              Text('Candidates: ${election.candidates.join(', ')}', style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 20),
-              Text('Registered Voters: ${election.registeredVoters.join(', ')}', style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 20),
-              Text('Voting starts: ${DateFormat('dd/MM/yyyy HH:mm').format(election.startDate)}', style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 20),
-              Text('Voting ends: ${DateFormat('dd/MM/yyyy HH:mm').format(election.endDate)}', style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      if (isEditable()) {
-                        Navigator.pushNamed(context, '/updateElection');
-                      } else {
-                        _showFeedbackDialog(context, "Election in progress cannot be edited.");
-                      }
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.primary),
-                      foregroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onPrimary),
-                      padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0)), // Padding
-                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0), // Rounded corners
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Election Title: ${election.title}', style: AppTextStyles.headingStyle(context)),
+                const SizedBox(height: 20),
+                Text('Candidates: ${election.candidates.join(', ')}', style: AppTextStyles.headingStyle(context)),
+                const SizedBox(height: 20),
+                Text('Registered Voters: ${election.registeredVoters.join(', ')}', style: AppTextStyles.headingStyle(context)),
+                const SizedBox(height: 20),
+                Text('Voting starts: ${DateFormat('dd/MM/yyyy HH:mm').format(election.startDate)}', style: AppTextStyles.headingStyle(context)),
+                const SizedBox(height: 20),
+                Text('Voting ends: ${DateFormat('dd/MM/yyyy HH:mm').format(election.endDate)}', style: AppTextStyles.headingStyle(context)),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        if (isEditable()) {
+                          Navigator.pushNamed(context, '/updateElection');
+                        } else {
+                          _showFeedbackDialog(context, "Election in progress cannot be edited.");
+                        }
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onSecondary),
+                        foregroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onTertiary),
+                        padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0)), // Padding
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                          ),
                         ),
+                        elevation: WidgetStateProperty.all(5), // Elevation
                       ),
-                      elevation: WidgetStateProperty.all(5), // Elevation
+                      child: Text('Edit', style: AppTextStyles.cardTextStyle(context)),
                     ),
-                    child: const Text('Edit'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (isEditable()) {
-                        _showConfirmationDialog(context);
-                      } else {
-                        _showFeedbackDialog(context, "Election in progress cannot be deleted.");
-                      }
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.primary),
-                      foregroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onPrimary),
-                      padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0)), // Padding
-                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                    ElevatedButton(
+                      onPressed: () {
+                        if (isEditable()) {
+                          _showConfirmationDialog(context);
+                        } else {
+                          _showFeedbackDialog(context, "Election in progress cannot be deleted.");
+                        }
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onSecondary),
+                        foregroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onTertiary),
+                        padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0)), // Padding
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                          ),
                         ),
+                        elevation: WidgetStateProperty.all(5), // Elevation
                       ),
-                      elevation: WidgetStateProperty.all(5), // Elevation
+                      child: Text('Delete',style: AppTextStyles.cardTextStyle(context)),
                     ),
-                    child: const Text('Delete'),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

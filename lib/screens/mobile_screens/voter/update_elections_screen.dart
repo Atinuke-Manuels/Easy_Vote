@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
+import '../../../constants/app_text_styles.dart';
 import '../../../models/election.dart';
-import '../../../services/firebase_service.dart'; // Import for date formatting
+import '../../../services/firebase_service.dart';
+import '../../../themes/theme_provider.dart'; // Import for date formatting
 
 class UpdateElectionScreen extends StatefulWidget {
   final Election election;
@@ -192,7 +195,7 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       // backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(title: Text('Update Election'),
+      appBar: AppBar(title: Text('Update Election', style: AppTextStyles.headingStyle(context),),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
         elevation: 0,
@@ -202,11 +205,8 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
           padding: EdgeInsets.only(top:40, right: MediaQuery.of(context).size.width* 0.1, left: MediaQuery.of(context).size.width* 0.1),
           width: double.infinity,
           height: double.infinity,
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/evbg1.png"),
-                fit: BoxFit.cover,
-              )
+          decoration: BoxDecoration(
+            gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
           ),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -216,19 +216,19 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
                 children: [
                   TextField(
                     controller: _titleController,
-                    decoration: const InputDecoration(labelText: 'Election Title'),
+                    decoration: InputDecoration(labelText: 'Election Title', labelStyle: AppTextStyles.hintTextStyle(context),),
                   ),
                   SizedBox(height: 15,),
                   TextField(
                     controller: _candidatesController,
-                    decoration: const InputDecoration(
-                        labelText: 'Candidates (comma-separated)'),
+                    decoration: InputDecoration(
+                        labelText: 'Candidates (comma-separated)', labelStyle: AppTextStyles.hintTextStyle(context),),
                   ),
                   SizedBox(height: 15,),
                   // Inside the build method, add a new text field
                   TextField(
                     controller: _voterIdsController,
-                    decoration: const InputDecoration(labelText: 'Voter IDs (comma-separated)'),
+                    decoration: InputDecoration(labelText: 'Voter IDs (comma-separated)', labelStyle: AppTextStyles.hintTextStyle(context),),
                   ),
                   SizedBox(height: 15,),
                   TextField(
@@ -236,6 +236,7 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
                     readOnly: true, // Make it read-only so users can't type in it
                     decoration: InputDecoration(
                       labelText: 'Start Date & Time',
+                      labelStyle: AppTextStyles.hintTextStyle(context),
                       suffixIcon: IconButton(
                         icon: const Icon(Icons.calendar_today),
                         onPressed: _selectStartDateTime,
@@ -248,6 +249,7 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
                     readOnly: true, // Make it read-only so users can't type in it
                     decoration: InputDecoration(
                       labelText: 'End Date & Time',
+                      labelStyle: AppTextStyles.hintTextStyle(context),
                       suffixIcon: IconButton(
                         icon: const Icon(Icons.calendar_today),
                         onPressed: _selectEndDateTime,
@@ -258,8 +260,8 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
                   ElevatedButton(
                     onPressed: _updateElection,
                     style: ButtonStyle(
-                      backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.primary),
-                      foregroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onPrimary),
+                      backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onSecondary),
+                      foregroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onTertiary),
                       padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0)), // Padding
                       shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
@@ -268,7 +270,7 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
                       ),
                       elevation: WidgetStateProperty.all(5), // Elevation
                     ),
-                    child: const Text('Update Election'),
+                    child: Text('Update Election', style: AppTextStyles.cardTextStyle(context)),
                   ),
                 ],
               ),

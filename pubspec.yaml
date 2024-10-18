@@ -44,10 +44,17 @@ dependencies:
   intl: ^0.17.0
   fl_chart: ^0.69.0
   responsive_builder: ^0.7.1
+  flutter_launcher_icons: ^0.14.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_launcher_icons:
+  android: launcher_icons
+  ios: true
+  image_path: assets/appLogo.png
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

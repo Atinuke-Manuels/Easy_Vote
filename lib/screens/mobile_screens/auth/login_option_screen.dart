@@ -18,10 +18,7 @@ class LoginOptionScreen extends StatelessWidget {
 
       body: Container(
         decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/evbg1.png"),
-              fit: BoxFit.cover,
-            )
+          gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
         ),
         child: Center(
             child: SafeArea(
@@ -37,16 +34,16 @@ class LoginOptionScreen extends StatelessWidget {
                         height: 120,
                       ),
                     ),
-                    SizedBox(height: 60,),
+                    const SizedBox(height: 60,),
                      Text("Select Login Option", textAlign: TextAlign.center, style: AppTextStyles.headingStyle(context)),
 
-                    SizedBox(height: 40,),
+                    const SizedBox(height: 40,),
                     CustomButton(
                         onPressed: () {
                           Navigator.pushNamed(context, '/adminLogin');
                         },
                         child: const Text("Admin - Schedule an election")),
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
                     CustomButton(

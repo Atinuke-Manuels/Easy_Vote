@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants/app_text_styles.dart';
+import '../../../themes/theme_provider.dart';
 
 class WebChartScreen extends StatelessWidget {
   final Map<String, int> results;
@@ -22,11 +24,8 @@ class WebChartScreen extends StatelessWidget {
         padding: EdgeInsets.only(top:40, right: MediaQuery.of(context).size.width* 0.2, left: MediaQuery.of(context).size.width* 0.2),
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/evbg1.png"),
-              fit: BoxFit.cover,
-            )
+        decoration: BoxDecoration(
+          gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
         ),
         child: Center(
           child: Padding(
@@ -40,7 +39,7 @@ class WebChartScreen extends StatelessWidget {
                       reservedSize: 40, // Reserve space for left titles
                       getTitlesWidget: (value, meta) {
                         // Display all integer values for the y-axis
-                        return Text(value.toInt().toString(), style: TextStyle(color: Colors.white));
+                        return Text(value.toInt().toString(), style: AppTextStyles.bodyTextStyle(context));
                       },
                     ),
                   ),
@@ -54,7 +53,7 @@ class WebChartScreen extends StatelessWidget {
                         // Return the first five letters of the candidate's name
                         return Text(
                           candidateName.length > 5 ? candidateName.substring(0, 5) : candidateName,
-                          style: TextStyle(color: Colors.white),
+                          style: AppTextStyles.bodyTextStyle(context),
                         );
                       },
                     ),

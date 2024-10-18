@@ -39,7 +39,7 @@ class WebHomeScreen extends StatelessWidget {
         actions: [
           CupertinoSwitch(
             activeColor: Colors.grey,
-              thumbColor: Colors.yellow,
+              thumbColor: Theme.of(context).colorScheme.onPrimaryFixed,
               value: themeProvider.isDarkMode,
               onChanged: (value) {
                 themeProvider.toggleTheme();
@@ -55,11 +55,8 @@ class WebHomeScreen extends StatelessWidget {
           padding: EdgeInsets.only(top:40, right: MediaQuery.of(context).size.width* 0.2, left: MediaQuery.of(context).size.width* 0.2),
           width: double.infinity,
           height: double.infinity,
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/evbg1.png"),
-                fit: BoxFit.cover,
-              )
+          decoration: BoxDecoration(
+            gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
           ),
           child: registeredElections.isNotEmpty
               ? ListView.builder(

@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         TextButton(
                           onPressed: () => Navigator.of(context).pop(),
-                          child: Text("Cancel"),
+                          child: Text("Cancel", style: TextStyle(color: Theme.of(context).colorScheme.error),),
                         ),
                         TextButton(
                           onPressed: () async {
@@ -119,17 +119,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                   });
                                 });
                               } else {
-                                _showSnackBar('Voter ID not found.', Theme.of(context).colorScheme.error);
+                                _showSnackBar('Voter ID not found.', Theme.of(context).colorScheme.onError);
                               }
                             } else {
-                              _showSnackBar('Enter valid details. Please try again.', Theme.of(context).colorScheme.error);
+                              _showSnackBar('Enter valid details. Please try again.', Theme.of(context).colorScheme.onError);
                             }
 
                             setState(() {
                               _isRetrieving = false;
                             });
                           },
-                          child: Text(_isRetrieving ? "Retrieving..." : "Retrieve"),
+                          child: Text(_isRetrieving ? "Retrieving..." : "Retrieve", style: TextStyle(color: Theme.of(context).colorScheme.error),),
                         ),
                       ],
                     ),
@@ -162,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
       // print('Fetched Voter ID from the database: $storedVoterId');
 
       if (storedVoterId == null) {
-        _showSnackBar('User data not found in database.', Theme.of(context).colorScheme.error);
+        _showSnackBar('User data not found in database.', Theme.of(context).colorScheme.onError);
         setState(() {
           _isLoading = false;
         });
@@ -170,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
       }
 
       if (_voterIdController.text == storedVoterId) {
-        _showSnackBar('Logged in successfully!', Theme.of(context).colorScheme.inversePrimary);
+        _showSnackBar('Logged in successfully!', Theme.of(context).colorScheme.onSurfaceVariant);
 
         // print('Fetching registered elections for Voter ID: ${_voterIdController.text}');
         // Fetch elections that the voter is registered for
@@ -189,10 +189,10 @@ class _LoginScreenState extends State<LoginScreen> {
         );
 
       } else {
-        _showSnackBar('Invalid Voter ID. Please try again.', Theme.of(context).colorScheme.error);
+        _showSnackBar('Invalid Voter ID. Please try again.', Theme.of(context).colorScheme.onError);
       }
     } else {
-      _showSnackBar('Login failed. Please try again.', Theme.of(context).colorScheme.error);
+      _showSnackBar('Login failed. Please try again.', Theme.of(context).colorScheme.onError);
     }
 
     setState(() {
@@ -210,11 +210,8 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/evbg1.png"),
-              fit: BoxFit.cover,
-            )
+        decoration: BoxDecoration(
+          gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
         ),
         child: Padding(
           padding: EdgeInsets.only(top:60, right: MediaQuery.of(context).size.width* 0.1, left: MediaQuery.of(context).size.width* 0.1),

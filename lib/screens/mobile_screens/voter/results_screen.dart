@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../constants/app_text_styles.dart';
 import '../../../services/firebase_service.dart';
+import '../../../themes/theme_provider.dart';
 import 'chart_screen.dart';
 
 class ResultsScreen extends StatelessWidget {
@@ -22,11 +25,8 @@ class ResultsScreen extends StatelessWidget {
         padding: EdgeInsets.only(top:40, right: MediaQuery.of(context).size.width* 0.1, left: MediaQuery.of(context).size.width* 0.1),
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/evbg1.png"),
-              fit: BoxFit.cover,
-            )
+        decoration: BoxDecoration(
+          gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
         ),
         child: StreamBuilder<Map<String, int>>(
           stream: _firebaseService.getResults(electionId),
@@ -48,9 +48,14 @@ class ResultsScreen extends StatelessWidget {
 
             return ListView(
               children: sortedResults.entries.map((entry) {
-                return ListTile(
-                  title: Text("Candidate: ${entry.key}"),
-                  trailing: Text("Votes: ${entry.value}"),
+                return Card(
+                  elevation: 4, // Add elevation for depth
+                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  color: Theme.of(context).colorScheme.onSecondary,
+                  child: ListTile(
+                    title: Text("Candidate: ${entry.key}", style: AppTextStyles.cardTitleTextStyle(context)),
+                    trailing: Text("Votes: ${entry.value}",style: AppTextStyles.cardTitleTextStyle(context)),
+                  ),
                 );
               }).toList(),
             );
@@ -58,6 +63,7 @@ class ResultsScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
         onPressed: () {
           // Get the current results from the StreamBuilder
           _firebaseService.getResults(electionId).first.then((results) {
@@ -75,7 +81,7 @@ class ResultsScreen extends StatelessWidget {
             );
           });
         },
-        child: Icon(Icons.bar_chart),
+        child: Icon(Icons.bar_chart, color: Theme.of(context).colorScheme.onSecondary,),
         tooltip: "View Chart",
       ),
     );

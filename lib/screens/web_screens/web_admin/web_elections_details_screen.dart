@@ -1,9 +1,11 @@
 import 'package:easy_vote/screens/combined_layout_screens/voter/update_elections_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../../../constants/app_text_styles.dart';
 import '../../../models/election.dart';
 import '../../../services/firebase_service.dart';
+import '../../../themes/theme_provider.dart';
 
 class WebElectionDetailsScreen extends StatelessWidget {
   final Election election;
@@ -84,11 +86,8 @@ class WebElectionDetailsScreen extends StatelessWidget {
           padding: EdgeInsets.only(top:40, right: MediaQuery.of(context).size.width* 0.2, left: MediaQuery.of(context).size.width* 0.2),
           width: double.infinity,
           height: double.infinity,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/evbg1.png"),
-              fit: BoxFit.cover,
-            ),
+          decoration: BoxDecoration(
+            gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
           ),
           child: Container(
             alignment: Alignment.center,
@@ -118,9 +117,9 @@ class WebElectionDetailsScreen extends StatelessWidget {
                         }
                       },
                       style: ButtonStyle(
-                        backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.primary),
-                        foregroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onPrimary),
-                        padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 24.0, horizontal: 30.0)), // Padding
+                        backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onSecondary),
+                        foregroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onTertiary),
+                        padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0)), // Padding
                         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0), // Rounded corners
@@ -139,9 +138,9 @@ class WebElectionDetailsScreen extends StatelessWidget {
                         }
                       },
                       style: ButtonStyle(
-                        backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.primary),
-                        foregroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onPrimary),
-                        padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 24.0, horizontal: 30.0)), // Padding
+                        backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onSecondary),
+                        foregroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onTertiary),
+                        padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 20.0, horizontal: 30.0)), // Padding
                         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0), // Rounded corners

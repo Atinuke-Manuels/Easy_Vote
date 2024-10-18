@@ -1,9 +1,11 @@
 import 'package:easy_vote/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import the intl package
+import 'package:provider/provider.dart';
 import '../../../constants/app_text_styles.dart';
 import '../../../models/election.dart';
 import '../../../services/firebase_service.dart';
+import '../../../themes/theme_provider.dart';
 import '../../combined_layout_screens/admin/election_details_layout.dart';
 import '../auth/login_option_screen.dart';
 import '../voter/update_elections_screen.dart';
@@ -35,17 +37,17 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
         elevation: 0,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).colorScheme.error, // Set the desired color here
+        ),
       ),
       drawer: const MyDrawer(),
       body: Container(
         padding: EdgeInsets.only(top:40, right: MediaQuery.of(context).size.width* 0.1, left: MediaQuery.of(context).size.width* 0.1),
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/evbg1.png"),
-              fit: BoxFit.cover,
-            )
+        decoration:  BoxDecoration(
+          gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
         ),
         child: StreamBuilder<List<Election>>(
           stream: _firebaseService.fetchElections(),
@@ -74,7 +76,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                   child: Card(
-                    color: Colors.white.withOpacity(0.8),
+                    color: Theme.of(context).colorScheme.onSecondary,
                     child: ListTile(
                       title: Text(election.title, style: AppTextStyles.cardTextStyle(context),),
                       subtitle: Text(
@@ -110,6 +112,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
         onPressed: () {
           Election temporaryElection = Election(
             id: '',
@@ -130,7 +133,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           });
         },
         tooltip: "Add Election",
-        child: const Icon(Icons.add),
+        child: Icon(Icons.add, color: Theme.of(context).colorScheme.onSecondary,),
       ),
     );
   }
