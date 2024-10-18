@@ -112,7 +112,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     child: Text(_isLoading ? 'Loading...' : 'Send Reset Link'),
                   ),
                   const SizedBox(height: 10),
-                  Row(
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text("You now remember your password?",

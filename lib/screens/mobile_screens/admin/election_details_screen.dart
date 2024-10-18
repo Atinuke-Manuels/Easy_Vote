@@ -74,20 +74,23 @@ class ElectionDetailsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(election.title),
+        title: Text(election.title, style: AppTextStyles.headingStyle(context),),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
         elevation: 0,
       ),
       body: Container(
+        width: double.infinity,
+        height: double.infinity,
         decoration: BoxDecoration(
           gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
         ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Center(
+          child: SingleChildScrollView(
+            reverse: false,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text('Election Title: ${election.title}', style: AppTextStyles.headingStyle(context)),
                 const SizedBox(height: 20),

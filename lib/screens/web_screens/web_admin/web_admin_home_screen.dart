@@ -106,17 +106,7 @@ class _WebAdminHomeScreenState extends State<WebAdminHomeScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ElectionDetailsLayout(
-                              election: Election(
-                                id: '1', // Provide a valid id
-                                title: 'Election Title',
-                                candidates: ['Candidate A', 'Candidate B'],
-                                startDate: DateTime.now(),
-                                endDate: DateTime.now().add(Duration(days: 7)),
-                                registeredVoters: ['Voter1', 'Voter2'],
-                                creatorId: 'creatorId',
-                              ),
-                            ),
+                            builder: (context) => ElectionDetailsLayout(election: election,),
                           ),
                         );
                       },

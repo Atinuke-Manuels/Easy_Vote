@@ -185,7 +185,7 @@ class _WebSignUpScreenState extends State<WebSignUpScreen> {
                 ),
                 CustomButton(
                   onPressed: _isLoading ? null : _submitSignup,
-                  child: Text(_isLoading ? 'Loading...' : 'Signup'),
+                  child: Text(_isLoading ? 'Loading...' : 'S I G N U P'),
                 ),
                 const SizedBox(
                   height: 10,

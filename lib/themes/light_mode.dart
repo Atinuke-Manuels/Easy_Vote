@@ -12,7 +12,7 @@ ThemeData lightMode = ThemeData(
       // Background color
       //error: Colors.red.shade600,
       error: Colors.purple.shade700,
-      onError: Colors.red,
+      onError: const Color(0xFFDE918B),
       // Error color
      // onPrimary: Colors.white,
       // Text on primary color

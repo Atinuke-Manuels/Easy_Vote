@@ -43,7 +43,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
       ),
       drawer: const MyDrawer(),
       body: Container(
-        padding: EdgeInsets.only(top:40, right: MediaQuery.of(context).size.width* 0.1, left: MediaQuery.of(context).size.width* 0.1),
+        padding: EdgeInsets.only(top:40, right: MediaQuery.of(context).size.width* 0.025, left: MediaQuery.of(context).size.width* 0.025),
         width: double.infinity,
         height: double.infinity,
         decoration:  BoxDecoration(
@@ -88,17 +88,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ElectionDetailsLayout(
-                              election: Election(
-                                id: '1', // Provide a valid id
-                                title: 'Election Title',
-                                candidates: ['Candidate A', 'Candidate B'],
-                                startDate: DateTime.now(),
-                                endDate: DateTime.now().add(Duration(days: 7)),
-                                registeredVoters: ['Voter1', 'Voter2'],
-                                creatorId: 'creatorId',
-                              ),
-                            ),
+                            builder: (context) => ElectionDetailsLayout(election: election,),
                           ),
                         );
 
