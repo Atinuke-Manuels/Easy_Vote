@@ -26,6 +26,19 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
   final _passwordController = TextEditingController();
   final _voterIdController = TextEditingController();
 
+  final TextEditingController _retrieveEmailController = TextEditingController();
+  final TextEditingController _retrievePasswordController = TextEditingController();
+  final TextEditingController _voterIdController2 = TextEditingController();
+
+  @override
+  void dispose() {
+    // Dispose controllers when the widget is disposed
+    _retrieveEmailController.dispose();
+    _retrievePasswordController.dispose();
+    _voterIdController2.dispose();
+    super.dispose();
+  }
+
   bool _isLoading = false;
   bool _isRetrieving = false;
 
@@ -42,12 +55,9 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
   Future<void> _retrieveVoterId() async {
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true, // Allows the bottom sheet to be full-screen or to adjust size based on content
+      isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
-        final _retrieveEmailController = TextEditingController();
-        final _retrievePasswordController = TextEditingController();
-        final _voterIdController = TextEditingController();
         bool _voterIdRetrieved = false;
         bool _isRetrieving = false;
 
@@ -86,10 +96,10 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                     if (_voterIdRetrieved) ...[
                       SizedBox(height: 15),
                       CustomTextField(
-                        controller: _voterIdController,
+                        controller: _voterIdController2,
                         labelText: 'Voter ID',
                         prefix: Icons.how_to_vote,
-                        isReadOnly: true, // Make it read-only since it’s a retrieved value
+                        isReadOnly: true,
                       ),
                     ],
                     SizedBox(height: 20),
@@ -98,7 +108,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                       children: [
                         TextButton(
                           onPressed: () => Navigator.of(context).pop(),
-                          child: Text("Cancel"),
+                          child: Text("Cancel", style: TextStyle(color: Theme.of(context).colorScheme.error)),
                         ),
                         TextButton(
                           onPressed: () async {
@@ -118,21 +128,21 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                                 WidgetsBinding.instance.addPostFrameCallback((_) {
                                   setState(() {
                                     _voterIdRetrieved = true;
-                                    _voterIdController.text = storedVoterId; // Set Voter ID in the controller
+                                    _voterIdController2.text = storedVoterId;
                                   });
                                 });
                               } else {
-                                _showSnackBar('Voter ID not found.', Theme.of(context).colorScheme.error);
+                                _showSnackBar('Voter ID not found.', Theme.of(context).colorScheme.onError);
                               }
                             } else {
-                              _showSnackBar('Enter valid details. Please try again.', Theme.of(context).colorScheme.error);
+                              _showSnackBar('Enter valid details. Please try again.', Theme.of(context).colorScheme.onError);
                             }
 
                             setState(() {
                               _isRetrieving = false;
                             });
                           },
-                          child: Text(_isRetrieving ? "Retrieving..." : "Retrieve"),
+                          child: Text(_isRetrieving ? "Retrieving..." : "Retrieve", style: TextStyle(color: Theme.of(context).colorScheme.error)),
                         ),
                       ],
                     ),
@@ -212,7 +222,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
           gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
         ),
         child: Padding(
-          padding: EdgeInsets.only(top:60, right: MediaQuery.of(context).size.width* 0.1, left: MediaQuery.of(context).size.width* 0.1),
+          padding: EdgeInsets.only(top:60, right: MediaQuery.of(context).size.width* 0.025, left: MediaQuery.of(context).size.width* 0.025),
           child: SingleChildScrollView(
             reverse: false,
             child: Center(

@@ -42,7 +42,7 @@ class VotingScreen extends StatelessWidget {
           gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          padding: EdgeInsets.only(top:40, right: MediaQuery.of(context).size.width* 0.025, left: MediaQuery.of(context).size.width* 0.025),
           child: ListView.builder(
             itemCount: election.candidates.length,
             itemBuilder: (context, index) {

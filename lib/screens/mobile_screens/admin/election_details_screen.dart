@@ -90,18 +90,18 @@ class ElectionDetailsScreen extends StatelessWidget {
           child: SingleChildScrollView(
             reverse: false,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Election Title: ${election.title}', style: AppTextStyles.headingStyle(context)),
-                const SizedBox(height: 20),
+                const SizedBox(height: 25),
                 Text('Candidates: ${election.candidates.join(', ')}', style: AppTextStyles.headingStyle(context)),
-                const SizedBox(height: 20),
+                const SizedBox(height: 25),
                 Text('Registered Voters: ${election.registeredVoters.join(', ')}', style: AppTextStyles.headingStyle(context)),
-                const SizedBox(height: 20),
+                const SizedBox(height: 25),
                 Text('Voting starts: ${DateFormat('dd/MM/yyyy HH:mm').format(election.startDate)}', style: AppTextStyles.headingStyle(context)),
-                const SizedBox(height: 20),
+                const SizedBox(height: 25),
                 Text('Voting ends: ${DateFormat('dd/MM/yyyy HH:mm').format(election.endDate)}', style: AppTextStyles.headingStyle(context)),
-                const SizedBox(height: 20),
+                const SizedBox(height: 35),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [

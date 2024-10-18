@@ -23,6 +23,19 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   final _voterIdController = TextEditingController();
 
+  final TextEditingController _retrieveEmailController = TextEditingController();
+  final TextEditingController _retrievePasswordController = TextEditingController();
+  final TextEditingController _voterIdController2 = TextEditingController();
+
+  @override
+  void dispose() {
+    // Dispose controllers when the widget is disposed
+    _retrieveEmailController.dispose();
+    _retrievePasswordController.dispose();
+    _voterIdController2.dispose();
+    super.dispose();
+  }
+
   bool _isLoading = false;
   bool _isRetrieving = false;
 
@@ -39,12 +52,9 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _retrieveVoterId() async {
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true, // Allows the bottom sheet to be full-screen or to adjust size based on content
+      isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
-        final _retrieveEmailController = TextEditingController();
-        final _retrievePasswordController = TextEditingController();
-        final _voterIdController = TextEditingController();
         bool _voterIdRetrieved = false;
         bool _isRetrieving = false;
 
@@ -83,10 +93,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (_voterIdRetrieved) ...[
                       SizedBox(height: 15),
                       CustomTextField(
-                        controller: _voterIdController,
+                        controller: _voterIdController2,
                         labelText: 'Voter ID',
                         prefix: Icons.how_to_vote,
-                        isReadOnly: true, // Make it read-only since it’s a retrieved value
+                        isReadOnly: true,
                       ),
                     ],
                     SizedBox(height: 20),
@@ -95,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         TextButton(
                           onPressed: () => Navigator.of(context).pop(),
-                          child: Text("Cancel", style: TextStyle(color: Theme.of(context).colorScheme.error),),
+                          child: Text("Cancel", style: TextStyle(color: Theme.of(context).colorScheme.error)),
                         ),
                         TextButton(
                           onPressed: () async {
@@ -115,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 WidgetsBinding.instance.addPostFrameCallback((_) {
                                   setState(() {
                                     _voterIdRetrieved = true;
-                                    _voterIdController.text = storedVoterId; // Set Voter ID in the controller
+                                    _voterIdController2.text = storedVoterId;
                                   });
                                 });
                               } else {
@@ -129,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               _isRetrieving = false;
                             });
                           },
-                          child: Text(_isRetrieving ? "Retrieving..." : "Retrieve", style: TextStyle(color: Theme.of(context).colorScheme.error),),
+                          child: Text(_isRetrieving ? "Retrieving..." : "Retrieve", style: TextStyle(color: Theme.of(context).colorScheme.error)),
                         ),
                       ],
                     ),
@@ -142,6 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
       },
     );
   }
+
 
 // Submit Login
   Future<void> _submitLogin() async {
@@ -214,7 +225,7 @@ class _LoginScreenState extends State<LoginScreen> {
           gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
         ),
         child: Padding(
-          padding: EdgeInsets.only(top:60, right: MediaQuery.of(context).size.width* 0.1, left: MediaQuery.of(context).size.width* 0.1),
+          padding: EdgeInsets.only(top:60, right: MediaQuery.of(context).size.width* 0.025, left: MediaQuery.of(context).size.width* 0.025),
           child: SingleChildScrollView(
             reverse: false,
             child: Center(

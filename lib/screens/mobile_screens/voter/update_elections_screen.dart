@@ -202,7 +202,7 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
       ),
       body: Center(
         child: Container(
-          padding: EdgeInsets.only(top:40, right: MediaQuery.of(context).size.width* 0.1, left: MediaQuery.of(context).size.width* 0.1),
+          padding: EdgeInsets.only(top:40, right: MediaQuery.of(context).size.width* 0.025, left: MediaQuery.of(context).size.width* 0.025),
           width: double.infinity,
           height: double.infinity,
           decoration: BoxDecoration(
