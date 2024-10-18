@@ -238,6 +238,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller: _emailController,
                     labelText: 'Email',
                     prefix: Icons.email_outlined,
+                    keyboardType: TextInputType.emailAddress,
                     onChanged: (value) {
                       // Convert the input to lowercase as the user types
                       _emailController.value = TextEditingValue(
@@ -255,6 +256,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: 15),
                   CustomTextField(
+                    keyboardType: TextInputType.number,
                     controller: _voterIdController,
                     labelText: 'Voter ID',
                     prefix: Icons.how_to_vote,
@@ -268,7 +270,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: _retrieveVoterId, // Call retrieve Voter ID
                           child: Text(
                             "Retrieve Voter ID",
-                            style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                            style: TextStyle(color: Theme.of(context).colorScheme.error),
                           ),
                         ),
                       ),
@@ -280,7 +282,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               },
                               child: Text(
                                 "Forgot Password",
-                                style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                                style: TextStyle(color: Theme.of(context).colorScheme.error),
                               ))),
                     ],
                   ),

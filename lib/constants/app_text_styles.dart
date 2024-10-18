@@ -9,7 +9,7 @@ class AppTextStyles {
     return TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.bold,
-      color: colorScheme.onSurface,  // Use primary color directly
+      color: colorScheme.error,  // Use primary color directly
     );
   }
 
@@ -20,7 +20,7 @@ class AppTextStyles {
     final colorScheme = Theme.of(context).colorScheme;
     return TextStyle(
       fontSize: 16,
-      color: colorScheme.onSurface,  // Use onSurface color directly
+      color: colorScheme.error,  // Use onSurface color directly
     );
   }
 
@@ -46,7 +46,7 @@ class AppTextStyles {
     final colorScheme = Theme.of(context).colorScheme;
     return TextStyle(
       fontSize: 13,
-      color: colorScheme.onSurface,  // Use onSurface color directly
+      color: colorScheme.error,  // Use onSurface color directly
     );
   }
 
@@ -54,7 +54,7 @@ class AppTextStyles {
     final colorScheme = Theme.of(context).colorScheme;
     return TextStyle(
       fontSize: 16,
-      color: colorScheme.onSurface,  // Use onSurface color directly
+      color: colorScheme.error,  // Use onSurface color directly
     );
   }
 
@@ -63,7 +63,7 @@ class AppTextStyles {
     final colorScheme = Theme.of(context).colorScheme;
     return TextStyle(
       fontSize: 16,
-      color: colorScheme.onSecondary,  // Use onSurface color directly
+      color: colorScheme.error,  // Use onSurface color directly
     );
   }
 
@@ -74,7 +74,7 @@ class AppTextStyles {
     return TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
-      color: colorScheme.onSecondary,  // Use onSurface color directly
+      color: colorScheme.error,  // Use onSurface color directly
     );
   }
 

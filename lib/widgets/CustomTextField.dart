@@ -10,6 +10,8 @@ class CustomTextField extends StatefulWidget {
   final Function(String)? onChanged; // Add an onChanged callback
   final IconData prefix;
   final bool? isReadOnly;
+  final TextInputType? keyboardType; // Add keyboardType
+  final TextInputAction? textInputAction; // Add textInputAction
  // final TextStyle? labelStyle;
 
   const CustomTextField(
@@ -21,6 +23,8 @@ class CustomTextField extends StatefulWidget {
       this.isConfirmPassword = false,
       this.isObscure = false,
       this.onChanged, // Accept an onChanged callback
+        this.keyboardType, // Initialize keyboardType
+        this.textInputAction, // Initialize textInputAction
       required this.prefix, this.isReadOnly = false})
       : super(key: key);
 
@@ -41,13 +45,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
         // Use the primary color for labels
         prefixIcon: Icon(
           widget.prefix,
-          color: Theme.of(context).colorScheme.onSecondary,
+          color: Theme.of(context).colorScheme.error,
         ),
         suffixIcon: widget.isPassword || widget.isConfirmPassword
             ? IconButton(
                 icon: Icon(
                   _isPasswordVisible ? Icons.visibility_off : Icons.visibility,
                 ),
+               color: Theme.of(context).colorScheme.error,
                 onPressed: () {
                   setState(() {
                     _isPasswordVisible = !_isPasswordVisible;

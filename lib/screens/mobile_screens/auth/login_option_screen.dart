@@ -38,7 +38,8 @@ class LoginOptionScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 60,),
-                    const Text("Select Login Option"),
+                     Text("Select Login Option", textAlign: TextAlign.center, style: AppTextStyles.headingStyle(context)),
+
                     SizedBox(height: 40,),
                     CustomButton(
                         onPressed: () {
