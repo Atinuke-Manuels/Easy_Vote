@@ -10,11 +10,13 @@ class CustomTextField extends StatefulWidget {
   final Function(String)? onChanged; // Add an onChanged callback
   final IconData prefix;
   final bool? isReadOnly;
+ // final TextStyle? labelStyle;
 
   const CustomTextField(
       {Key? key,
       required this.controller,
       required this.labelText,
+      //  this.labelStyle,
       this.isPassword = false,
       this.isConfirmPassword = false,
       this.isObscure = false,
@@ -39,7 +41,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         // Use the primary color for labels
         prefixIcon: Icon(
           widget.prefix,
-          color: Theme.of(context).colorScheme.tertiary,
+          color: Theme.of(context).colorScheme.onSecondary,
         ),
         suffixIcon: widget.isPassword || widget.isConfirmPassword
             ? IconButton(

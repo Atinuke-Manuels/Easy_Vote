@@ -63,8 +63,13 @@ class ThemeProvider extends ChangeNotifier {
     themeData = brightness == Brightness.dark ? darkMode : lightMode;
   }
 
+
   // app logo
   String get logoAsset {
     return isDarkMode ? 'assets/logo_white.png' : 'assets/logo_light3.png';
   }
+
+
 }
+
+

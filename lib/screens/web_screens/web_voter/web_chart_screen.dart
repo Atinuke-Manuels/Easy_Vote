@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
-class ChartScreen extends StatelessWidget {
+import '../../../constants/app_text_styles.dart';
+
+class WebChartScreen extends StatelessWidget {
   final Map<String, int> results;
 
-  ChartScreen({required this.results});
+  WebChartScreen({super.key, required this.results});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(title: Text("Results Chart"), centerTitle: true,
+      appBar: AppBar(title: Text("Results Chart",style: AppTextStyles.headingStyle(context),), centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
-        elevation: 0,),
+        elevation: 0,
+        leading: TextButton(onPressed: (){Navigator.pop(context);}, child: Text("Back", style: AppTextStyles.bodyTextStyle(context),)),
+        leadingWidth: 80,
+      ),
       body: Container(
+        padding: EdgeInsets.only(top:40, right: MediaQuery.of(context).size.width* 0.2, left: MediaQuery.of(context).size.width* 0.2),
         width: double.infinity,
         height: double.infinity,
         decoration: const BoxDecoration(
@@ -78,7 +84,6 @@ class ChartScreen extends StatelessWidget {
             ),
           ),
         ),
-
 
       ),
     );

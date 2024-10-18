@@ -13,12 +13,32 @@ class AppTextStyles {
     );
   }
 
+
+
   // Body text style using the onSurface color
   static TextStyle bodyTextStyle(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return TextStyle(
       fontSize: 16,
       color: colorScheme.onSurface,  // Use onSurface color directly
+    );
+  }
+
+  // Body text style using the onSurface color
+  static TextStyle cardTextStyle(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return TextStyle(
+      fontSize: 16,
+      color: colorScheme.onPrimaryFixed,  // Use onSurface color directly
+    );
+  }
+
+  static TextStyle cardTitleTextStyle(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: colorScheme.onPrimaryFixed,  // Use onSurface color directly
     );
   }
 
@@ -30,11 +50,11 @@ class AppTextStyles {
     );
   }
 
-  static TextStyle signupSmallBodyTextStyle(BuildContext context) {
+  static TextStyle webSmallBodyTextStyle(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return TextStyle(
-      fontSize: 13,
-      color: colorScheme.onPrimaryFixed,  // Use onSurface color directly
+      fontSize: 16,
+      color: colorScheme.onSurface,  // Use onSurface color directly
     );
   }
 
@@ -43,7 +63,7 @@ class AppTextStyles {
     final colorScheme = Theme.of(context).colorScheme;
     return TextStyle(
       fontSize: 16,
-      color: colorScheme.secondary,  // Use onSurface color directly
+      color: colorScheme.onSecondary,  // Use onSurface color directly
     );
   }
 

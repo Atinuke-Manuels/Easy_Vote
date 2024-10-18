@@ -7,16 +7,17 @@ import '../../../themes/theme_provider.dart';
 import '../../../widgets/CustomButton.dart';
 import '../../../widgets/CustomTextField.dart';
 import '../../combined_layout_screens/voter/home_layout.dart';
-import '../voter/home_screen.dart';
+import '../../mobile_screens/voter/home_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+
+class WebLoginScreen extends StatefulWidget {
+  const WebLoginScreen({super.key});
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _WebLoginScreenState createState() => _WebLoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _WebLoginScreenState extends State<WebLoginScreen> {
   final FirebaseService _authService = FirebaseService(); // Initialize AuthService
 
   final _emailController = TextEditingController();
@@ -37,111 +38,92 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // Show dialog to retrieve Voter ID
   Future<void> _retrieveVoterId() async {
-    showModalBottomSheet(
+    showDialog(
       context: context,
-      isScrollControlled: true, // Allows the bottom sheet to be full-screen or to adjust size based on content
-      backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
         final _retrieveEmailController = TextEditingController();
         final _retrievePasswordController = TextEditingController();
         final _voterIdController = TextEditingController();
         bool _voterIdRetrieved = false;
-        bool _isRetrieving = false;
 
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
-            return Container(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom,
-              ),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onPrimaryFixed,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      "Retrieve Voter ID",
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    SizedBox(height: 10),
+            return AlertDialog(
+              backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
+              title: Text("Retrieve Voter ID"),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CustomTextField(
+                    controller: _retrieveEmailController,
+                    labelText: 'Email',
+                    prefix: Icons.email_outlined,
+                  ),
+                  SizedBox(height: 5),
+                  CustomTextField(
+                    controller: _retrievePasswordController,
+                    labelText: 'Password',
+                    isPassword: true,
+                    prefix: Icons.lock,
+                  ),
+                  if (_voterIdRetrieved) ...[
+                    SizedBox(height: 15),
                     CustomTextField(
-                      controller: _retrieveEmailController,
-                      labelText: 'Email',
-                      prefix: Icons.email_outlined,
+                      controller: _voterIdController,
+                      labelText: 'Voter ID',
+                      prefix: Icons.how_to_vote,
+                      isReadOnly: true, // Make it read-only since it’s a retrieved value
                     ),
-                    SizedBox(height: 5),
-                    CustomTextField(
-                      controller: _retrievePasswordController,
-                      labelText: 'Password',
-                      isPassword: true,
-                      prefix: Icons.lock,
-                    ),
-                    if (_voterIdRetrieved) ...[
-                      SizedBox(height: 15),
-                      CustomTextField(
-                        controller: _voterIdController,
-                        labelText: 'Voter ID',
-                        prefix: Icons.how_to_vote,
-                        isReadOnly: true, // Make it read-only since it’s a retrieved value
-                      ),
-                    ],
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: Text("Cancel"),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            setState(() {
-                              _isRetrieving = true;
-                            });
-
-                            var userCredential = await _authService.signIn(
-                              _retrieveEmailController.text,
-                              _retrievePasswordController.text,
-                            );
-
-                            if (userCredential != null) {
-                              String? storedVoterId = await _authService.fetchVoterId(userCredential.user!.uid);
-
-                              if (storedVoterId != null) {
-                                WidgetsBinding.instance.addPostFrameCallback((_) {
-                                  setState(() {
-                                    _voterIdRetrieved = true;
-                                    _voterIdController.text = storedVoterId; // Set Voter ID in the controller
-                                  });
-                                });
-                              } else {
-                                _showSnackBar('Voter ID not found.', Theme.of(context).colorScheme.error);
-                              }
-                            } else {
-                              _showSnackBar('Enter valid details. Please try again.', Theme.of(context).colorScheme.error);
-                            }
-
-                            setState(() {
-                              _isRetrieving = false;
-                            });
-                          },
-                          child: Text(_isRetrieving ? "Retrieving..." : "Retrieve"),
-                        ),
-                      ],
-                    ),
-                  ],
+                  ]
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text("Cancel"),
                 ),
-              ),
+                TextButton(
+                  onPressed: () async {
+                    setState(() {
+                      _isRetrieving = true;
+                    });
+
+                    var userCredential = await _authService.signIn(
+                      _retrieveEmailController.text,
+                      _retrievePasswordController.text,
+                    );
+
+                    if (userCredential != null) {
+                      String? storedVoterId = await _authService.fetchVoterId(userCredential.user!.uid);
+
+                      if (storedVoterId != null) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          setState(() {
+                            _voterIdRetrieved = true;
+                            _voterIdController.text = storedVoterId; // Set Voter ID in the controller
+                          });
+                        });
+                      } else {
+                        _showSnackBar('Voter ID not found.', Theme.of(context).colorScheme.error);
+                      }
+                    } else {
+                      _showSnackBar('Enter valid details. Please try again.', Theme.of(context).colorScheme.error);
+                    }
+
+                    setState(() {
+                      _isRetrieving = false;
+                    });
+                  },
+                  child: Text(_isRetrieving ? "Retrieving..." : "Retrieve"),
+                ),
+              ],
             );
           },
         );
       },
     );
   }
+
 
 // Submit Login
   Future<void> _submitLogin() async {
@@ -206,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
-     // backgroundColor: Theme.of(context).colorScheme.surface,
+      // backgroundColor: Theme.of(context).colorScheme.surface,
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -217,7 +199,7 @@ class _LoginScreenState extends State<LoginScreen> {
             )
         ),
         child: Padding(
-          padding: EdgeInsets.only(top:60, right: MediaQuery.of(context).size.width* 0.1, left: MediaQuery.of(context).size.width* 0.1),
+          padding: EdgeInsets.only(top:60, right: MediaQuery.of(context).size.width* 0.25, left: MediaQuery.of(context).size.width* 0.25),
           child: SingleChildScrollView(
             reverse: false,
             child: Center(
@@ -227,8 +209,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   Center(
                     child: Image.asset(
                       themeProvider.logoAsset,
-                      width: 80, // adjust size as needed
-                      height: 80,
+                      width: 110, // adjust size as needed
+                      height: 110,
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -293,12 +275,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Don't Have An Account?", style: AppTextStyles.smallBodyTextStyle(context)),
+                      Text("Don't Have An Account?", style: AppTextStyles.webSmallBodyTextStyle(context)),
                       TextButton(
                         onPressed: () {
                           Navigator.pushReplacementNamed(context, '/signup');
                         },
-                        child: Text('Sign Up', style: AppTextStyles.smallBodyTextStyle(context)),
+                        child: Text('Sign Up', style: AppTextStyles.webSmallBodyTextStyle(context)),
                       ),
                     ],
                   ),

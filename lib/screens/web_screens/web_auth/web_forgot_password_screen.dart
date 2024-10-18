@@ -9,12 +9,12 @@ import '../../../themes/theme_provider.dart';
 import '../../../widgets/CustomTextField.dart';
 
 
-class ForgotPasswordScreen extends StatefulWidget {
+class WebForgotPasswordScreen extends StatefulWidget {
   @override
-  _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
+  _WebForgotPasswordScreenState createState() => _WebForgotPasswordScreenState();
 }
 
-class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+class _WebForgotPasswordScreenState extends State<WebForgotPasswordScreen> {
   final FirebaseService _authService = FirebaseService();
 
   final _emailController = TextEditingController();
@@ -77,7 +77,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       body: Container(
         // width: double.infinity,
         // height: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage("assets/evbg1.png"),
               fit: BoxFit.cover,
@@ -85,7 +85,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         ),
         child: Center(
           child: Padding(
-            padding: EdgeInsets.only(top:60, right: MediaQuery.of(context).size.width* 0.1, left: MediaQuery.of(context).size.width* 0.1),
+            padding: EdgeInsets.only(top:60, right: MediaQuery.of(context).size.width* 0.25, left: MediaQuery.of(context).size.width* 0.25),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -93,15 +93,15 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   Center(
                     child: Image.asset(
                       themeProvider.logoAsset,
-                      width: 120, // adjust size as needed
-                      height: 120,
+                      width: 220, // adjust size as needed
+                      height: 220,
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 60,
                   ),
                   Text("Enter your email to reset your password", textAlign: TextAlign.center, style: AppTextStyles.headingStyle(context)),
-                  const SizedBox(
+                  SizedBox(
                     height: 40,
                   ),
                   CustomTextField(
@@ -119,13 +119,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text("You now remember your password?",
-                          style: AppTextStyles.smallBodyTextStyle(context)),
+                          style: AppTextStyles.webSmallBodyTextStyle(context)),
                       TextButton(
                         onPressed: () {
                           Navigator.pushReplacementNamed(context, '/');
                         },
                         child: Text('Log In',
-                            style: AppTextStyles.smallBodyTextStyle(context)),
+                            style: AppTextStyles.webSmallBodyTextStyle(context)),
                       ),
                     ],
                   ),

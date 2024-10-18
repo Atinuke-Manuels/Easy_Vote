@@ -7,16 +7,16 @@ import '../../../widgets/CustomButton.dart';
 import '../../../widgets/CustomTextField.dart';
 
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class WebSignUpScreen extends StatefulWidget {
+  const WebSignUpScreen({super.key});
 
   @override
-  _SignUpScreenState createState() => _SignUpScreenState();
+  _WebSignUpScreenState createState() => _WebSignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _WebSignUpScreenState extends State<WebSignUpScreen> {
   final FirebaseService _authService =
-      FirebaseService(); // Initialize AuthService
+  FirebaseService(); // Initialize AuthService
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -116,16 +116,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
       //     title: Text('Create Your Account', style: AppTextStyles.headingStyle(context))),
 
       body: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/evbg1.png"),
-                fit: BoxFit.cover,
-              )
-          ),
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/evbg1.png"),
+              fit: BoxFit.cover,
+            )
+        ),
         child: Padding(
-          padding: EdgeInsets.only(top:60, right: MediaQuery.of(context).size.width* 0.1, left: MediaQuery.of(context).size.width* 0.1),
+          padding: EdgeInsets.only(top:40, right: MediaQuery.of(context).size.width* 0.25, left: MediaQuery.of(context).size.width* 0.25),
           child: SingleChildScrollView(
             reverse: false,
             child: Column(
@@ -134,15 +134,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Center(
                   child: Image.asset(
                     themeProvider.logoAsset,
-                    width: 80, // adjust size as needed
-                    height: 80,
+                    width: 110, // adjust size as needed
+                    height: 110,
                   ),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
                 Text("Let's create your account", textAlign: TextAlign.center, style: AppTextStyles.headingStyle(context)),
-                const SizedBox(
+                SizedBox(
                   height: 40,
                 ),
                 CustomTextField(
@@ -197,13 +197,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text("Already Have An Account? ",
-                        style: AppTextStyles.smallBodyTextStyle(context)),
+                        style: AppTextStyles.webSmallBodyTextStyle(context)),
                     TextButton(
                       onPressed: () {
                         Navigator.pushReplacementNamed(context, '/');
                       },
                       child: Text('Log In',
-                          style: AppTextStyles.smallBodyTextStyle(context)),
+                          style: AppTextStyles.webSmallBodyTextStyle(context)),
                     ),
                   ],
                 ),
