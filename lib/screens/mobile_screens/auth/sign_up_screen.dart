@@ -80,7 +80,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   TextSpan(
                       text: voterId, // Use the returned voterId
                       style: AppTextStyles.voterIdTextStyle(context)),
-                  const TextSpan(text: '. Please make sure to save it.'),
+                  const TextSpan(text: '. Please make sure you save it.'),
                 ],
               ),
             ),
