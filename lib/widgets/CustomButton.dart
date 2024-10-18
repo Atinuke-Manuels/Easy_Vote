@@ -14,11 +14,11 @@ class CustomButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed, // Use the secondary color for buttons
-        foregroundColor: Theme.of(context).colorScheme.onSecondary,
+        foregroundColor: Theme.of(context).colorScheme.error,
         minimumSize: Size(280, 70),
         shape: RoundedRectangleBorder(
 
-          side: BorderSide(color:Theme.of(context).colorScheme.onSecondary, width:3),
+          side: BorderSide(color:Theme.of(context).colorScheme.error, width:3),
           borderRadius: BorderRadius.circular(40)
         )
       ),

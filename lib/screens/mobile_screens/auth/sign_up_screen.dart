@@ -37,6 +37,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   // Submit Signup
 // Submit Signup
   Future<void> _submitSignup() async {
+    // Trim all input fields to remove leading/trailing spaces
+    // String email = _emailController.text.trim();
+    // String password = _passwordController.text.trim();
+    // String confirmPassword = _confirmPasswordController.text.trim();
+    // String name = _nameController.text.trim();
+
+    // Check if passwords match
     if (_passwordController.text != _confirmPasswordController.text) {
       _showSnackBar(
           'Passwords do not match', Theme.of(context).colorScheme.error);
@@ -46,6 +53,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() {
       _isLoading = true;
     });
+
+
 
     var result = await _authService.signUp(
       _emailController.text,
@@ -147,6 +156,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 CustomTextField(
                   controller: _nameController,
+                  //keyboardType: TextInputType.name,
                   labelText: 'Full Name',
                   prefix: Icons.person,
                 ),
@@ -155,6 +165,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 CustomTextField(
                   controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
                   labelText: 'Email',
                   prefix: Icons.email_outlined,
                   onChanged: (value) {

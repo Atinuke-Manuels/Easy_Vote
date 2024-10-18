@@ -76,7 +76,7 @@ class MyDrawer extends StatelessWidget {
                       style: AppTextStyles.bodyTextStyle(context)),
                   leading: Icon(
                     Icons.logout,
-                    color: theme.colorScheme.primary,
+                    color: theme.colorScheme.error,
                   ),
                   onTap: () {
                     logout(context);
