@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../constants/app_text_styles.dart';
@@ -160,56 +161,75 @@ class _LoginScreenState extends State<LoginScreen> {
       _isLoading = true;
     });
 
-    // print('Attempting to sign in with email: ${_emailController.text} and password: ${_passwordController.text}');
+    try {
+      var userCredential = await _authService.signIn(
+        _emailController.text.trim(),
+        _passwordController.text,
+      );
 
-    var userCredential = await _authService.signIn(
-      _emailController.text,
-      _passwordController.text,
-    );
+      if (userCredential != null) {
+        String? storedVoterId = await _authService.fetchVoterId(userCredential.user!.uid);
 
-    if (userCredential != null) {
-      // print('User signed in successfully with UID: ${userCredential.user!.uid}');
-      String? storedVoterId = await _authService.fetchVoterId(userCredential.user!.uid);
-      // print('Fetched Voter ID from the database: $storedVoterId');
+        if (storedVoterId == null) {
+          _showSnackBar('User data not found in the database.', Theme.of(context).colorScheme.onError);
+          setState(() {
+            _isLoading = false;
+          });
+          return;
+        }
 
-      if (storedVoterId == null) {
-        _showSnackBar('User data not found in database.', Theme.of(context).colorScheme.onError);
-        setState(() {
-          _isLoading = false;
-        });
-        return;
-      }
+        if (_voterIdController.text == storedVoterId) {
+          _showSnackBar('Logged in successfully!', Theme.of(context).colorScheme.onSurfaceVariant);
 
-      if (_voterIdController.text == storedVoterId) {
-        _showSnackBar('Logged in successfully!', Theme.of(context).colorScheme.onSurfaceVariant);
+          // Fetch elections that the voter is registered for
+          List<Election> registeredElections = await _authService.fetchRegisteredElections(_voterIdController.text);
 
-        // print('Fetching registered elections for Voter ID: ${_voterIdController.text}');
-        // Fetch elections that the voter is registered for
-        List<Election> registeredElections = await _authService.fetchRegisteredElections(_voterIdController.text);
-
-        // print('Number of registered elections fetched: ${registeredElections.length}');
-        // Navigate to HomeScreen and pass the list of registered elections
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HomeLayout(
-              voterId: _voterIdController.text,
-              registeredElections: registeredElections,
+          // Navigate to HomeScreen and pass the list of registered elections
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeLayout(
+                voterId: _voterIdController.text,
+                registeredElections: registeredElections,
+              ),
             ),
-          ),
-        );
-
-      } else {
-        _showSnackBar('Invalid Voter ID. Please try again.', Theme.of(context).colorScheme.onError);
+          );
+        } else {
+          _showSnackBar('Invalid Voter ID. Please try again.', Theme.of(context).colorScheme.onError);
+        }
       }
-    } else {
-      _showSnackBar('Login failed. Please try again.', Theme.of(context).colorScheme.onError);
-    }
+    } on FirebaseAuthException catch (e) {
+      // Display more descriptive error messages based on the error code
+      String errorMessage;
+      switch (e.code) {
+        case 'invalid-email':
+          errorMessage = 'The email address is not valid.';
+          break;
+        case 'user-disabled':
+          errorMessage = 'This user account has been disabled.';
+          break;
+        case 'user-not-found':
+          errorMessage = 'No user found with this email.';
+          break;
+        case 'wrong-password':
+          errorMessage = 'Incorrect password. Please try again.';
+          break;
+        default:
+          errorMessage = 'Login failed. ${e.message}';
+          break;
+      }
 
-    setState(() {
-      _isLoading = false;
-    });
+      _showSnackBar(errorMessage, Theme.of(context).colorScheme.onError);
+    } catch (e) {
+      // For any other errors, show a general error message
+      _showSnackBar('An unexpected error occurred. Please try again.', Theme.of(context).colorScheme.onError);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
+
 
 
   @override

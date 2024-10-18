@@ -59,16 +59,19 @@ class FirebaseService {
     }
   }
 
-  // Sign in a user
+// Sign in a user
   Future<UserCredential?> signIn(String email, String password) async {
     try {
-      return await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
+      return await _auth.signInWithEmailAndPassword(email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      // Re-throw the error to be handled at a higher level
+      throw e;
     } catch (e) {
-      // Handle error appropriately, perhaps logging it or throwing a custom exception
-      return null;
+      // If some other error occurs, throw a general error
+      throw Exception('An unexpected error occurred. Please try again.');
     }
   }
+
 
   // Fetch voter ID from Firestore
   Future<String?> fetchVoterId(String userId) async {

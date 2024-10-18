@@ -48,7 +48,7 @@ class _WebSignUpScreenState extends State<WebSignUpScreen> {
     });
 
     var result = await _authService.signUp(
-      _emailController.text,
+      _emailController.text.trim(),
       _passwordController.text,
       _nameController.text,
     );

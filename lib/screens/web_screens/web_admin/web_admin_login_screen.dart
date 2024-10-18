@@ -1,4 +1,5 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -133,52 +134,77 @@ class _WebAdminLoginScreenState extends State<WebAdminLoginScreen> {
       _isLoading = true;
     });
 
-    // Call the signIn method from AuthService
-    var userCredential = await _authService.signIn(
-      _emailController.text,
-      _passwordController.text,
-    );
-
-    if (userCredential != null) {
-      // Retrieve the Voter ID from Firestore
-      String? storedVoterId =
-      await _authService.fetchVoterId(userCredential.user!.uid);
-
-      // Check if the provided Voter ID matches the stored one
-      if (storedVoterId == null) {
-        _showSnackBar('User data not found in database.',
-            Theme.of(context).colorScheme.error);
-        setState(() {
-          _isLoading = false;
-        });
-        return; // Stop further execution if user data is not found
-      }
-
-      if (_voterIdController.text != storedVoterId) {
-        _showSnackBar('Invalid Voter ID. Please try again.',
-            Theme.of(context).colorScheme.onError);
-        setState(() {
-          _isLoading = false;
-        });
-        return; // Stop further execution if the Voter ID does not match
-      }
-
-      _showSnackBar(
-          'Logged in successfully!', Theme.of(context).colorScheme.onSurfaceVariant);
-
-      // Navigate to HomeScreen after successful login
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const AdminHomeLayout()),
+    try {
+      // Call the signIn method from AuthService
+      var userCredential = await _authService.signIn(
+        _emailController.text.trim(),
+        _passwordController.text,
       );
-    } else {
-      _showSnackBar('Login failed. Please try again.',
+
+      if (userCredential != null) {
+        // Retrieve the Voter ID from Firestore
+        String? storedVoterId =
+        await _authService.fetchVoterId(userCredential.user!.uid);
+
+        // Check if the provided Voter ID matches the stored one
+        if (storedVoterId == null) {
+          _showSnackBar('User data not found in the database.',
+              Theme.of(context).colorScheme.error);
+          setState(() {
+            _isLoading = false;
+          });
+          return; // Stop further execution if user data is not found
+        }
+
+        if (_voterIdController.text != storedVoterId) {
+          _showSnackBar('Invalid Voter ID. Please try again.',
+              Theme.of(context).colorScheme.onError);
+          setState(() {
+            _isLoading = false;
+          });
+          return; // Stop further execution if the Voter ID does not match
+        }
+
+        _showSnackBar(
+            'Logged in successfully!', Theme.of(context).colorScheme.onSurfaceVariant);
+
+        // Navigate to Admin HomeScreen after successful login
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const AdminHomeLayout()),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      // Handle Firebase-specific errors and display descriptive messages
+      String errorMessage = _getFirebaseAuthErrorMessage(e);
+      _showSnackBar(errorMessage, Theme.of(context).colorScheme.onError);
+    } catch (e) {
+      // Handle any other errors
+      _showSnackBar('An unexpected error occurred. Please try again.',
           Theme.of(context).colorScheme.onError);
+    } finally {
       setState(() {
         _isLoading = false;
       });
     }
   }
+
+// Helper function to get descriptive error messages based on FirebaseAuthException
+  String _getFirebaseAuthErrorMessage(FirebaseAuthException e) {
+    switch (e.code) {
+      case 'invalid-email':
+        return 'The email address is not valid.';
+      case 'user-disabled':
+        return 'This user account has been disabled.';
+      case 'user-not-found':
+        return 'No user found with this email.';
+      case 'wrong-password':
+        return 'Incorrect password. Please try again.';
+      default:
+        return 'Login failed. ${e.message}';
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
