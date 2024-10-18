@@ -28,6 +28,7 @@ class WebVotingScreen extends StatelessWidget {
           centerTitle: true,
           backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
           elevation: 0,
+          leading: TextButton(onPressed: (){Navigator.pop(context);}, child: Text("Back", style: AppTextStyles.headingStyle(context),)),
         ),
         body: Center(
           child: Text(
@@ -46,6 +47,8 @@ class WebVotingScreen extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
         elevation: 0,
+        leading: TextButton(onPressed: (){Navigator.pop(context);}, child: Text("Back", style: AppTextStyles.bodyTextStyle(context),)),
+        leadingWidth: 80,
         actions: [
           TextButton(
               onPressed: () {

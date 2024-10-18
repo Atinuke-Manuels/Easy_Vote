@@ -7,6 +7,7 @@ import '../../../services/firebase_service.dart';
 import '../../../themes/theme_provider.dart';
 import '../../../widgets/CustomButton.dart';
 import '../../../widgets/CustomTextField.dart';
+import '../../combined_layout_screens/admin/admin_home_layout.dart';
 import '../../mobile_screens/admin/admin_home_screen.dart';
 
 
@@ -168,7 +169,7 @@ class _WebAdminLoginScreenState extends State<WebAdminLoginScreen> {
       // Navigate to HomeScreen after successful login
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => AdminHomeScreen()),
+        MaterialPageRoute(builder: (context) => const AdminHomeLayout()),
       );
     } else {
       _showSnackBar('Login failed. Please try again.',

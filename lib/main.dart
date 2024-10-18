@@ -1,9 +1,14 @@
+import 'package:easy_vote/screens/combined_layout_screens/admin/admin_home_layout.dart';
 import 'package:easy_vote/screens/combined_layout_screens/admin/admin_login_layout.dart';
+import 'package:easy_vote/screens/combined_layout_screens/admin/election_details_layout.dart';
 import 'package:easy_vote/screens/combined_layout_screens/auth/forgot_password_layout.dart';
 import 'package:easy_vote/screens/combined_layout_screens/auth/login_option_screen_layout.dart';
 import 'package:easy_vote/screens/combined_layout_screens/auth/login_screen_layout.dart';
 import 'package:easy_vote/screens/combined_layout_screens/auth/sign_up_layout.dart';
+import 'package:easy_vote/screens/combined_layout_screens/voter/chart_layout.dart';
 import 'package:easy_vote/screens/combined_layout_screens/voter/home_layout.dart';
+import 'package:easy_vote/screens/combined_layout_screens/voter/results_layout.dart';
+import 'package:easy_vote/screens/combined_layout_screens/voter/update_elections_layout.dart';
 import 'package:easy_vote/screens/combined_layout_screens/voter/voting_layout.dart';
 import 'package:easy_vote/screens/mobile_screens/admin/admin_home_screen.dart';
 import 'package:easy_vote/screens/mobile_screens/admin/admin_login_screen.dart';
@@ -55,11 +60,15 @@ class EasyVoteApp extends StatelessWidget {
         '/signup': (context) => const SignUpLayout(),
         '/forgotPassword': (context) => const ForgotPasswordLayout(),
         '/home': (context) => const HomeLayout(voterId: '', registeredElections: [],),
-        '/adminHome': (context) => AdminHomeScreen(),
-        '/updateElection': (context) => UpdateElectionScreen(election: Election(id: '', title: '', candidates: [], startDate: DateTime.now(), endDate: DateTime.now().add(Duration(days: 7)), registeredVoters: [], creatorId: '')),
+        '/adminHome': (context) => const AdminHomeLayout(),
+        '/updateElection': (context) => UpdateElectionsLayout(election: Election(id: '', title: '', candidates: [], startDate: DateTime.now(), endDate: DateTime.now().add(Duration(days: 7)), registeredVoters: [], creatorId: '')),
         '/election': (context) => const VotingLayout(),
-        '/electionDetails': (context) => ElectionDetailsScreen(election: Election(id: '', title: '', candidates: [], startDate: DateTime.now(), endDate: DateTime.now().add(Duration(days: 7)), registeredVoters: [], creatorId: '')),
-        '/results': (context) => ResultsScreen(),
+        '/electionDetails': (context) => ElectionDetailsLayout(election: Election(id: '', title: '', candidates: [], startDate: DateTime.now(), endDate: DateTime.now().add(Duration(days: 7)), registeredVoters: [], creatorId: '')),
+        '/results': (context) => const ResultsLayout(),
+        '/chart': (context) {
+          final args = ModalRoute.of(context)!.settings.arguments as Map<String, int>?;
+          return ChartLayout(results: args ?? {}); // Pass an empty map if args is null
+        },
       },
     );
   }

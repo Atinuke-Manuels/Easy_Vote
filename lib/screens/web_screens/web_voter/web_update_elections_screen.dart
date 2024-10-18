@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../constants/app_text_styles.dart';
 import '../../../models/election.dart';
 import '../../../services/firebase_service.dart'; // Import for date formatting
 
-class UpdateElectionScreen extends StatefulWidget {
+class WebUpdateElectionsScreen extends StatefulWidget {
   final Election election;
 
-  const UpdateElectionScreen({Key? key, required this.election})
+  const WebUpdateElectionsScreen ({Key? key, required this.election})
       : super(key: key);
 
   @override
-  _UpdateElectionScreenState createState() => _UpdateElectionScreenState();
+  _WebUpdateElectionsScreenState createState() => _WebUpdateElectionsScreenState();
 }
 
-class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
+class _WebUpdateElectionsScreenState extends State<WebUpdateElectionsScreen > {
   final FirebaseService _firebaseService = FirebaseService();
 
   late TextEditingController _titleController;
@@ -192,14 +193,17 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       // backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(title: Text('Update Election'),
+      appBar: AppBar(title: Text('UPDATE   ELECTION', style: AppTextStyles.headingStyle(context), ),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
         elevation: 0,
+        leading: TextButton(onPressed: (){Navigator.pop(context);}, child: Text("Back", style: AppTextStyles.bodyTextStyle(context),)),
+        leadingWidth: 80,
       ),
       body: Center(
         child: Container(
-          padding: EdgeInsets.only(top:40, right: MediaQuery.of(context).size.width* 0.1, left: MediaQuery.of(context).size.width* 0.1),
+          alignment: Alignment.center,
+          padding: EdgeInsets.only(top:40, right: MediaQuery.of(context).size.width* 0.2, left: MediaQuery.of(context).size.width* 0.2),
           width: double.infinity,
           height: double.infinity,
           decoration: const BoxDecoration(
@@ -218,19 +222,19 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
                     controller: _titleController,
                     decoration: const InputDecoration(labelText: 'Election Title'),
                   ),
-                  SizedBox(height: 15,),
+                  const SizedBox(height: 25,),
                   TextField(
                     controller: _candidatesController,
                     decoration: const InputDecoration(
                         labelText: 'Candidates (comma-separated)'),
                   ),
-                  SizedBox(height: 15,),
+                  const SizedBox(height: 25,),
                   // Inside the build method, add a new text field
                   TextField(
                     controller: _voterIdsController,
                     decoration: const InputDecoration(labelText: 'Voter IDs (comma-separated)'),
                   ),
-                  SizedBox(height: 15,),
+                  const SizedBox(height: 25,),
                   TextField(
                     controller: _startDateController,
                     readOnly: true, // Make it read-only so users can't type in it
@@ -242,7 +246,7 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 15,),
+                  SizedBox(height: 25,),
                   TextField(
                     controller: _endDateController,
                     readOnly: true, // Make it read-only so users can't type in it
@@ -254,13 +258,13 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 30),
                   ElevatedButton(
                     onPressed: _updateElection,
                     style: ButtonStyle(
                       backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.primary),
                       foregroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onPrimary),
-                      padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0)), // Padding
+                      padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 24.0, horizontal: 30.0)), // Padding
                       shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0), // Rounded corners
@@ -268,7 +272,7 @@ class _UpdateElectionScreenState extends State<UpdateElectionScreen> {
                       ),
                       elevation: WidgetStateProperty.all(5), // Elevation
                     ),
-                    child: const Text('Update Election'),
+                    child: Text('Update Election',style: AppTextStyles.cardTextStyle(context),),
                   ),
                 ],
               ),

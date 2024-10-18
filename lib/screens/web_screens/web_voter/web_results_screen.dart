@@ -1,25 +1,30 @@
 import 'package:flutter/material.dart';
+import '../../../constants/app_text_styles.dart';
 import '../../../services/firebase_service.dart';
-import 'chart_screen.dart';
+import '../../mobile_screens/voter/chart_screen.dart';
 
-class ResultsScreen extends StatelessWidget {
+
+class WebResultsScreen extends StatelessWidget {
   final String electionId;
   final FirebaseService _firebaseService = FirebaseService();
 
-  ResultsScreen({super.key, required this.electionId});
+  WebResultsScreen({super.key, required this.electionId});
 
   @override
   Widget build(BuildContext context) {
     final String electionId =
-        ModalRoute.of(context)?.settings.arguments as String;
+    ModalRoute.of(context)?.settings.arguments as String;
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(title: Text("Results"), centerTitle: true,
+      appBar: AppBar(title: const Text("R E S U L T S"), centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
-        elevation: 0,),
+        elevation: 0,
+        leading: TextButton(onPressed: (){Navigator.pop(context);}, child: Text("Back", style: AppTextStyles.bodyTextStyle(context),)),
+        leadingWidth: 80,
+      ),
       body: Container(
-        padding: EdgeInsets.only(top:40, right: MediaQuery.of(context).size.width* 0.1, left: MediaQuery.of(context).size.width* 0.1),
+        padding: EdgeInsets.only(top:40, right: MediaQuery.of(context).size.width* 0.2, left: MediaQuery.of(context).size.width* 0.2),
         width: double.infinity,
         height: double.infinity,
         decoration: const BoxDecoration(
@@ -49,8 +54,8 @@ class ResultsScreen extends StatelessWidget {
             return ListView(
               children: sortedResults.entries.map((entry) {
                 return ListTile(
-                  title: Text("Candidate: ${entry.key}"),
-                  trailing: Text("Votes: ${entry.value}"),
+                  title: Text("Candidate: ${entry.key}", style: AppTextStyles.cardTitleTextStyle(context).copyWith(color: Colors.white)),
+                  trailing: Text("Votes: ${entry.value}", style: AppTextStyles.cardTextStyle(context).copyWith(color: Colors.white),),
                 );
               }).toList(),
             );
@@ -75,8 +80,8 @@ class ResultsScreen extends StatelessWidget {
             );
           });
         },
-        child: Icon(Icons.bar_chart),
         tooltip: "View Chart",
+        child: Icon(Icons.bar_chart),
       ),
     );
   }

@@ -1,4 +1,5 @@
 
+import 'package:easy_vote/screens/combined_layout_screens/admin/admin_home_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -187,7 +188,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
       // Navigate to HomeScreen after successful login
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => AdminHomeScreen()),
+        MaterialPageRoute(builder: (context) => const AdminHomeLayout()),
       );
     } else {
       _showSnackBar('Login failed. Please try again.',

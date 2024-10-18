@@ -104,12 +104,7 @@ class ElectionDetailsScreen extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       if (isEditable()) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => UpdateElectionScreen(election: election),
-                          ),
-                        );
+                        Navigator.pushNamed(context, '/updateElection');
                       } else {
                         _showFeedbackDialog(context, "Election in progress cannot be edited.");
                       }

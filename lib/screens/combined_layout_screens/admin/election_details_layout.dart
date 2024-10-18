@@ -3,15 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 import '../../../models/election.dart';
+import '../../web_screens/web_admin/web_elections_details_screen.dart';
 
 class ElectionDetailsLayout extends StatelessWidget {
-  const ElectionDetailsLayout({super.key});
+  final Election election; // Store the election parameter
+
+  const ElectionDetailsLayout({super.key, required this.election}); // Update constructor
 
   @override
   Widget build(BuildContext context) {
     return ScreenTypeLayout.builder(
-      mobile: (BuildContext context) =>  ElectionDetailsScreen(election: Election(id: '', title: '', candidates: [], startDate: DateTime.now(), endDate: DateTime.now().add(Duration(days: 7)), registeredVoters: [], creatorId: '')),
-      tablet: (BuildContext context) =>  ElectionDetailsScreen(election: Election(id: '', title: '', candidates: [], startDate: DateTime.now(), endDate: DateTime.now().add(Duration(days: 7)), registeredVoters: [], creatorId: '')),
+      mobile: (BuildContext context) => ElectionDetailsScreen(election: election), // Pass the stored election
+      tablet: (BuildContext context) => WebElectionDetailsScreen(election: election), // Pass the stored election
     );
   }
 }
