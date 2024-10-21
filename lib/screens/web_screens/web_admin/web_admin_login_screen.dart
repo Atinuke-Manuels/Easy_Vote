@@ -93,7 +93,7 @@ class _WebAdminLoginScreenState extends State<WebAdminLoginScreen> {
                     });
 
                     var userCredential = await _authService.signIn(
-                      _retrieveEmailController.text,
+                      _retrieveEmailController.text.trim(),
                       _retrievePasswordController.text,
                     );
 

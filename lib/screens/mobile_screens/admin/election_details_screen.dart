@@ -73,6 +73,7 @@ class ElectionDetailsScreen extends StatelessWidget {
     }
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
       appBar: AppBar(
         title: Text(election.title, style: AppTextStyles.headingStyle(context),),
         centerTitle: true,

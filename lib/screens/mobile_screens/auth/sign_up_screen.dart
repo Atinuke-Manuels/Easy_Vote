@@ -120,106 +120,116 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
-      //backgroundColor: Theme.of(context).colorScheme.surface,
-      // appBar: AppBar(
-      //     title: Text('Create Your Account', style: AppTextStyles.headingStyle(context))),
-
-      body: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: BoxDecoration(
-            gradient: Provider.of<ThemeProvider>(context).backgroundGradient,
-          ),
-        child: Padding(
-          padding: EdgeInsets.only(top:60, right: MediaQuery.of(context).size.width* 0.025, left: MediaQuery.of(context).size.width* 0.025),
-          child: SingleChildScrollView(
-            reverse: false,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(
-                  child: Image.asset(
-                    themeProvider.logoAsset,
-                    width: 80, // adjust size as needed
-                    height: 80,
+      backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
+      resizeToAvoidBottomInset: true,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SafeArea(
+            child: Container(
+              width: double.infinity,
+              height: constraints.maxHeight,
+              decoration: BoxDecoration(
+                gradient: themeProvider.backgroundGradient,
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: 60,
+                  right: MediaQuery.of(context).size.width * 0.025,
+                  left: MediaQuery.of(context).size.width * 0.025,
+                ),
+                child: SingleChildScrollView(
+                  reverse: true,
+                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight,
+                    ),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Center(
+                            child: Image.asset(
+                              themeProvider.logoAsset,
+                              width: 80, // Adjust size as needed
+                              height: 80,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                            "Let's create your account",
+                            textAlign: TextAlign.center,
+                            style: AppTextStyles.headingStyle(context),
+                          ),
+                          const SizedBox(height: 40),
+                          CustomTextField(
+                            controller: _nameController,
+                            labelText: 'Full Name',
+                            prefix: Icons.person,
+                          ),
+                          const SizedBox(height: 15),
+                          CustomTextField(
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            labelText: 'Email',
+                            prefix: Icons.email_outlined,
+                            onChanged: (value) {
+                              _emailController.value = TextEditingValue(
+                                text: value.toLowerCase(),
+                                selection: _emailController.selection,
+                              );
+                            },
+                          ),
+                          const SizedBox(height: 15),
+                          CustomTextField(
+                            controller: _passwordController,
+                            labelText: 'Password',
+                            isPassword: true,
+                            prefix: Icons.lock,
+                          ),
+                          const SizedBox(height: 15),
+                          CustomTextField(
+                            controller: _confirmPasswordController,
+                            labelText: 'Confirm Password',
+                            isConfirmPassword: true,
+                            prefix: Icons.lock,
+                          ),
+                          const SizedBox(height: 40),
+                          CustomButton(
+                            onPressed: _isLoading ? null : _submitSignup,
+                            child: Text(_isLoading ? 'Loading...' : 'S I G N U P'),
+                          ),
+                          const SizedBox(height: 10),
+                          Spacer(), // Push content up when keyboard is shown
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Already Have An Account? ",
+                                style: AppTextStyles.smallBodyTextStyle(context),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pushReplacementNamed(context, '/');
+                                },
+                                child: Text(
+                                  'Log In',
+                                  style: AppTextStyles.smallBodyTextStyle(context),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Text("Let's create your account", textAlign: TextAlign.center, style: AppTextStyles.headingStyle(context)),
-                const SizedBox(
-                  height: 40,
-                ),
-                CustomTextField(
-                  controller: _nameController,
-                  //keyboardType: TextInputType.name,
-                  labelText: 'Full Name',
-                  prefix: Icons.person,
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                CustomTextField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  labelText: 'Email',
-                  prefix: Icons.email_outlined,
-                  onChanged: (value) {
-                    // Convert the input to lowercase as the user types
-                    _emailController.value = TextEditingValue(
-                      text: value.toLowerCase(),
-                      selection: _emailController.selection,
-                    );
-                  },
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                CustomTextField(
-                  controller: _passwordController,
-                  labelText: 'Password',
-                  isPassword: true,
-                  prefix: Icons.lock,
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                CustomTextField(
-                  controller: _confirmPasswordController,
-                  labelText: 'Confirm Password',
-                  isConfirmPassword: true,
-                  prefix: Icons.lock,
-                ),
-                const SizedBox(
-                  height: 40,
-                ),
-                CustomButton(
-                  onPressed: _isLoading ? null : _submitSignup,
-                  child: Text(_isLoading ? 'Loading...' : 'S I G N U P'),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Already Have An Account? ",
-                        style: AppTextStyles.smallBodyTextStyle(context)),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushReplacementNamed(context, '/');
-                      },
-                      child: Text('Log In',
-                          style: AppTextStyles.smallBodyTextStyle(context)),
-                    ),
-                  ],
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
+
 }

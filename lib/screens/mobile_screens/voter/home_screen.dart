@@ -93,7 +93,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      backgroundColor: theme.colorScheme.surface, // Use background color for better contrast
+      backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed, // Use background color for better contrast
     );
   }
 }

@@ -17,7 +17,7 @@ class ResultsScreen extends StatelessWidget {
         ModalRoute.of(context)?.settings.arguments as String;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
       appBar: AppBar(title: Text("Results"), centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
         elevation: 0,),

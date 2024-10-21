@@ -13,7 +13,7 @@ class ChartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
       appBar: AppBar(title: Text("Results Chart"), centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
         elevation: 0,),

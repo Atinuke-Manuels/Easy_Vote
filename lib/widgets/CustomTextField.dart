@@ -12,7 +12,7 @@ class CustomTextField extends StatefulWidget {
   final bool? isReadOnly;
   final TextInputType? keyboardType; // Add keyboardType
   final TextInputAction? textInputAction; // Add textInputAction
- // final TextStyle? labelStyle;
+  // final TextStyle? labelStyle;
 
   const CustomTextField(
       {Key? key,
@@ -23,9 +23,10 @@ class CustomTextField extends StatefulWidget {
       this.isConfirmPassword = false,
       this.isObscure = false,
       this.onChanged, // Accept an onChanged callback
-        this.keyboardType, // Initialize keyboardType
-        this.textInputAction, // Initialize textInputAction
-      required this.prefix, this.isReadOnly = false})
+      this.keyboardType, // Initialize keyboardType
+      this.textInputAction, // Initialize textInputAction
+      required this.prefix,
+      this.isReadOnly = false})
       : super(key: key);
 
   @override
@@ -38,38 +39,42 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: widget.controller,
-      decoration: InputDecoration(
-        labelText: widget.labelText,
-        labelStyle: AppTextStyles.hintTextStyle(context),
-        // Use the primary color for labels
-        prefixIcon: Icon(
-          widget.prefix,
-          color: Theme.of(context).colorScheme.error,
+        controller: widget.controller,
+        decoration: InputDecoration(
+          labelText: widget.labelText,
+          labelStyle: AppTextStyles.hintTextStyle(context),
+          // Use the primary color for labels
+          prefixIcon: Icon(
+            widget.prefix,
+            color: Theme.of(context).colorScheme.error,
+          ),
+          suffixIcon: widget.isPassword || widget.isConfirmPassword
+              ? IconButton(
+                  icon: Icon(
+                    _isPasswordVisible
+                        ? Icons.visibility_off
+                        : Icons.visibility,
+                  ),
+                  color: Theme.of(context).colorScheme.error,
+                  onPressed: () {
+                    setState(() {
+                      _isPasswordVisible = !_isPasswordVisible;
+                    });
+                  },
+                )
+              : null,
         ),
-        suffixIcon: widget.isPassword || widget.isConfirmPassword
-            ? IconButton(
-                icon: Icon(
-                  _isPasswordVisible ? Icons.visibility_off : Icons.visibility,
-                ),
-               color: Theme.of(context).colorScheme.error,
-                onPressed: () {
-                  setState(() {
-                    _isPasswordVisible = !_isPasswordVisible;
-                  });
-                },
-              )
-            : null,
-      ),
-      obscureText: (widget.isPassword || widget.isConfirmPassword) &&
-          !_isPasswordVisible,
-      readOnly: widget.isReadOnly ?? false, // Set readOnly based on isReadOnly
-      onChanged: (value) {
-        // If an onChanged function is provided, call it
-        if (widget.onChanged != null) {
-          widget.onChanged!(value);
-        }
-      },
-    );
+        obscureText: (widget.isPassword || widget.isConfirmPassword) &&
+            !_isPasswordVisible,
+        readOnly: widget.isReadOnly ?? false,
+        // Set readOnly based on isReadOnly
+        onChanged: (value) {
+          // If an onChanged function is provided, call it
+          if (widget.onChanged != null) {
+            widget.onChanged!(value);
+          }
+        },
+        minLines: 1,
+        maxLines: widget.isPassword || widget.isConfirmPassword ? 1 : null);
   }
 }

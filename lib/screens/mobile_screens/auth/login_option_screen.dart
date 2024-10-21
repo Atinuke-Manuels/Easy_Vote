@@ -14,7 +14,7 @@ class LoginOptionScreen extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
-     // backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
 
       body: Container(
         decoration: BoxDecoration(

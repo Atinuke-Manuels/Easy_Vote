@@ -10,14 +10,15 @@ import '../../../themes/theme_provider.dart'; // Import for date formatting
 class WebUpdateElectionsScreen extends StatefulWidget {
   final Election election;
 
-  const WebUpdateElectionsScreen ({Key? key, required this.election})
+  const WebUpdateElectionsScreen({Key? key, required this.election})
       : super(key: key);
 
   @override
-  _WebUpdateElectionsScreenState createState() => _WebUpdateElectionsScreenState();
+  _WebUpdateElectionsScreenState createState() =>
+      _WebUpdateElectionsScreenState();
 }
 
-class _WebUpdateElectionsScreenState extends State<WebUpdateElectionsScreen > {
+class _WebUpdateElectionsScreenState extends State<WebUpdateElectionsScreen> {
   final FirebaseService _firebaseService = FirebaseService();
 
   late TextEditingController _titleController;
@@ -33,7 +34,8 @@ class _WebUpdateElectionsScreenState extends State<WebUpdateElectionsScreen > {
   void initState() {
     super.initState();
     _titleController = TextEditingController(text: widget.election.title);
-    _candidatesController = TextEditingController(text: widget.election.candidates.join(', '));
+    _candidatesController =
+        TextEditingController(text: widget.election.candidates.join(', '));
     _startDate = widget.election.startDate;
     _endDate = widget.election.endDate;
 
@@ -49,7 +51,6 @@ class _WebUpdateElectionsScreenState extends State<WebUpdateElectionsScreen > {
     ); // Ensure existing voter IDs are loaded if they exist
   }
 
-
   @override
   void dispose() {
     _titleController.dispose();
@@ -61,8 +62,12 @@ class _WebUpdateElectionsScreenState extends State<WebUpdateElectionsScreen > {
 
   Future<void> _updateElection() async {
     String title = _titleController.text.trim();
-    List<String> candidates = _candidatesController.text.split(',').map((s) => s.trim()).toList();
-    List<String> registeredVoters = _voterIdsController.text.split(',').map((s) => s.trim()).toList(); // Assuming _votersController is for registered voters
+    List<String> candidates =
+        _candidatesController.text.split(',').map((s) => s.trim()).toList();
+    List<String> registeredVoters = _voterIdsController.text
+        .split(',')
+        .map((s) => s.trim())
+        .toList(); // Assuming _votersController is for registered voters
 
     // Validation checks
     if (title.isEmpty) {
@@ -82,7 +87,8 @@ class _WebUpdateElectionsScreenState extends State<WebUpdateElectionsScreen > {
 
     if (_startDate != null && _endDate != null) {
       if (_endDate!.isBefore(_startDate!)) {
-        _showErrorDialog('End date and time must be after the start date and time.');
+        _showErrorDialog(
+            'End date and time must be after the start date and time.');
         return;
       }
     } else {
@@ -109,7 +115,6 @@ class _WebUpdateElectionsScreenState extends State<WebUpdateElectionsScreen > {
     Navigator.pop(context);
   }
 
-
 // Helper function to display error messages
   void _showErrorDialog(String message) {
     showDialog(
@@ -126,7 +131,6 @@ class _WebUpdateElectionsScreenState extends State<WebUpdateElectionsScreen > {
       ),
     );
   }
-
 
   Future<void> _selectStartDateTime() async {
     DateTime? pickedDate = await showDatePicker(
@@ -190,22 +194,35 @@ class _WebUpdateElectionsScreenState extends State<WebUpdateElectionsScreen > {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(title: Text('UPDATE   ELECTION', style: AppTextStyles.headingStyle(context), ),
+      appBar: AppBar(
+        title: Text(
+          'UPDATE   ELECTION',
+          style: AppTextStyles.headingStyle(context),
+        ),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
         elevation: 0,
-        leading: TextButton(onPressed: (){Navigator.pop(context);}, child: Text("Back", style: AppTextStyles.bodyTextStyle(context),)),
+        leading: TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text(
+              "Back",
+              style: AppTextStyles.bodyTextStyle(context),
+            )),
         leadingWidth: 80,
       ),
       body: Center(
         child: Container(
           alignment: Alignment.center,
-          padding: EdgeInsets.only(top:40, right: MediaQuery.of(context).size.width* 0.2, left: MediaQuery.of(context).size.width* 0.2),
+          padding: EdgeInsets.only(
+              top: 40,
+              right: MediaQuery.of(context).size.width * 0.2,
+              left: MediaQuery.of(context).size.width * 0.2),
           width: double.infinity,
           height: double.infinity,
           decoration: BoxDecoration(
@@ -219,24 +236,46 @@ class _WebUpdateElectionsScreenState extends State<WebUpdateElectionsScreen > {
                 children: [
                   TextField(
                     controller: _titleController,
-                    decoration: InputDecoration(labelText: 'Election Title', labelStyle: AppTextStyles.hintTextStyle(context),),
+                    decoration: InputDecoration(
+                      labelText: 'Election Title',
+                      labelStyle: AppTextStyles.hintTextStyle(context),
+                    ),
+                    minLines: 1,
+                    maxLines: null,
                   ),
-                  const SizedBox(height: 25,),
+                  const SizedBox(
+                    height: 25,
+                  ),
                   TextField(
                     controller: _candidatesController,
                     decoration: InputDecoration(
-                        labelText: 'Candidates (comma-separated)', labelStyle: AppTextStyles.hintTextStyle(context),),
+                      labelText: 'Names Of Candidates (comma-separated)',
+                      labelStyle: AppTextStyles.hintTextStyle(context),
+                    ),
+                    minLines: 1,
+                    maxLines: null,
                   ),
-                  const SizedBox(height: 25,),
+                  const SizedBox(
+                    height: 25,
+                  ),
                   // Inside the build method, add a new text field
                   TextField(
                     controller: _voterIdsController,
-                    decoration: InputDecoration(labelText: 'Voter IDs (comma-separated)', labelStyle: AppTextStyles.hintTextStyle(context),),
+                    decoration: InputDecoration(
+                      labelText:
+                          'Voter IDs Of Eligible Voters (comma-separated)',
+                      labelStyle: AppTextStyles.hintTextStyle(context),
+                    ),
+                    minLines: 1,
+                    maxLines: null,
                   ),
-                  const SizedBox(height: 25,),
+                  const SizedBox(
+                    height: 25,
+                  ),
                   TextField(
                     controller: _startDateController,
-                    readOnly: true, // Make it read-only so users can't type in it
+                    readOnly: true,
+                    // Make it read-only so users can't type in it
                     decoration: InputDecoration(
                       labelText: 'Start Date & Time',
                       suffixIcon: IconButton(
@@ -245,10 +284,13 @@ class _WebUpdateElectionsScreenState extends State<WebUpdateElectionsScreen > {
                       ),
                     ),
                   ),
-                  SizedBox(height: 25,),
+                  SizedBox(
+                    height: 25,
+                  ),
                   TextField(
                     controller: _endDateController,
-                    readOnly: true, // Make it read-only so users can't type in it
+                    readOnly: true,
+                    // Make it read-only so users can't type in it
                     decoration: InputDecoration(
                       labelText: 'End Date & Time',
                       labelStyle: AppTextStyles.hintTextStyle(context),
@@ -262,17 +304,26 @@ class _WebUpdateElectionsScreenState extends State<WebUpdateElectionsScreen > {
                   ElevatedButton(
                     onPressed: _updateElection,
                     style: ButtonStyle(
-                      backgroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onSecondary),
-                      foregroundColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onTertiary),
-                      padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 24.0, horizontal: 30.0)), // Padding
+                      backgroundColor: WidgetStateProperty.all(
+                          Theme.of(context).colorScheme.onSecondary),
+                      foregroundColor: WidgetStateProperty.all(
+                          Theme.of(context).colorScheme.onTertiary),
+                      padding: WidgetStateProperty.all(
+                          const EdgeInsets.symmetric(
+                              vertical: 24.0, horizontal: 30.0)),
+                      // Padding
                       shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                          borderRadius:
+                              BorderRadius.circular(8.0), // Rounded corners
                         ),
                       ),
                       elevation: WidgetStateProperty.all(5), // Elevation
                     ),
-                    child: Text('Update Election',style: AppTextStyles.cardTextStyle(context),),
+                    child: Text(
+                      'Update Election',
+                      style: AppTextStyles.cardTextStyle(context),
+                    ),
                   ),
                 ],
               ),

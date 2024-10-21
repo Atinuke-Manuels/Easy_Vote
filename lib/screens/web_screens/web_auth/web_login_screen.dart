@@ -90,7 +90,7 @@ class _WebLoginScreenState extends State<WebLoginScreen> {
                     });
 
                     var userCredential = await _authService.signIn(
-                      _retrieveEmailController.text,
+                      _retrieveEmailController.text.trim(),
                       _retrievePasswordController.text,
                     );
 

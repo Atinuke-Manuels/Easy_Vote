@@ -118,7 +118,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                             });
 
                             var userCredential = await _authService.signIn(
-                              _retrieveEmailController.text,
+                              _retrieveEmailController.text.trim(),
                               _retrievePasswordController.text,
                             );
 
@@ -239,8 +239,8 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
-      //backgroundColor: Theme.of(context).colorScheme.surface,
-
+      backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
+      resizeToAvoidBottomInset: true,
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -250,7 +250,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
         child: Padding(
           padding: EdgeInsets.only(top:60, right: MediaQuery.of(context).size.width* 0.025, left: MediaQuery.of(context).size.width* 0.025),
           child: SingleChildScrollView(
-            reverse: false,
+            reverse: true,
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

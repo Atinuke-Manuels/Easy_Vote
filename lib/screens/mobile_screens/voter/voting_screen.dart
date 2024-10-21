@@ -20,7 +20,7 @@ class VotingScreen extends StatelessWidget {
         ModalRoute.of(context)?.settings.arguments as Election;
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
       appBar: AppBar(
         title:  Text('${election.title} Candidates'),
         centerTitle: true,

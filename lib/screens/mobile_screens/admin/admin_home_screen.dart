@@ -31,7 +31,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: Theme.of(context).colorScheme.error,
+      backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
       appBar: AppBar(
         title: Text('Schedule  An  Election', style: AppTextStyles.headingStyle(context),),
         centerTitle: true,

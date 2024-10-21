@@ -73,7 +73,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
-      //backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Theme.of(context).colorScheme.onPrimaryFixed,
+      resizeToAvoidBottomInset: true,
       body: Container(
         // width: double.infinity,
         // height: double.infinity,
@@ -84,6 +85,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           child: Padding(
             padding: EdgeInsets.only(top:60, right: MediaQuery.of(context).size.width* 0.025, left: MediaQuery.of(context).size.width* 0.025),
             child: SingleChildScrollView(
+              reverse: true,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
